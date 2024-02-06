@@ -62,6 +62,7 @@ export const color = {
   secondary01: "#FF8D56",
   secondary02: "#FF6000",
   tertiary: "#F90C5E",
+  tertiary02: "rgba(249,12,94, 0.3)",
   blue01: "#6DA1D8",
   black01: "#000",
   black02: "#2F2F2F",
