@@ -17,6 +17,13 @@ const style = css`
   .fc-toolbar {
     flex-wrap: wrap;
   }
+
+  .slick-slide > div {
+    margin: 0 20px;
+  }
+  .slick-list {
+    margin: 0 -20px;
+  }
 `;
 
 function LibraryStyles() {
