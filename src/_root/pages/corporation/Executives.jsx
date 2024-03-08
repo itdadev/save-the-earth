@@ -8,7 +8,7 @@ import {
 import { CommonTitleOne } from "@/components/ui/fonts/Fonts";
 import { Flex } from "antd";
 import styled from "@emotion/styled";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const PageTitle = styled(CommonTitleOne)(() => ({
   lineHeight: 0.8,

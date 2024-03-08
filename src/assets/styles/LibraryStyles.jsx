@@ -18,6 +18,12 @@ const style = css`
     flex-wrap: wrap;
   }
 
+  .fc-h-event {
+    background-color: ${color.peach};
+    border: 1px solid ${color.peach};
+    margin-bottom: 3px;
+  }
+
   .slick-slide > div {
     margin: 0 20px;
   }

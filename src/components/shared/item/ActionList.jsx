@@ -1,5 +1,5 @@
 import React from "react";
-import { IsDesktop, mq } from "@/lib/react-responsive/mediaQuery";
+import { IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { useMediaQuery } from "react-responsive";
 import { image } from "@/theme";
 import styled from "@emotion/styled";

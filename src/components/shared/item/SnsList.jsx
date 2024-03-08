@@ -3,7 +3,7 @@ import { Flex } from "antd";
 import styled from "@emotion/styled";
 
 import { image } from "@/theme";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const SnsImage = styled.img(({ big }) => ({
   width: big ? "5.2rem" : "2rem",

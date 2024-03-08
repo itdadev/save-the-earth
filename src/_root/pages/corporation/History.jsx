@@ -11,7 +11,7 @@ import {
   ONLINE_HISTORY_ARR,
 } from "@/constants/staticInformation";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled(Flex)(() => ({
   flexDirection: "column",

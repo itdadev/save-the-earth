@@ -5,7 +5,7 @@ import { Flex } from "antd";
 import { ImageFigure } from "@/components/ui/image";
 import { TEXT_Z_INDEX } from "@/constants/zIndex";
 import { image } from "@/theme";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const List = styled(Flex)(() => ({
   width: "100%",

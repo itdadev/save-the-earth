@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled.div(({ theme, bgColor, textColor, fit }) => ({
   width: "fit-content",

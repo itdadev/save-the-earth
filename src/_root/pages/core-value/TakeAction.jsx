@@ -13,7 +13,7 @@ import {
   CommonTitleTwo,
 } from "@/components/ui/fonts/Fonts";
 import { ActionList } from "@/components/shared/item";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Wrapper = styled(Flex)(() => ({
   flexDirection: "column-reverse",

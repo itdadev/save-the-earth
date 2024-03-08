@@ -4,13 +4,13 @@
 
 import React from "react";
 import { MobileHeader, WebHeader } from "@/components/shared/header/index";
-import { IsDefault, IsDesktop } from "@/lib/react-responsive/mediaQuery";
+import { IsDefault, IsDesktop } from "@/libs/react-responsive/mediaQuery";
 
 const Header = () => {
   const utilMenu = [
     { id: 1, title: "홈", url: "/" },
     { id: 2, title: "로그인", url: "/login" },
-    { id: 3, title: "국세청", url: "/tax-service" },
+    { id: 3, title: "국세청", outerLink: "https://www.nts.go.kr/" },
   ];
 
   const menuTree = [

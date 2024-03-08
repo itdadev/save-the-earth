@@ -1,6 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { Flex } from "antd";
+import axios from "axios";
 import styled from "@emotion/styled";
+import { useQuery } from "@tanstack/react-query";
 
 import { image } from "@/theme";
 import {
@@ -12,8 +14,9 @@ import {
   CommonTitleThree,
 } from "@/components/ui/fonts/Fonts";
 import { Pagination, TitleTag } from "@/components/shared/item";
-import { mq } from "@/lib/react-responsive/mediaQuery";
-import { DividePerPage } from "@/utils/Functions";
+import { YOUTUBE_LIST_QUERY_KEY } from "@/constants/queryKeys";
+import { YOUTUBE_API_URL } from "@/constants/apiUrls";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const TitleWrapper = styled(CommonTitleThree)(() => ({
   position: "relative",
@@ -54,30 +57,18 @@ const YoutubeItem = styled.iframe(() => ({
 }));
 
 const YoutubeCampaign = () => {
+  const LOAD_SIZE_4 = 4;
+
   const [active, setActive] = useState(1);
 
-  const youtubeList = [
-    {
-      id: 1,
-      link: "https://www.youtube.com/embed/rNKHNABS3ro?si=xGk0K2NCuSjNFGQp",
+  const { data: youtubeList } = useQuery({
+    queryKey: [YOUTUBE_LIST_QUERY_KEY, active],
+    queryFn: async () =>
+      await axios.get(`${YOUTUBE_API_URL}?limit=${LOAD_SIZE_4}&page=${active}`),
+    select: data => {
+      return data?.data;
     },
-    {
-      id: 2,
-      link: "https://www.youtube.com/embed/V6DfsFmW9N0?si=b945T58OseYMJPbh",
-    },
-    {
-      id: 3,
-      link: "https://www.youtube.com/embed/30i9rxCUDJo?si=_Ul2httb8K_XJYE7",
-    },
-    {
-      id: 4,
-      link: "https://www.youtube.com/embed/TTel6bSQtVM?si=2HzapfIt0enZdbVx",
-    },
-    {
-      id: 5,
-      link: "https://www.youtube.com/embed/efdZgumhYfA?si=xaes4GUmA2ZWNEuG",
-    },
-  ];
+  });
 
   return (
     <CommonPageContainer>
@@ -116,19 +107,22 @@ const YoutubeCampaign = () => {
         </TitleWrapper>
 
         <Pagination
-          total={youtubeList.length}
+          total={youtubeList?.totalCnt}
           active={active}
           setActive={setActive}
         />
 
         <YoutubeList>
-          {DividePerPage(youtubeList, 4)[active - 1]?.map(youtube => {
+          {youtubeList?.data?.map(youtube => {
+            const regExp =
+              /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+            const matches = youtube.youtube_link?.match(regExp);
+
             return (
               <YoutubeItem
-                key={youtube.link}
-                src={youtube.link}
-                title="YouTube video player"
-                frameBorder="0"
+                key={youtube.youtube_link}
+                src={"https://www.youtube.com/embed/" + matches[7]}
+                title={youtube.youtube_title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; "
                 allowFullScreen
               ></YoutubeItem>

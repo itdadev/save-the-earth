@@ -4,7 +4,7 @@ import { Flex } from "antd";
 import styled from "@emotion/styled";
 
 import CommonContainer from "@/components/ui/container/CommonContainer";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled(Flex)(() => ({
   flexDirection: "column",

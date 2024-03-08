@@ -7,7 +7,7 @@ import {
   CommonPageContainer,
 } from "@/components/ui/container";
 import { ProjectList, TitleTag } from "@/components/shared/item";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled.div(() => ({
   maxWidth: "84rem",

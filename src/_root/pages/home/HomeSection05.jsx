@@ -6,7 +6,7 @@ import { Flex } from "antd";
 import { CommonContainer } from "@/components/ui/container";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled(Flex)(({ theme }) => ({
   padding: "1rem 3rem",

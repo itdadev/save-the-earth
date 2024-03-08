@@ -10,7 +10,7 @@ import {
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { PRIVACY_POLICY_ARR } from "@/constants/staticInformation";
 import { TermsContainer } from "@/_root/pages/corporation/TermsOfUse";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Wrapper = styled(Flex)(({ theme }) => ({
   gap: "1rem 0",

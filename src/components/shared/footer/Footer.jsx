@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { Flex } from "antd";
 
 import { image } from "@/theme";
-import { IsDefault, mq } from "@/lib/react-responsive/mediaQuery";
+import { IsDefault, mq } from "@/libs/react-responsive/mediaQuery";
 import { DONATE_BUTTON_Z_INDEX } from "@/constants/zIndex";
 import { SnsList } from "@/components/shared/item";
 

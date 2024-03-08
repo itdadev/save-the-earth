@@ -14,7 +14,7 @@ import {
   CommonTitleThree,
 } from "@/components/ui/fonts/Fonts";
 import { ImageFigure } from "@/components/ui/image";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const PageTitle = styled(CommonTitleTwo)(({ theme }) => ({
   margin: "2rem 0",
@@ -160,35 +160,37 @@ const CampaignActivity = ({
           </div>
         </ActivityDescription>
 
-        <PlanWrapper>
-          <CommonTitleThree textColor={color.primary02}>
-            세부 추진계획
-          </CommonTitleThree>
+        {planArr && (
+          <PlanWrapper>
+            <CommonTitleThree textColor={color.primary02}>
+              세부 추진계획
+            </CommonTitleThree>
 
-          <Flex vertical gap="2rem 0">
-            {planArr.map(plan => {
-              return (
-                <PlanItem key={plan.id} gap="0 0.8rem" align="center">
-                  <PlanNumber>{plan.id}</PlanNumber>
+            <Flex vertical gap="2rem 0">
+              {planArr?.map(plan => {
+                return (
+                  <PlanItem key={plan.id} gap="0 0.8rem" align="center">
+                    <PlanNumber>{plan.id}</PlanNumber>
 
-                  <CommonDescriptionOne>
-                    <span
-                      style={
-                        {
-                          // display: "inline-block",
-                          // lineHeight: "normal",
-                          // verticalAlign: "middle",
+                    <CommonDescriptionOne>
+                      <span
+                        style={
+                          {
+                            // display: "inline-block",
+                            // lineHeight: "normal",
+                            // verticalAlign: "middle",
+                          }
                         }
-                      }
-                    >
-                      {plan.description}
-                    </span>
-                  </CommonDescriptionOne>
-                </PlanItem>
-              );
-            })}
-          </Flex>
-        </PlanWrapper>
+                      >
+                        {plan.description}
+                      </span>
+                    </CommonDescriptionOne>
+                  </PlanItem>
+                );
+              })}
+            </Flex>
+          </PlanWrapper>
+        )}
       </CommonContainer>
     </CommonPageContainer>
   );

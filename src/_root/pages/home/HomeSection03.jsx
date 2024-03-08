@@ -6,7 +6,7 @@ import { image } from "@/theme";
 
 import { TitleTag } from "@/components/shared/item";
 import { CommonContainer } from "@/components/ui/container";
-import { IsDesktop, mq } from "@/lib/react-responsive/mediaQuery";
+import { IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { useTheme } from "@emotion/react";
 import { CORE_VALUE_ARR } from "@/constants/staticInformation";
 

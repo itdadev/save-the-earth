@@ -11,7 +11,7 @@ import {
   MainBanner,
 } from "@/_root/pages/home/index";
 import { color } from "@/theme";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled.div(() => ({}));
 

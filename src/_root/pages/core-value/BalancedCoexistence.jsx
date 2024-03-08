@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/fonts/Fonts";
 import { CORE_VALUE_ARR } from "@/constants/staticInformation";
 import { CommonContainer } from "@/components/ui/container";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled.div(() => ({
   [mq("desktop")]: {

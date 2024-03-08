@@ -11,13 +11,15 @@ import { CommonTitleFour } from "@/components/ui/fonts/Fonts";
 import styled from "@emotion/styled";
 import { ImageFigure } from "@/components/ui/image";
 import { useMediaQuery } from "react-responsive";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
+import { Link } from "react-router-dom";
 
 const Container = styled.div(() => ({
   marginTop: "8rem",
 }));
 
-const ActivityItem = styled(Flex)(({ theme }) => ({
+const ActivityItem = styled(Link)(({ theme }) => ({
+  display: "flex",
   width: "100%",
   gap: "0 2.4rem",
   padding: "2rem 0",
@@ -69,7 +71,10 @@ const LatestActivities = () => {
           <Flex wrap="wrap">
             {latestActivityArr.map(activity => {
               return (
-                <ActivityItem key={`${activity.title}${activity.id}`}>
+                <ActivityItem
+                  key={`${activity.title}${activity.id}`}
+                  to={`/latest-activities/${activity.id}`}
+                >
                   <ImageFigure width={isDesktop ? "25.2rem" : "15rem"}>
                     <img src={activity.src} alt={activity.title} />
                   </ImageFigure>

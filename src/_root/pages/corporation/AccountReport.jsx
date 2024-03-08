@@ -9,7 +9,7 @@ import {
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { Flex } from "antd";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled(Flex)(({ theme }) => ({
   flexDirection: "column",

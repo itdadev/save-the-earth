@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import { image } from "@/theme";
 import { CommonContainer } from "@/components/ui/container";
 import { Flex } from "antd";
-import { IsDefault, IsDesktop, mq } from "@/lib/react-responsive/mediaQuery";
+import { IsDefault, IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { ImageFigure } from "@/components/ui/image";
 import { Link, useNavigate } from "react-router-dom";
 

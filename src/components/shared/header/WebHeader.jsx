@@ -26,11 +26,16 @@ const UtilMenuWrapper = styled(Flex)(() => ({
   background: "white",
 }));
 
-const UtilMenuList = styled(Flex)(() => ({
+const UtilMenuList = styled(Flex)(({ theme }) => ({
   gap: "0 2rem",
 
+  "& a": {
+    lineHeight: "normal",
+    height: "20px",
+  },
+
   "& a:not(:last-of-type)": {
-    borderRight: "1px solid black",
+    borderRight: `1px solid ${theme.color.grey02}`,
     paddingRight: "2rem",
   },
 }));
@@ -120,13 +125,30 @@ const WebHeader = ({ menuTree, utilMenu }) => {
         </Link>
 
         <UtilMenuList>
-          {utilMenu.map(util => {
-            return (
-              <Link to={util.url} key={util.id}>
-                {util.title}
-              </Link>
-            );
-          })}
+          {utilMenu
+            .filter(el => !el.outerLink)
+            .map(util => {
+              return (
+                <Link to={util.url} key={util.id}>
+                  {util.title}
+                </Link>
+              );
+            })}
+
+          {utilMenu
+            .filter(el => el.outerLink)
+            .map(util => {
+              return (
+                <a
+                  href={util.outerLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  key={util.id}
+                >
+                  {util.title}
+                </a>
+              );
+            })}
         </UtilMenuList>
       </UtilMenuWrapper>
 

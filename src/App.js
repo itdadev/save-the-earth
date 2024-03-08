@@ -18,7 +18,7 @@ import { Home } from "@/_root/pages/home";
 import { Login } from "@/_root/pages/user";
 import { MyPage } from "@/_auth/pages/user";
 import { Header } from "@/components/shared/header";
-import { AntdTheme } from "@/lib/antd/AntdCustomTheme";
+import { AntdTheme } from "@/libs/antd/AntdCustomTheme";
 import { Footer } from "@/components/shared/footer";
 import { Donate } from "@/_root/pages/donate";
 import { YoutubeCampaign } from "@/_root/pages/youtube-campaign";
@@ -40,6 +40,7 @@ import {
   TermsOfUse,
 } from "@/_root/pages/corporation";
 import { EnvironmentCalendar } from "@/_root/pages/environment-calendar";
+import LatestActivityDetail from "./_root/pages/campaign-activity/detail/LatestActivityDetail";
 
 const Container = styled.div(() => ({
   minHeight: "100svh",
@@ -67,6 +68,10 @@ function App() {
                 <Route
                   path="/latest-activities"
                   element={<LatestActivities />}
+                />
+                <Route
+                  path="/latest-activities/:activityId"
+                  element={<LatestActivityDetail />}
                 />
                 <Route
                   path="/balanced-coexistence"

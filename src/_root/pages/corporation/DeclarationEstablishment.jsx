@@ -12,7 +12,7 @@ import {
   CommonContainer,
   CommonPageContainer,
 } from "@/components/ui/container";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Wrapper = styled(Flex)(() => ({
   marginBottom: "4.2rem",

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/container";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { PrimaryButton } from "@/components/ui/buttons";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 import { ImageFigure } from "@/components/ui/image";
 import { Pagination } from "@/components/shared/item";
 
@@ -37,6 +37,7 @@ const Texts = styled(Flex)(({ theme, order }) => ({
   textAlign: "center",
 
   [mq("desktop")]: {
+    height: "27rem",
     padding: "4rem 3rem",
   },
 }));

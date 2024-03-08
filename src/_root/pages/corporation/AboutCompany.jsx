@@ -8,7 +8,7 @@ import {
   CommonPageContainer,
 } from "@/components/ui/container";
 import { CommonTitleFour } from "@/components/ui/fonts/Fonts";
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 import NaverMap from "@/_root/pages/NaverMap";
 import { SnsList } from "@/components/shared/item";
 

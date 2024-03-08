@@ -52,7 +52,7 @@ const LatestActivityDetail = () => {
   return (
     <CampaignActivity
       title="국제 연안 정화의 날 연안 정화 활동"
-      mainImage={image.latestActivities01_1}
+      mainImage={image.latestActivities01}
       activityArr={activityArr}
       pageTitle="지난활동"
     >

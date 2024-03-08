@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { Flex } from "antd";
 
 import { CommonContainer } from "@/components/ui/container";
-import { IsDesktop, mq } from "@/lib/react-responsive/mediaQuery";
+import { IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { ActionList, TitleTag } from "@/components/shared/item";
 
 const TitleWrapper = styled.div(() => ({

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Flex } from "antd";
 
-import { mq } from "@/lib/react-responsive/mediaQuery";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 export const CommonTitleOne = styled.h2(({ theme, align = "center" }) => ({
   fontWeight: theme.fontWeight.bold,
