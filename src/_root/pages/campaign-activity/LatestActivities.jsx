@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 
-import { color, image } from "@/theme";
+import { color } from "@/theme";
 import {
   CommonContainer,
   CommonPageContainer,
 } from "@/components/ui/container";
-import { Pagination, TitleTag } from "@/components/shared/item";
-import { Flex, Image } from "antd";
+import { CustomPagination, TitleTag } from "@/components/shared/item";
+import { Flex } from "antd";
 import { CommonTitleFour } from "@/components/ui/fonts/Fonts";
 import styled from "@emotion/styled";
 import { ImageFigure } from "@/components/ui/image";
 import { useMediaQuery } from "react-responsive";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { ACTIVITY_LIST_QUERY_KEY, LOAD_SIZE_4 } from "@/constants/queryKeys";
+import axios from "axios";
+import { ACTIVITY_API_URL } from "@/constants/apiUrls";
+import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
 
 const Container = styled.div(() => ({
   marginTop: "8rem",
@@ -44,47 +49,50 @@ const LatestActivities = () => {
 
   const [active, setActive] = useState(1);
 
-  const latestActivityArr = [
-    {
-      id: 1,
-      title: "국제 연안 정화의 날 연안 정화 활동",
-      date: "2023년 09월 16일",
-      place: "영종도 마시안해변",
-      src: image.latestActivities01,
+  const { data: activityList } = useQuery({
+    queryKey: [ACTIVITY_LIST_QUERY_KEY, active],
+    queryFn: async () =>
+      await axios.get(
+        `${ACTIVITY_API_URL}?limit=${LOAD_SIZE_4}&page=${active}`,
+      ),
+    select: data => {
+      return data?.data;
     },
-    {
-      id: 2,
-      title: "후쿠시마 오염수 방류 반대 서명",
-      date: "2023년 06월 06일, 14일~15일",
-      place: "북한산 등산로 입구",
-      src: image.latestActivities02,
-    },
-  ];
+  });
+
   return (
     <CommonPageContainer>
       <CommonContainer>
         <TitleTag title="지난활동" bgColor={color.blue01} />
 
         <Container>
-          <Pagination total={2} active={active} setActive={setActive} />
+          <CustomPagination
+            total={activityList?.totalCnt}
+            active={active}
+            setActive={setActive}
+          />
 
           <Flex wrap="wrap">
-            {latestActivityArr.map(activity => {
+            {activityList?.data?.map(activity => {
               return (
                 <ActivityItem
-                  key={`${activity.title}${activity.id}`}
-                  to={`/latest-activities/${activity.id}`}
+                  key={`${activity.title}${activity.activity_seq}`}
+                  to={`/latest-activities/${activity.activity_seq}`}
                 >
                   <ImageFigure width={isDesktop ? "25.2rem" : "15rem"}>
-                    <img src={activity.src} alt={activity.title} />
+                    <img
+                      src={activity.image_url}
+                      alt={activity.activity_title}
+                    />
                   </ImageFigure>
 
                   <Flex vertical justify="space-between">
-                    <CommonTitleFour>{activity.title}</CommonTitleFour>
+                    <CommonTitleFour>{activity.activity_title}</CommonTitleFour>
 
+                    <DangerouslyInnerHtml value={activity.activity_content} />
                     <ul>
-                      <li>일시: {activity.date}</li>
-                      <li>장소: {activity.place}</li>
+                      <li>일시: {activity.activity_date}</li>
+                      <li>장소: {activity.activity_location}</li>
                     </ul>
                   </Flex>
                 </ActivityItem>

@@ -166,7 +166,7 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
             <DonateButton>후원하기</DonateButton>
           </LinkButton>
 
-          {menuTree.map((menu, idx) => {
+          {menuTree?.map((menu, idx) => {
             return (
               <div key={menu.id}>
                 <LinkButton

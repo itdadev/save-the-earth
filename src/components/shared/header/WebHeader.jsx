@@ -153,7 +153,7 @@ const WebHeader = ({ menuTree, utilMenu }) => {
       </UtilMenuWrapper>
 
       <MainMenuWrapper align="center" justify="space-between">
-        {menuTree.map(menu => {
+        {menuTree?.map(menu => {
           return (
             <MainMenuItem
               to={menu.url}
@@ -188,7 +188,7 @@ const WebHeader = ({ menuTree, utilMenu }) => {
         onMouseEnter={showHeaderHandler}
         onMouseLeave={hideHeaderHandler}
       >
-        {menuTree.map(menu => {
+        {menuTree?.map(menu => {
           return (
             <Flex align="flex-start" justify="space-between" key={menu.id}>
               {menu.subMenus ? (

@@ -11,7 +11,7 @@ const Container = styled.figure(({ ratio, radius, width, height }) => ({
   width: width ? width : "100%",
   height: height ? height : "100%",
   minHeight: "auto",
-  aspectRatio: ratio ? ratio : "1/ 1",
+  aspectRatio: ratio ? ratio : "1 / 1",
   borderRadius: radius ? radius : 0,
   overflow: "hidden",
 

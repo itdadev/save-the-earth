@@ -2,62 +2,64 @@
   NOTE: 헤더 부모 컴포넌트입니다. menu 트리 배열을 내보내고 WebHeader.jsx와 MobileHeader.jsx를 가져옵니다.
 */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MobileHeader, WebHeader } from "@/components/shared/header/index";
 import { IsDefault, IsDesktop } from "@/libs/react-responsive/mediaQuery";
+import { useQuery } from "@tanstack/react-query";
+import { CAMPAIGN_LIST_QUERY_KEY } from "@/constants/queryKeys";
+import axios from "axios";
+import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
+import { MENU_LIST } from "@/constants/staticInformation";
 
 const Header = () => {
+  const [menuTree, setMenuTree] = useState(MENU_LIST);
+
+  const { data: campaignList } = useQuery({
+    queryKey: [CAMPAIGN_LIST_QUERY_KEY],
+    queryFn: async () => await axios.get(`${CAMPAIGN_API_URL}`),
+    select: data => {
+      return data?.data?.data;
+    },
+  });
+
   const utilMenu = [
     { id: 1, title: "홈", url: "/" },
     { id: 2, title: "로그인", url: "/login" },
     { id: 3, title: "국세청", outerLink: "https://www.nts.go.kr/" },
   ];
 
-  const menuTree = [
-    {
-      id: 1,
-      title: "Youtube 캠페인",
-      url: "/youtube-campaign",
-    },
-    {
-      id: 2,
-      title: "캠페인 & 활동",
-      subMenus: [
-        { id: 1, title: "깨끗한 연안 만들기", url: "/clean-shore" },
-        { id: 2, title: "숲과 환경", url: "/forest" },
-        { id: 3, title: "환경 보존", url: "/environment" },
-        { id: 4, title: "식목일 행사", url: "/tree-planting" },
-        { id: 5, title: "지난활동", url: "/latest-activities" },
-      ],
-    },
-    {
-      id: 3,
-      title: "핵심가치",
-      subMenus: [
-        { id: 1, title: "균형있는 공존", url: "/balanced-coexistence" },
-        { id: 2, title: "작은 행동 실천", url: "/take-action" },
-      ],
-    },
-    {
-      id: 4,
-      title: "환경 달력",
-      url: "/environment-calendar",
-    },
-    {
-      id: 5,
-      title: "사단법인 소개",
-      subMenus: [
-        { id: 1, title: "설립선언문", url: "/declaration-establishment" },
-        { id: 2, title: "임원진", url: "/executives" },
-        { id: 3, title: "연혁 및 주요활동", url: "/history" },
-        { id: 4, title: "미디어", url: "/media" },
-        { id: 5, title: "이용약관", url: "/terms-of-use" },
-        { id: 6, title: "개인정보취급방침", url: "/privacy-policy" },
-        { id: 7, title: "정관/회계보고서", url: "/account-report" },
-        { id: 8, title: "회사소개", url: "/about-company" },
-      ],
-    },
-  ];
+  useEffect(() => {
+    if (campaignList) {
+      const campaignMenuList = campaignList?.map(campaignMenu => {
+        return {
+          id: campaignMenu?.campaign_seq,
+          title: campaignMenu?.campaign_menu_title,
+          url: `/campaign/${campaignMenu?.campaign_menu_title.replaceAll(" ", "-")}`,
+        };
+      });
+      // 캠페인 & 활동 항목 찾기
+      const campaignActivityIndex = menuTree.findIndex(item => item.id === 2);
+
+      if (campaignActivityIndex !== -1) {
+        // 새로운 캠페인 메뉴를 기존 subMenus에 추가
+        const updatedSubMenu = [
+          ...campaignMenuList,
+          ...menuTree[campaignActivityIndex].subMenus,
+        ];
+
+        // 캠페인 & 활동 항목의 subMenus 업데이트
+        const updatedMenuTree = [...menuTree];
+
+        updatedMenuTree[campaignActivityIndex] = {
+          ...updatedMenuTree[campaignActivityIndex],
+          subMenus: updatedSubMenu,
+        };
+
+        // 메뉴 트리 업데이트
+        setMenuTree(updatedMenuTree);
+      }
+    }
+  }, [campaignList]);
 
   return (
     <>

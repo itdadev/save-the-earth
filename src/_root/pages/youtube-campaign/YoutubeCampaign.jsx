@@ -13,8 +13,8 @@ import {
   CommonDescriptionTwo,
   CommonTitleThree,
 } from "@/components/ui/fonts/Fonts";
-import { Pagination, TitleTag } from "@/components/shared/item";
-import { YOUTUBE_LIST_QUERY_KEY } from "@/constants/queryKeys";
+import { CustomPagination, TitleTag } from "@/components/shared/item";
+import { LOAD_SIZE_4, YOUTUBE_LIST_QUERY_KEY } from "@/constants/queryKeys";
 import { YOUTUBE_API_URL } from "@/constants/apiUrls";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 
@@ -57,8 +57,6 @@ const YoutubeItem = styled.iframe(() => ({
 }));
 
 const YoutubeCampaign = () => {
-  const LOAD_SIZE_4 = 4;
-
   const [active, setActive] = useState(1);
 
   const { data: youtubeList } = useQuery({
@@ -106,7 +104,7 @@ const YoutubeCampaign = () => {
           </Flex>
         </TitleWrapper>
 
-        <Pagination
+        <CustomPagination
           total={youtubeList?.totalCnt}
           active={active}
           setActive={setActive}

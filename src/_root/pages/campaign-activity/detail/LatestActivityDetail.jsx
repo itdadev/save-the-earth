@@ -2,26 +2,18 @@ import React from "react";
 
 import { image } from "@/theme";
 import CampaignActivity from "@/_root/pages/campaign-activity/CampaignActivity";
+import { useQuery } from "@tanstack/react-query";
+import {
+  ACTIVITY_DETAIL_QUERY_KEY,
+  ACTIVITY_LIST_QUERY_KEY,
+  LOAD_SIZE_4,
+} from "@/constants/queryKeys";
+import axios from "axios";
+import { ACTIVITY_API_URL } from "@/constants/apiUrls";
+import { useParams } from "react-router-dom";
 
 const LatestActivityDetail = () => {
-  const latestActivityArr = [
-    {
-      id: 1,
-      title: "국제 연안 정화의 날 연안 정화 활동",
-      date: "2023년 09월 16일",
-      place: "영종도 마시안해변",
-      src: image.latestActivities01,
-      linkTo: "/international-coastal-cleanup-day",
-    },
-    {
-      id: 2,
-      title: "후쿠시마 오염수 방류 반대 서명",
-      date: "2023년 06월 06일, 14일~15일",
-      place: "북한산 등산로 입구",
-      src: image.latestActivities02,
-      linkTo: "/discharging-fukushima-contaminated-water",
-    },
-  ];
+  const activityId = useParams().activityId;
 
   const activityArr = [
     {
@@ -48,6 +40,17 @@ const LatestActivityDetail = () => {
       ),
     },
   ];
+
+  const { data: activityDetail } = useQuery({
+    queryKey: [ACTIVITY_DETAIL_QUERY_KEY, activityId],
+    queryFn: async () => await axios.get(`${ACTIVITY_API_URL}/${activityId}`),
+    enabled: !!activityId,
+    select: data => {
+      return data?.data?.data;
+    },
+  });
+
+  console.log(activityDetail);
 
   return (
     <CampaignActivity

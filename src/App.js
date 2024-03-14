@@ -41,6 +41,7 @@ import {
 } from "@/_root/pages/corporation";
 import { EnvironmentCalendar } from "@/_root/pages/environment-calendar";
 import LatestActivityDetail from "./_root/pages/campaign-activity/detail/LatestActivityDetail";
+import CampaignActivity from "@/_root/pages/campaign-activity/CampaignActivity";
 
 const Container = styled.div(() => ({
   minHeight: "100svh",
@@ -62,6 +63,10 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/donate" element={<Donate />} />
                 <Route path="/youtube-campaign" element={<YoutubeCampaign />} />
+                <Route
+                  path="/campaign/:campaignId"
+                  element={<CampaignActivity />}
+                />
                 <Route path="/clean-shore" element={<CleanShore />} />
                 <Route path="/forest" element={<Forest />} />
                 <Route path="/environment" element={<Environment />} />

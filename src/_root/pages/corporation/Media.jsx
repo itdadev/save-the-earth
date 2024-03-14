@@ -11,7 +11,7 @@ import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 import { ImageFigure } from "@/components/ui/image";
-import { Pagination } from "@/components/shared/item";
+import { CustomPagination } from "@/components/shared/item";
 
 const MediaList = styled(Flex)(() => ({
   gap: "3.4rem 4.4rem",
@@ -73,7 +73,11 @@ const Media = () => {
       <CommonContainer>
         <CommonTitleTwo>미디어</CommonTitleTwo>
 
-        <Pagination total={TOTAL_PAGE} active={active} setActive={setActive} />
+        <CustomPagination
+          total={TOTAL_PAGE}
+          active={active}
+          setActive={setActive}
+        />
 
         <MediaList>
           {mediaArr.map((media, idx) => {

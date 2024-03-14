@@ -12,6 +12,12 @@ import {
 } from "@/constants/staticInformation";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { mq } from "@/libs/react-responsive/mediaQuery";
+import { useQuery } from "@tanstack/react-query";
+import { HISTORY_LIST_QUERY_KEY } from "@/constants/queryKeys";
+import axios from "axios";
+import { HISTORY_API_URL } from "@/constants/apiUrls";
+import dayjs from "dayjs";
+import { ImageFigure } from "@/components/ui/image";
 
 const Container = styled(Flex)(() => ({
   flexDirection: "column",
@@ -130,6 +136,28 @@ const Button = styled.div(({ theme }) => ({
 }));
 
 const History = () => {
+  const { data: offlineHistory } = useQuery({
+    queryKey: [HISTORY_LIST_QUERY_KEY],
+    queryFn: async () => await axios.get(`${HISTORY_API_URL}`),
+    select: data => {
+      return data?.data?.data?.offline.sort(
+        (a, b) => new Date(b.history_date) - new Date(a.history_date),
+      );
+    },
+  });
+
+  const { data: onlineHistory } = useQuery({
+    queryKey: [HISTORY_LIST_QUERY_KEY],
+    queryFn: async () => await axios.get(`${HISTORY_API_URL}`),
+    select: data => {
+      return data?.data?.data?.online.sort(
+        (a, b) => new Date(b.history_date) - new Date(a.history_date),
+      );
+    },
+  });
+
+  console.log(onlineHistory);
+
   return (
     <CommonPageContainer>
       <CommonContainer>
@@ -145,64 +173,95 @@ const History = () => {
 
         <Container>
           <EachRow>
-            {OFFLINE_HISTORY_ARR.map(offlineHistory => {
+            {offlineHistory?.map(offlineHistory => {
+              const day = dayjs(offlineHistory.history_date);
+
               return (
-                <div key={offlineHistory.id}>
-                  <Year>{offlineHistory.year}</Year>
+                <div key={offlineHistory.history_seq}>
+                  <Year>{day.year()}</Year>
 
-                  {offlineHistory.months.map(month => {
-                    return (
-                      <Flex key={month.id} gap="0 1rem">
-                        <Month>{month.month}</Month>
+                  <Flex gap="0 1rem">
+                    <Month>{day.month()}</Month>
 
-                        <Wrapper gap="2rem 0" vertical>
-                          {month.events.map(event => {
-                            return (
-                              <div key={event.id}>
-                                <Title>{event.title}</Title>
+                    <Wrapper gap="2rem 0" vertical>
+                      <div>
+                        <Title>{offlineHistory.history_title}</Title>
 
-                                <Description>{event.description}</Description>
-                              </div>
-                            );
-                          })}
-                        </Wrapper>
-                      </Flex>
-                    );
-                  })}
+                        <Description>
+                          {offlineHistory.history_content}
+                        </Description>
+                      </div>
+                    </Wrapper>
+                  </Flex>
                 </div>
               );
             })}
           </EachRow>
 
           <EachRow>
-            {ONLINE_HISTORY_ARR.map(offlineHistory => {
+            {onlineHistory?.map(onlineHistory => {
+              const day = dayjs(onlineHistory.history_date);
+
               return (
-                <div key={offlineHistory.id}>
-                  <Year>{offlineHistory.year}</Year>
+                <div key={onlineHistory.history_seq}>
+                  <Year>{day.year()}</Year>
 
-                  {offlineHistory.months.map(month => {
-                    return (
-                      <Flex key={month.id} gap="0 1rem">
-                        <Month>{month.month}</Month>
+                  {onlineHistory.image_url && (
+                    <ImageFigure>
+                      <img
+                        src={onlineHistory.image_url}
+                        alt="onlineHistory.history_title"
+                      />
+                    </ImageFigure>
+                  )}
 
-                        <Wrapper gap="2rem 0" vertical>
-                          {month.events.map(event => {
-                            return (
-                              <div key={event.id}>
-                                <Title>{event.title}</Title>
+                  <Flex gap="0 1rem">
+                    <Month>{day.month()}</Month>
 
-                                <Description>{event.description}</Description>
-                              </div>
-                            );
-                          })}
-                        </Wrapper>
-                      </Flex>
-                    );
-                  })}
+                    <Wrapper gap="2rem 0" vertical>
+                      <div>
+                        <Title>{onlineHistory.history_title}</Title>
+
+                        <Description>
+                          {onlineHistory.history_content}
+                        </Description>
+                      </div>
+                    </Wrapper>
+                  </Flex>
                 </div>
               );
             })}
           </EachRow>
+
+          {/*<EachRow>*/}
+          {/*  {ONLINE_HISTORY_ARR.map(offlineHistory => {*/}
+          {/*    return (*/}
+          {/*      <div key={offlineHistory.id}>*/}
+          {/*        <Year>{offlineHistory.year}</Year>*/}
+
+          {/*        {offlineHistory.months.map(month => {*/}
+          {/*          return (*/}
+          {/*            <Flex key={month.id} gap="0 1rem">*/}
+          {/*              <Month>{month.month}</Month>*/}
+
+          {/*              <Wrapper gap="2rem 0" vertical>*/}
+          {/*                {month.events.map(event => {*/}
+          {/*                  return (*/}
+          {/*                    <div key={event.id}>*/}
+          {/*                      <Title>{event.title}</Title>*/}
+
+          {/*                      <Description>{event.description}</Description>*/}
+          {/*                    </div>*/}
+          {/*                  );*/}
+          {/*                })}*/}
+          {/*              </Wrapper>*/}
+          {/*            </Flex>*/}
+          {/*          );*/}
+          {/*        })}*/}
+          {/*      </div>*/}
+          {/*    );*/}
+          {/*  })}*/}
+          {/*</EachRow>*/}
         </Container>
       </CommonContainer>
     </CommonPageContainer>

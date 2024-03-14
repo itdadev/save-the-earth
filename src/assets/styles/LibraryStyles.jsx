@@ -30,6 +30,10 @@ const style = css`
   .slick-list {
     margin: 0 -20px;
   }
+
+  .ant-pagination-options {
+    display: none !important;
+  }
 `;
 
 function LibraryStyles() {
