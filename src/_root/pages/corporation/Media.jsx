@@ -58,7 +58,7 @@ const Media = () => {
     queryFn: async () =>
       await axios.get(`${MEDIA_LIST_API}?page=${active}&limit=${LOAD_SIZE_4}`),
     select: data => {
-      return data?.data.data;
+      return data?.data;
     },
   });
 
@@ -72,13 +72,13 @@ const Media = () => {
         <CommonTitleTwo>미디어</CommonTitleTwo>
 
         <CustomPagination
-          total={mediaList?.length}
+          total={mediaList?.totalCnt}
           active={active}
           setActive={setActive}
         />
 
         <MediaList>
-          {mediaList?.map((media, idx) => {
+          {mediaList?.data?.map((media, idx) => {
             return (
               <MediaItem key={media.id}>
                 <ImageFigure ratio="4 / 3" height="30rem">
