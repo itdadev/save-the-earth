@@ -156,15 +156,11 @@ const History = () => {
     queryKey: [HISTORY_LIST_QUERY_KEY],
     queryFn: async () => await axios.get(`${HISTORY_API_URL}`),
     select: data => {
-      console.log(data);
       return data?.data?.data?.online.sort(
         (a, b) => new Date(b.history_date) - new Date(a.history_date),
       );
     },
   });
-
-  console.log(offlineHistory);
-  console.log(onlineHistory);
 
   const renderHistory = history => {
     let prevYear = null;
