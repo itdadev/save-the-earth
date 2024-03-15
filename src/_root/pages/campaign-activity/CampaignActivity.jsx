@@ -19,6 +19,7 @@ import { CAMPAIGN_DETAIL_QUERY_KEY } from "@/constants/queryKeys";
 import axios from "axios";
 import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
 import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
+import { ImageFigure } from "@/components/ui/image";
 
 const PageTitle = styled(CommonTitleTwo)(({ theme }) => ({
   margin: "2rem 0",
@@ -129,11 +130,9 @@ const CampaignActivity = () => {
     queryKey: [CAMPAIGN_DETAIL_QUERY_KEY],
     queryFn: async () => await axios.get(`${CAMPAIGN_API_URL}/${campaignId}`),
     select: data => {
-      return data?.data?.data?.detail_data;
+      return data?.data?.data;
     },
   });
-
-  console.log(campaignDetail);
 
   useEffect(() => {
     refetch();
@@ -144,17 +143,19 @@ const CampaignActivity = () => {
       {
         id: 1,
         title: "행사일",
-        description: <div>{campaignDetail?.campaign_date}</div>,
+        description: <div>{campaignDetail?.detail_data.campaign_date}</div>,
       },
       {
         id: 2,
         title: "장소",
-        description: <div>{campaignDetail?.campaign_location}</div>,
+        description: <div>{campaignDetail?.detail_data.campaign_location}</div>,
       },
       {
         id: 3,
         title: "참여대상",
-        description: <div>{campaignDetail?.campaign_participants}</div>,
+        description: (
+          <div>{campaignDetail?.detail_data.campaign_participants}</div>
+        ),
       },
     ]);
   }, [campaignDetail]);
@@ -164,14 +165,19 @@ const CampaignActivity = () => {
       <CommonContainer>
         <TitleTag title="환경활동" bgColor={color.primary02} />
 
-        <PageTitle>{campaignDetail?.campaign_title}</PageTitle>
+        <PageTitle>{campaignDetail?.detail_data.campaign_title}</PageTitle>
 
-        {/*<ImageFigure ratio="2 / 1">*/}
-        {/*  <img src={mainImage} alt={title} />*/}
-        {/*</ImageFigure>*/}
+        <ImageFigure ratio="2 / 1">
+          <img
+            src={campaignDetail?.file_list[0].file_url}
+            alt={campaignDetail?.detail_data.campaign_title}
+          />
+        </ImageFigure>
 
         <ActivityDescription>
-          <DangerouslyInnerHtml value={campaignDetail?.campaign_content} />
+          <DangerouslyInnerHtml
+            value={campaignDetail?.detail_data.campaign_content}
+          />
 
           <div>
             <ActivityInfoList>
