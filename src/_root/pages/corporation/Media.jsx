@@ -80,7 +80,7 @@ const Media = () => {
         <MediaList>
           {mediaList?.data?.map((media, idx) => {
             return (
-              <MediaItem key={media.id}>
+              <MediaItem key={media.media_seq}>
                 <ImageFigure ratio="4 / 3" height="30rem">
                   <img src={media.image_url} alt={media.media_title} />
                 </ImageFigure>
