@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Flex } from "antd";
+import { color, image } from "@/theme";
 import { useParams } from "react-router-dom";
 
-import { color, image } from "@/theme";
+import { useQuery } from "@tanstack/react-query";
+import { CAMPAIGN_DETAIL_QUERY_KEY } from "@/constants/queryKeys";
+import axios from "axios";
+import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
+
+import { ImageFigure } from "@/components/ui/image";
 import {
   CommonContainer,
   CommonPageContainer,
@@ -11,15 +17,11 @@ import {
 import { TitleTag } from "@/components/shared/item";
 import {
   CommonDescriptionOne,
+  CommonTitleThree,
   CommonTitleTwo,
 } from "@/components/ui/fonts/Fonts";
 import { mq } from "@/libs/react-responsive/mediaQuery";
-import { useQuery } from "@tanstack/react-query";
-import { CAMPAIGN_DETAIL_QUERY_KEY } from "@/constants/queryKeys";
-import axios from "axios";
 import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
-import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
-import { ImageFigure } from "@/components/ui/image";
 
 const PageTitle = styled(CommonTitleTwo)(({ theme }) => ({
   margin: "2rem 0",
@@ -105,6 +107,7 @@ const PlanItem = styled(Flex)(() => ({
 }));
 
 const PlanNumber = styled(Flex)(({ theme }) => ({
+  display: "flex",
   alignItems: "center",
   justifyContent: "center",
   width: "2rem",
@@ -112,13 +115,14 @@ const PlanNumber = styled(Flex)(({ theme }) => ({
   borderRadius: "0.2rem",
   background: theme.color.black01,
   color: "white",
-  fontSize: "1.8rem",
+  fontSize: "1.4rem",
   textAlign: "center",
   fontWeight: theme.fontWeight.bold,
 
   [mq("desktop")]: {
     width: "2rem",
     height: "3rem",
+    fontSize: "1.8rem",
   },
 }));
 
@@ -201,37 +205,31 @@ const CampaignActivity = () => {
           </div>
         </ActivityDescription>
 
-        {/*{planArr && (*/}
-        {/*  <PlanWrapper>*/}
-        {/*    <CommonTitleThree textColor={color.primary02}>*/}
-        {/*      세부 추진계획*/}
-        {/*    </CommonTitleThree>*/}
+        {campaignDetail?.plan_list && (
+          <PlanWrapper>
+            <CommonTitleThree textColor={color.primary02}>
+              세부 추진계획
+            </CommonTitleThree>
 
-        {/*    <Flex vertical gap="2rem 0">*/}
-        {/*      {planArr?.map(plan => {*/}
-        {/*        return (*/}
-        {/*          <PlanItem key={plan.id} gap="0 0.8rem" align="center">*/}
-        {/*            <PlanNumber>{plan.id}</PlanNumber>*/}
+            <Flex vertical gap="2rem 0">
+              {campaignDetail?.plan_list?.map((plan, idx) => {
+                return (
+                  <PlanItem
+                    key={plan.campaign_plan_seq}
+                    gap="0 0.8rem"
+                    align="center"
+                  >
+                    <PlanNumber>{idx}</PlanNumber>
 
-        {/*            <CommonDescriptionOne>*/}
-        {/*              <span*/}
-        {/*                style={*/}
-        {/*                  {*/}
-        {/*                    // display: "inline-block",*/}
-        {/*                    // lineHeight: "normal",*/}
-        {/*                    // verticalAlign: "middle",*/}
-        {/*                  }*/}
-        {/*                }*/}
-        {/*              >*/}
-        {/*                {plan.description}*/}
-        {/*              </span>*/}
-        {/*            </CommonDescriptionOne>*/}
-        {/*          </PlanItem>*/}
-        {/*        );*/}
-        {/*      })}*/}
-        {/*    </Flex>*/}
-        {/*  </PlanWrapper>*/}
-        {/*)}*/}
+                    <CommonDescriptionOne>
+                      {plan.campaign_plan_content}
+                    </CommonDescriptionOne>
+                  </PlanItem>
+                );
+              })}
+            </Flex>
+          </PlanWrapper>
+        )}
       </CommonContainer>
     </CommonPageContainer>
   );
