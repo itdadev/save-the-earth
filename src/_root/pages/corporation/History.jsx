@@ -4,7 +4,7 @@ import { Flex } from "antd";
 import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
+import { useMediaQuery } from "react-responsive";
 import {
   CommonContainer,
   CommonPageContainer,
@@ -121,7 +121,27 @@ const Button = styled.div(({ theme }) => ({
   },
 }));
 
+const MobileButton = styled.div(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: "6rem",
+  fontSize: "1.4rem",
+  maxWidth: "10rem",
+  margin: "3.4rem 0",
+  height: "3rem",
+  fontWeight: theme.fontWeight.bold,
+  border: `1px solid ${theme.color.black01}`,
+  [mq("desktop")]: {
+    minWidth: "20rem",
+    height: "6rem",
+    fontSize: "2.4rem",
+  },
+}));
+
 const History = () => {
+  const isDesktop = useMediaQuery({ minWidth: 1240 });
+
   const { data: offlineHistory } = useQuery({
     queryKey: [HISTORY_LIST_QUERY_KEY],
     queryFn: async () => await axios.get(`${HISTORY_API_URL}`),
@@ -185,15 +205,25 @@ const History = () => {
         <TitleWrapper>
           <CommonTitleTwo>연혁 및 주요활동</CommonTitleTwo>
 
-          <Buttons>
-            <Button>오프라인</Button>
-            <Button>온라인</Button>
-          </Buttons>
+          {isDesktop && (
+            <Buttons>
+              <Button>오프라인</Button>
+              <Button>온라인</Button>
+            </Buttons>
+          )}
         </TitleWrapper>
 
         <Container>
-          <EachRow>{renderHistory(offlineHistory)}</EachRow>
-          <EachRow>{renderHistory(onlineHistory)}</EachRow>
+          <EachRow>
+            {!isDesktop && <MobileButton>오프라인</MobileButton>}
+
+            {renderHistory(offlineHistory)}
+          </EachRow>
+          <EachRow>
+            {!isDesktop && <MobileButton>온라인</MobileButton>}
+
+            {renderHistory(onlineHistory)}
+          </EachRow>
         </Container>
       </CommonContainer>
     </CommonPageContainer>
