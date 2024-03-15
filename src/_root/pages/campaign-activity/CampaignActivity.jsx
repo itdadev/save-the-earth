@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Flex } from "antd";
+import { useParams } from "react-router-dom";
 
 import { color, image } from "@/theme";
 import {
@@ -122,16 +123,21 @@ const PlanNumber = styled(Flex)(({ theme }) => ({
 
 const CampaignActivity = () => {
   const [activityArr, setActivityArr] = useState([]);
+  const { campaignId } = useParams();
 
-  const { data: campaignDetail } = useQuery({
+  const { data: campaignDetail, refetch } = useQuery({
     queryKey: [CAMPAIGN_DETAIL_QUERY_KEY],
-    queryFn: async () => await axios.get(`${CAMPAIGN_API_URL}/26`),
+    queryFn: async () => await axios.get(`${CAMPAIGN_API_URL}/${campaignId}`),
     select: data => {
       return data?.data?.data?.detail_data;
     },
   });
 
   console.log(campaignDetail);
+
+  useEffect(() => {
+    refetch();
+  }, [campaignId]);
 
   useEffect(() => {
     setActivityArr([
