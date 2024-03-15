@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Flex } from "antd";
+import { useQuery } from "@tanstack/react-query";
 
 import { color, image } from "@/theme";
 import {
@@ -12,6 +13,9 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 import { ImageFigure } from "@/components/ui/image";
 import { CustomPagination } from "@/components/shared/item";
+import { LOAD_SIZE_4, MEDIA_LIST_QUERY_KEY } from "@/constants/queryKeys";
+import { MEDIA_LIST_API } from "@/constants/apiUrls";
+import axios from "axios";
 
 const MediaList = styled(Flex)(() => ({
   gap: "3.4rem 4.4rem",
@@ -49,24 +53,18 @@ const Title = styled.header(({ theme }) => ({
 const Media = () => {
   const [active, setActive] = useState(1);
 
-  const TOTAL_PAGE = 4;
+  const { data: mediaList } = useQuery({
+    queryKey: [MEDIA_LIST_QUERY_KEY, active],
+    queryFn: async () =>
+      await axios.get(`${MEDIA_LIST_API}?page=${active}&limit=${LOAD_SIZE_4}`),
+    select: data => {
+      return data?.data.data;
+    },
+  });
 
-  const mediaArr = [
-    {
-      id: 1,
-      title: "건강을 지키는 것이 곧...",
-      description:
-        "환경단체인 사단법인 세이브더얼스가 지난 14일 북한산 캠비움힐스에서 맨발 걷기와 야채 비빔밥 함께하기 행사를 진행했다. 이번 행사는 세계 채식인의 날과 산의 날을 맞아 사람과 자연이 건강하게 조화할 수 있도록 하는 취지에서 기획되었다",
-      image: image.media02,
-    },
-    {
-      id: 2,
-      title: "세이브더얼스, 국제 연안...",
-      description:
-        "환경단체인 사단법인 세이브더얼스가 지난 16일 국제 연안 정화의 날을 맞아 인천광역시 영종도 마시안 해변에서 쓰레기 줍기 봉사를 했다. 국제 연안 정화의 날은 매년 9월 셋째 주 토요일에 전세계 100여개 국가에서 50만명이 넘는 자원봉사자가 해양 환경 보전…",
-      image: image.media01,
-    },
-  ];
+  const handleArticleClick = articleLink => {
+    window.open(articleLink, "_blank");
+  };
 
   return (
     <CommonPageContainer>
@@ -74,17 +72,17 @@ const Media = () => {
         <CommonTitleTwo>미디어</CommonTitleTwo>
 
         <CustomPagination
-          total={TOTAL_PAGE}
+          total={mediaList?.length}
           active={active}
           setActive={setActive}
         />
 
         <MediaList>
-          {mediaArr.map((media, idx) => {
+          {mediaList?.map((media, idx) => {
             return (
               <MediaItem key={media.id}>
                 <ImageFigure ratio="4 / 3" height="30rem">
-                  <img src={media.image} alt={media.title} />
+                  <img src={media.image_url} alt={media.media_title} />
                 </ImageFigure>
 
                 <Texts
@@ -94,15 +92,16 @@ const Media = () => {
                   align="center"
                   justify="center"
                 >
-                  <Title className="ellipsis-1">{media.title}</Title>
+                  <Title className="ellipsis-1">{media.media_title}</Title>
 
-                  <div className="ellipsis-5">{media.description}</div>
+                  <div className="ellipsis-5">{media.media_content}</div>
 
                   <PrimaryButton
                     bgColor="white"
                     textColor={
                       idx % 2 === 0 ? color.primary02 : color.secondary02
                     }
+                    clickEvent={() => handleArticleClick(media.article_link)}
                   >
                     <Flex align="center" gap="0 0.4rem">
                       <p>기사보기</p>

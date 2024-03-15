@@ -60,6 +60,8 @@ const LatestActivities = () => {
     },
   });
 
+  console.log(activityList);
+
   return (
     <CommonPageContainer>
       <CommonContainer>

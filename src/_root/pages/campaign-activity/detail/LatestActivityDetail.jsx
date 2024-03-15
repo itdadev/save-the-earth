@@ -1,45 +1,97 @@
 import React from "react";
-
+import styled from "@emotion/styled";
 import { image } from "@/theme";
-import CampaignActivity from "@/_root/pages/campaign-activity/CampaignActivity";
-import { useQuery } from "@tanstack/react-query";
-import {
-  ACTIVITY_DETAIL_QUERY_KEY,
-  ACTIVITY_LIST_QUERY_KEY,
-  LOAD_SIZE_4,
-} from "@/constants/queryKeys";
 import axios from "axios";
-import { ACTIVITY_API_URL } from "@/constants/apiUrls";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+
+import { ACTIVITY_DETAIL_QUERY_KEY } from "@/constants/queryKeys";
+import { ACTIVITY_API_URL } from "@/constants/apiUrls";
+
+import {
+  CommonDescriptionOne,
+  CommonTitleTwo,
+} from "@/components/ui/fonts/Fonts";
+import { color } from "@/theme";
+import {
+  CommonContainer,
+  CommonPageContainer,
+} from "@/components/ui/container";
+import { TitleTag } from "@/components/shared/item";
+import { mq } from "@/libs/react-responsive/mediaQuery";
+import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
+import { ImageFigure } from "@/components/ui/image";
+
+const PageTitle = styled(CommonTitleTwo)(({ theme }) => ({
+  margin: "2rem 0",
+  textAlign: "center",
+}));
+
+const ActivityDescription = styled(CommonDescriptionOne)(({ theme }) => ({
+  marginTop: "3.2rem",
+  fontWeight: theme.fontWeight.light,
+
+  [mq("desktop")]: {
+    marginTop: "5.4rem",
+  },
+}));
+
+const ActivityInfoList = styled.ul(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  margin: "3rem 0 8rem",
+  fontSize: "1.4rem",
+
+  [mq("desktop")]: {
+    flexDirection: "row",
+    fontSize: "1.8rem",
+    borderTop: `1px solid ${theme.color.black01}`,
+    borderBottom: `1px solid ${theme.color.black01}`,
+  },
+}));
+
+const ActivityInfoItem = styled.li(({ theme }) => ({
+  flex: 1,
+  display: "flex",
+  gap: "0 4rem",
+  fontWeight: theme.fontWeight.regular,
+  padding: "2rem 1.5rem",
+
+  borderBottom: `1px solid ${theme.color.grey05}`,
+
+  ":first-of-type": {
+    borderTop: `1px solid ${theme.color.grey05}`,
+  },
+
+  [mq("desktop")]: {
+    padding: "8rem 3rem",
+    border: "none",
+
+    ":first-of-type": {
+      border: "none",
+    },
+  },
+}));
+
+const ActivityImage = styled.img(() => ({
+  width: "3rem",
+
+  [mq("desktop")]: {
+    width: "8rem",
+  },
+}));
+
+const ActivityInfoTitle = styled.header(({ theme }) => ({
+  fontSize: "1.6rem",
+  fontWeight: theme.fontWeight.bold,
+
+  [mq("desktop")]: {
+    fontSize: "2.6rem",
+  },
+}));
 
 const LatestActivityDetail = () => {
   const activityId = useParams().activityId;
-
-  const activityArr = [
-    {
-      id: 1,
-      title: "행사일",
-      description: <div>2023년 09월 16일</div>,
-    },
-    {
-      id: 2,
-      title: "장소",
-      description: (
-        <div>
-          <p>영종도 마시안해변</p>
-        </div>
-      ),
-    },
-    {
-      id: 3,
-      title: "참여대상",
-      description: (
-        <div>
-          <p>세이브더얼스 회원 및 일반 참가자</p>
-        </div>
-      ),
-    },
-  ];
 
   const { data: activityDetail } = useQuery({
     queryKey: [ACTIVITY_DETAIL_QUERY_KEY, activityId],
@@ -50,30 +102,77 @@ const LatestActivityDetail = () => {
     },
   });
 
-  console.log(activityDetail, "ddd");
+  const detailData = activityDetail?.detail_data;
+
+  const activityArr = [
+    {
+      id: 1,
+      title: "행사일",
+      description: <div>{detailData?.activity_date}</div>,
+    },
+    {
+      id: 2,
+      title: "장소",
+      description: (
+        <div>
+          <p>{detailData?.activity_location}</p>
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      title: "참여대상",
+      description: (
+        <div>
+          <p>{detailData?.activity_participants}</p>
+        </div>
+      ),
+    },
+  ];
 
   return (
-    <CampaignActivity
-      title="국제 연안 정화의 날 연안 정화 활동"
-      mainImage={image.latestActivities01}
-      activityArr={activityArr}
-      pageTitle="지난활동"
-    >
-      {/*<p>*/}
-      {/*  연안정화활동을 통하여 환경 교육 및 인식을 증가시키는 데도 도움이 될*/}
-      {/*  것이며, 이는 지속 가능한 소비 습관을 촉진하는 데 도움이 됩니다. 이*/}
-      {/*  활동을 통해 참여자들은 자연 환경 보호의 중요성을 실제로 경험하고,*/}
-      {/*  플라스틱 사용 및 폐기에 대한 자신의 행동을 반성할 기회를 갖게 됩니다.*/}
-      {/*  이러한 인식을 높이는 과정은 장기적으로 지속 가능한 소비 및 환경적*/}
-      {/*  책임감을 증가시키는 데 도움이 됩니다.*/}
-      {/*</p>*/}
+    <CommonPageContainer>
+      <CommonContainer>
+        <TitleTag title="지난활동" bgColor={color.blue01} />
 
-      {/*<ul>*/}
-      {/*  <li>- 행사내용 : 연안정화활동</li>*/}
+        <PageTitle>{detailData?.activity_title}</PageTitle>
 
-      {/*  <li>- 참여인원 : 16명</li>*/}
-      {/*</ul>*/}
-    </CampaignActivity>
+        <ImageFigure ratio="2 / 1">
+          <img
+            src={
+              activityDetail?.file_list[0] !== undefined
+                ? activityDetail?.file_list[0].file_url
+                : ""
+            }
+            alt={"지난활동 이미지"}
+          />
+        </ImageFigure>
+
+        <ActivityDescription>
+          <DangerouslyInnerHtml value={detailData?.activity_content} />
+
+          <div>
+            <ActivityInfoList>
+              {activityArr.map((activity, idx) => {
+                return (
+                  <ActivityInfoItem key={activity.id}>
+                    <ActivityImage
+                      src={`${image?.[`activityIcon0${idx + 1}`]?.default}`}
+                      alt={activity.title}
+                    />
+                    <div>
+                      <ActivityInfoTitle>{activity.title}</ActivityInfoTitle>
+
+                      <div>{activity.description}</div>
+                    </div>
+                  </ActivityInfoItem>
+                );
+              })}
+            </ActivityInfoList>
+          </div>
+        </ActivityDescription>
+      </CommonContainer>
+    </CommonPageContainer>
   );
 };
 

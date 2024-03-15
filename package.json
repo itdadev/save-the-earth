@@ -19,6 +19,7 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.13.2",
     "axios": "^1.6.5",
+    "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.10",
     "emotion": "^11.0.0",
@@ -40,11 +41,11 @@
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false env-cmd -f .env.dev craco start",
-    "build": "GENERATE_SOURCEMAP=false env-cmd -f .env.prod craco build",
+    "build": "env-cmd -f .env.prod craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "start:prod": "env-cmd -f .env.prod craco start",
-    "start:dev": "env-cmd -f .env.dev craco start",
+    "start:prod": "GENERATE_SOURCEMAP=false env-cmd -f .env.prod craco start",
+    "start:dev": "GENERATE_SOURCEMAP=false env-cmd -f .env.dev craco start",
     "build:prod": "env-cmd -f .env.prod craco build",
     "build:dev": "env-cmd -f .env.dev craco build"
   },
@@ -67,7 +68,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/parser": "^7.24.0",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.23.3",
     "@craco/craco": "^7.1.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",

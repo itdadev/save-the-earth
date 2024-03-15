@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { useQuery } from "@tanstack/react-query";
 
 import { image, color } from "@/theme";
 import {
@@ -10,6 +11,12 @@ import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { Flex } from "antd";
 import { mq } from "@/libs/react-responsive/mediaQuery";
+import { ACCOUNT_REPORT_LIST_QUERY_KEY } from "@/constants/queryKeys";
+import {
+  ACCOUNT_REPORT_API_URL,
+  FILE_DOWNLOAD_API_URL,
+} from "@/constants/apiUrls";
+import axios from "axios";
 
 const Container = styled(Flex)(({ theme }) => ({
   flexDirection: "column",
@@ -23,7 +30,7 @@ const Container = styled(Flex)(({ theme }) => ({
   },
 }));
 
-const ReportItem = styled(Flex)(({ theme }) => ({
+const ReportItem = styled(Flex)(({ theme, islastodd }) => ({
   width: "100%",
   minHeight: "11rem",
   fontSize: "1.8rem",
@@ -34,10 +41,9 @@ const ReportItem = styled(Flex)(({ theme }) => ({
     minHeight: "18rem",
     paddingRight: "5rem",
     fontSize: "3rem",
-
-    ":nth-of-type(3)": {
-      border: "none",
-    },
+    ...(islastodd === "true" && {
+      borderBottom: "none",
+    }),
   },
 }));
 
@@ -73,6 +79,11 @@ const Title = styled.header(({ theme }) => ({
 
   [mq("desktop")]: {
     margin: "4rem",
+    minHeight: "20rem",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
 
     b: {
       fontSize: "3.6rem",
@@ -88,70 +99,115 @@ const Notice = styled.div(({ theme }) => ({
   [mq("desktop")]: {
     marginTop: 0,
     fontSize: "2.2rem",
+    maxWidth: "44.4rem",
   },
 }));
 
 const AccountReport = () => {
-  const reportArr = [
-    {
-      id: 1,
-      title: "정관",
-      year: 2024,
-      file: "",
-      icon: image.reportIcon01.default,
-      type: 1,
-    },
-    {
-      id: 2,
-      title: "정관",
-      year: 2023,
-      file: "",
-      icon: image.reportIcon01.default,
-      type: 1,
-    },
-    {
-      id: 3,
-      title: "회계보고서",
-      year: 2024,
-      file: "",
-      icon: image.reportIcon02.default,
-      type: 2,
-    },
-  ];
+  const { data: accountReportList } = useQuery({
+    queryKey: [ACCOUNT_REPORT_LIST_QUERY_KEY],
+    queryFn: async () => await axios.get(`${ACCOUNT_REPORT_API_URL}`),
 
+    select: data => {
+      return data?.data?.data;
+    },
+  });
+  const { data: accountReportNotice } = useQuery({
+    queryKey: ["accountReportNotice"],
+    queryFn: async () => await axios.get(`${ACCOUNT_REPORT_API_URL}`),
+
+    select: data => {
+      return data?.data.notice;
+    },
+  });
+
+  console.log(accountReportNotice);
+
+  const downloadReport = async (seq, originalFile, serverFile, uploadPath) => {
+    try {
+      const res = await axios.get(
+        `${FILE_DOWNLOAD_API_URL}?original_file_name=${originalFile}&server_file_name=${serverFile}&upload_path=${uploadPath}`,
+        { responseType: "blob" },
+      );
+      const blob = new Blob([res.data], { type: res.headers["content-type"] });
+
+      // Blob을 URL로 변환합니다.
+      const fileUrl = window.URL.createObjectURL(blob);
+
+      // 링크 엘리먼트를 생성합니다.
+      const link = document.createElement("a");
+      link.href = fileUrl;
+      link.setAttribute("download", originalFile); // 다운로드할 파일의 원래 이름을 설정합니다.
+
+      // 링크를 클릭하여 다운로드를 시작합니다.
+      link.click();
+
+      // 더 이상 필요하지 않은 요소들을 제거합니다.
+      window.URL.revokeObjectURL(fileUrl);
+      link.remove();
+      // console.log(fileUrl);
+    } catch (error) {
+      console.error("Error downloading report:", error);
+      // 에러 처리
+    }
+  };
   return (
     <CommonPageContainer>
       <CommonContainer>
         <CommonTitleTwo>정관/회계 보고서</CommonTitleTwo>
 
         <Container align="center" justify="space-between">
-          {reportArr.map((report, idx) => {
-            return (
-              <ReportItem key={report.id} align="center">
-                <Icon align="center" justify="center">
-                  <img src={report.icon} alt="파일 아이콘" />
-                </Icon>
+          {accountReportList
+            ?.sort((a, b) => b.report_title - a.report_title)
+            .sort((a, b) => a.report_type_value - b.report_type_value)
+            .map((report, idx, array) => {
+              const isLastOdd = idx === array.length - 1 && idx % 2 === 0;
 
-                <Title>
-                  {report.title} <b>{report.year}</b>
-                </Title>
-
-                <PrimaryButton
-                  type="button"
-                  bgColor={
-                    report.type === 1 ? color.primary02 : color.secondary01
-                  }
+              return (
+                <ReportItem
+                  key={report.report_seq}
+                  align="center"
+                  islastodd={isLastOdd ? "true" : "false"}
                 >
-                  다운로드
-                </PrimaryButton>
-              </ReportItem>
-            );
-          })}
+                  <Icon align="center" justify="center">
+                    <img
+                      src={
+                        report.report_type_value === "01"
+                          ? image.reportIcon01.default
+                          : image.reportIcon02.default
+                      }
+                      alt="파일 아이콘"
+                    />
+                  </Icon>
+
+                  <Title>
+                    {report.report_type_name} <b>{report.report_title}</b>
+                  </Title>
+
+                  <PrimaryButton
+                    type="button"
+                    bgColor={
+                      report.report_type_value === "01"
+                        ? color.primary02
+                        : color.secondary01
+                    }
+                    clickEvent={() =>
+                      downloadReport(
+                        report.report_seq,
+                        report.original_file_name,
+                        report.server_file_name,
+                        report.upload_path,
+                      )
+                    }
+                  >
+                    다운로드
+                  </PrimaryButton>
+                </ReportItem>
+              );
+            })}
 
           <Notice>
-            <p>*2023년 회계감사보고서는</p>
-
-            <p>2024년 회계감사완료 후 부터 확인이 가능합니다.</p>
+            <p>{accountReportNotice}</p>
           </Notice>
         </Container>
       </CommonContainer>
