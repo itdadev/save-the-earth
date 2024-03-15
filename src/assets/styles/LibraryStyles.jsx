@@ -1,5 +1,6 @@
 import { css, Global } from "@emotion/react";
 import { color } from "@/theme";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const style = css`
   //  NOTE: Fullcalendar styling customization
@@ -33,6 +34,39 @@ const style = css`
 
   .ant-pagination-options {
     display: none !important;
+  }
+
+  .ant-input-outlined {
+    border-width: 2px !important;
+  }
+
+  .ant-input-lg,
+  .ant-input-affix-wrapper-lg {
+    border-radius: 8px !important;
+  }
+
+  .ant-modal-body {
+    & > div {
+      margin: 0;
+    }
+  }
+
+  .ant-checkbox-inner {
+    border-radius: 0 !important;
+  }
+
+  .ant-modal-content {
+    max-height: 80svh;
+  }
+
+  .ant-checkbox-wrapper {
+    align-items: flex-end !important;
+  }
+
+  .ant-input-group-addon {
+    border: none !important;
+    background: none !important;
+    padding-left: 0.4rem !important;
   }
 `;
 

@@ -1,11 +1,11 @@
 import { css, Global } from "@emotion/react";
+import { color } from "@/theme";
 
 const style = css`
   html {
     font-size: 62.5%;
     box-sizing: border-box;
     line-height: 1.2;
-    overflow-x: hidden;
   }
 
   body {
@@ -59,6 +59,23 @@ const style = css`
     font: inherit;
     cursor: pointer;
     background: inherit;
+  }
+
+  &::-webkit-scrollbar {
+    width: 1rem;
+    height: 0.8rem;
+    background-color: white;
+    border-radius: 1rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${color.grey01};
+    border-radius: 1rem;
+    height: 0.8rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
   }
 
   .ellipsis-1 {

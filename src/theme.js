@@ -53,6 +53,8 @@ export const image = {
   reportIcon02: require("./assets/icons/reportIcon02.svg"),
   rightArrowGreen: require("./assets/icons/rightArrowGreen.svg"),
   rightArrowOrange: require("./assets/icons/rightArrowOrange.svg"),
+  googleIcon: require("./assets/icons/google-logo.svg"),
+  kakaoIcon: require("./assets/icons/kakao-logo.svg"),
 };
 
 // NOTE: 공통 컬러
@@ -63,6 +65,7 @@ export const color = {
   secondary02: "#FF6000",
   tertiary: "#F90C5E",
   tertiary02: "rgba(249,12,94, 0.3)",
+  error: "#ff4d4f",
   blue01: "#6DA1D8",
   black01: "#000",
   black02: "#2F2F2F",

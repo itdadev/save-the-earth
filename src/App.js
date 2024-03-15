@@ -15,7 +15,13 @@ import RootLayout from "@/_root/RootLayout";
 import NotFound from "@/_root/pages/NotFound";
 
 import { Home } from "@/_root/pages/home";
-import { Login } from "@/_root/pages/user";
+import {
+  ChangePassword,
+  FindAccount,
+  FindAccountFail,
+  Join,
+  Login,
+} from "@/_root/pages/user";
 import { MyPage } from "@/_auth/pages/user";
 import { Header } from "@/components/shared/header";
 import { AntdTheme } from "@/libs/antd/AntdCustomTheme";
@@ -60,7 +66,16 @@ function App() {
 
               {/* NOTE: 로그인없이 접근할 수 있는 페이지 */}
               <Route element={<RootLayout />}>
+                {/* 로그인 + 회원가입 관련 */}
                 <Route path="/login" element={<Login />} />
+                <Route path="/join" element={<Join />} />
+                <Route path="/find-account" element={<FindAccount />} />
+                <Route
+                  path="/find-account-fail"
+                  element={<FindAccountFail />}
+                />
+                <Route path="/change-password" element={<ChangePassword />} />
+
                 <Route path="/donate" element={<Donate />} />
                 <Route path="/youtube-campaign" element={<YoutubeCampaign />} />
                 <Route
