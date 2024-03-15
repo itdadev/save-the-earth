@@ -1,28 +1,24 @@
 import React from "react";
-import { image } from "@/theme";
 import styled from "@emotion/styled";
-import { ImageFigure } from "@/components/ui/image";
+
 import { useMediaQuery } from "react-responsive";
 import { useQuery } from "@tanstack/react-query";
-import {
-  EXECUTIVE_LIST_QUERY_KEY,
-  HOME_BANNER_QUERY_KEY,
-} from "@/constants/queryKeys";
-import {
-  EXECUTIVE_LIST_API_URL,
-  HOME_BANNER_API_URL,
-} from "@/constants/apiUrls";
+import { HOME_BANNER_QUERY_KEY } from "@/constants/queryKeys";
+import { HOME_BANNER_API_URL } from "@/constants/apiUrls";
 import axios from "axios";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled.div(() => ({}));
 
-const MainBannerImage = styled.figure(() => ({
-  overflow: "hidden",
-}));
-
 const VideoWrapper = styled.video(() => ({
   width: "100%",
-  height: "auto",
+  height: "52rem",
+  marginTop: "4.8rem",
+  objectFit: "cover",
+
+  [mq("desktop")]: {
+    marginTop: "14.6rem",
+  },
 }));
 
 const MainBanner = () => {
