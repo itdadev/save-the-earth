@@ -22,7 +22,7 @@ import {
   Join,
   Login,
 } from "@/_root/pages/user";
-import { MyPage } from "@/_auth/pages/user";
+import { ChangeAccount, ChangeMyPassword, MyPage } from "@/_auth/pages/user";
 import { Header } from "@/components/shared/header";
 import { AntdTheme } from "@/libs/antd/AntdCustomTheme";
 import { Footer } from "@/components/shared/footer";
@@ -118,6 +118,11 @@ function App() {
               {/* NOTE: 로그인해야 접근할 수 있는 페이지 */}
               <Route element={<AuthLayout />}>
                 <Route path="/mypage" element={<MyPage />} />
+                <Route
+                  path="/change-my-password"
+                  element={<ChangeMyPassword />}
+                />
+                <Route path="/change-account" element={<ChangeAccount />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />

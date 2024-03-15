@@ -5,14 +5,14 @@ import {
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
   NAME_REQUIRED,
-  PASSWORD_CONFIRM_REQURIED,
+  PASSWORD_CONFIRM_REQUIRED,
   PASSWORD_FORMAT,
   PASSWORD_REQUIRED,
   PHONE_FORMAT,
   PHONE_REQUIRED,
   PRIVACY_POLICY_REQUIRED,
   USE_TERM_REQUIRED,
-  VERICATION_CODE_INCOMPLETE,
+  VERIFICATION_CODE_INCOMPLETE,
   VERIFICATION_CODE_REQUIRED,
 } from "@/constants/inputErrorMessage";
 
@@ -40,9 +40,9 @@ export const zodJoin = z
       .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, {
         message: PASSWORD_FORMAT,
       }),
-    password_confirm: z
+    confirm_password: z
       .string()
-      .min(1, { message: PASSWORD_CONFIRM_REQURIED })
+      .min(1, { message: PASSWORD_CONFIRM_REQUIRED })
       .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, {
         message: PASSWORD_FORMAT,
       }),
@@ -54,7 +54,7 @@ export const zodJoin = z
       .regex(/^[0-9]+$/, { message: PHONE_FORMAT }),
     auth_code: z.string().min(1, { message: VERIFICATION_CODE_REQUIRED }),
     phone_verified: z.boolean().refine(value => value === true, {
-      message: VERICATION_CODE_INCOMPLETE,
+      message: VERIFICATION_CODE_INCOMPLETE,
     }),
     user_key: z.optional(z.string()),
     use_term: z.boolean().refine(value => value === true, {
@@ -78,6 +78,6 @@ export const zodFindAccount = z.object({
     .regex(/^[0-9]+$/, { message: PHONE_FORMAT }),
   auth_code: z.string().min(1, { message: VERIFICATION_CODE_REQUIRED }),
   phone_verified: z.boolean().refine(value => value === true, {
-    message: VERICATION_CODE_INCOMPLETE,
+    message: VERIFICATION_CODE_INCOMPLETE,
   }),
 });

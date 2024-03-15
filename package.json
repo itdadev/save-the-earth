@@ -36,7 +36,8 @@
     "rrule": "^2.8.1",
     "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false env-cmd -f .env.dev craco start",

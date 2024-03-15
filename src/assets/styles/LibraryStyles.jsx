@@ -37,12 +37,14 @@ const style = css`
   }
 
   .ant-input-outlined {
+    padding: 1rem 1.1rem 0.7rem !important;
     border-width: 2px !important;
   }
 
   .ant-input-lg,
   .ant-input-affix-wrapper-lg {
     border-radius: 8px !important;
+    line-height: 0.8;
   }
 
   .ant-modal-body {
@@ -67,6 +69,7 @@ const style = css`
     border: none !important;
     background: none !important;
     padding-left: 0.4rem !important;
+    padding-right: 0 !important;
   }
 `;
 

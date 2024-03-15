@@ -16,7 +16,7 @@ const PasswordInput = props => {
             <Password
               {...field}
               {...props}
-              id={name}
+              id={props.name}
               status={errors[props.name] ? "error" : ""}
               size="large"
               type="password"

@@ -17,19 +17,22 @@ export const CommonTitleOne = styled.h2(({ theme, align = "center" }) => ({
   },
 }));
 
-export const CommonTitleTwo = styled.h3(({ theme, align = "center" }) => ({
-  fontWeight: theme.fontWeight.bold,
-  fontSize: "2.6rem",
-  textAlign: align,
+export const CommonTitleTwo = styled.h3(
+  ({ theme, align = "center", margin }) => ({
+    fontWeight: theme.fontWeight.bold,
+    fontSize: "2.6rem",
+    textAlign: align,
+    margin: margin ? margin : "0 0 4.8rem 0",
 
-  [mq("tablet")]: {
-    fontSize: "3.2rem",
-  },
+    [mq("tablet")]: {
+      fontSize: "3.2rem",
+    },
 
-  [mq("desktop")]: {
-    fontSize: "4.8rem",
-  },
-}));
+    [mq("desktop")]: {
+      fontSize: "4.8rem",
+    },
+  }),
+);
 
 export const CommonTitleThree = styled.h4(({ theme, textColor }) => ({
   fontWeight: theme.fontWeight.bold,

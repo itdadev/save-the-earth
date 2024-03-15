@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Divider, Flex } from "antd";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
@@ -16,6 +16,7 @@ import { image } from "@/theme";
 import { EmailField, PasswordField } from "@/components/ui/form/Fields";
 import { SingleCheckBox } from "@/components/ui/form";
 import { zodLogin } from "@/libs/zod/zodValidation";
+import useUserStore from "@/store/useUserStore";
 
 export const FormContainer = styled.form(() => ({
   maxWidth: "50rem",
@@ -29,6 +30,10 @@ const LoginUtilGroup = styled(Flex)(() => ({
 export const SubmitButtonWrapper = styled(Flex)(() => ({
   marginTop: "5rem",
   marginBottom: "2.4rem",
+
+  button: {
+    width: "24rem",
+  },
 }));
 
 export const SnsLoginButton = styled.button(({ theme }) => ({
@@ -54,6 +59,10 @@ export const SnsLoginButton = styled.button(({ theme }) => ({
 }));
 
 const Login = () => {
+  const { setUser } = useUserStore();
+
+  const navigate = useNavigate();
+
   const theme = useTheme();
 
   const { control, handleSubmit } = useForm({
@@ -67,13 +76,25 @@ const Login = () => {
     },
   });
 
-  const onSubmit = useCallback(data => {
-    if (data?.auto_login) {
-      sessionStorage.setItem("stored_email", data?.user_email);
-    } else {
-      sessionStorage.removeItem("stored_email");
-    }
-  }, []);
+  const onSubmit = useCallback(
+    data => {
+      if (data?.auto_login) {
+        sessionStorage.setItem("stored_email", data?.user_email);
+      } else {
+        sessionStorage.removeItem("stored_email");
+      }
+
+      setUser({
+        id: 1,
+        name: "유화경",
+        email: "lilly@itdadev.com",
+        phone: "01049555429",
+      });
+
+      navigate("/mypage");
+    },
+    [setUser, navigate],
+  );
 
   return (
     <CommonPageContainer>

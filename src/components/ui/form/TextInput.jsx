@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "antd";
+import { Flex, Input } from "antd";
 import styled from "@emotion/styled";
 import { Controller } from "react-hook-form";
 
@@ -22,6 +22,7 @@ const TextInput = ({
   control,
   type = "text",
   addonAfter,
+  labelafter,
 }) => {
   return (
     <Controller
@@ -30,7 +31,11 @@ const TextInput = ({
       render={({ field, formState: { errors } }) => {
         return (
           <Container>
-            <label htmlFor={id}>{label}</label>
+            <Flex justify="space-between">
+              <label htmlFor={id}>{label}</label>
+
+              {labelafter}
+            </Flex>
 
             <Input
               {...field}

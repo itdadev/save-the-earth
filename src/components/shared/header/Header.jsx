@@ -10,8 +10,11 @@ import { CAMPAIGN_LIST_QUERY_KEY } from "@/constants/queryKeys";
 import axios from "axios";
 import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
 import { MENU_LIST } from "@/constants/staticInformation";
+import useUserStore from "@/store/useUserStore";
 
 const Header = () => {
+  const { user } = useUserStore();
+
   const [menuTree, setMenuTree] = useState(MENU_LIST);
 
   const { data: campaignList } = useQuery({
@@ -24,7 +27,11 @@ const Header = () => {
 
   const utilMenu = [
     { id: 1, title: "홈", url: "/" },
-    { id: 2, title: "로그인", url: "/login" },
+    {
+      id: 2,
+      title: user ? `${user?.name}님` : "로그인",
+      url: user ? "/mypage" : "/login",
+    },
     { id: 3, title: "국세청", outerLink: "https://www.nts.go.kr/" },
   ];
 
