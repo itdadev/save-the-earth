@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom";
 
 import { ACTIVITY_DETAIL_QUERY_KEY } from "@/constants/queryKeys";
 import { ACTIVITY_API_URL } from "@/constants/apiUrls";
-import { changeDateKorean } from "@/utils/Functions";
 
 import {
   CommonDescriptionOne,
@@ -109,7 +108,7 @@ const LatestActivityDetail = () => {
     {
       id: 1,
       title: "행사일",
-      description: <div>{changeDateKorean(detailData?.activity_date)}</div>,
+      description: <div>{detailData?.activity_date}</div>,
     },
     {
       id: 2,

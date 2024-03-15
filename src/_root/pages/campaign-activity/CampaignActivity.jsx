@@ -11,15 +11,10 @@ import { TitleTag } from "@/components/shared/item";
 import {
   CommonDescriptionOne,
   CommonTitleTwo,
-  CommonTitleThree,
 } from "@/components/ui/fonts/Fonts";
-import { ImageFigure } from "@/components/ui/image";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 import { useQuery } from "@tanstack/react-query";
-import {
-  CAMPAIGN_DETAIL_QUERY_KEY,
-  CAMPAIGN_LIST_QUERY_KEY,
-} from "@/constants/queryKeys";
+import { CAMPAIGN_DETAIL_QUERY_KEY } from "@/constants/queryKeys";
 import axios from "axios";
 import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
 import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
@@ -135,6 +130,8 @@ const CampaignActivity = () => {
       return data?.data?.data?.detail_data;
     },
   });
+
+  console.log(campaignDetail);
 
   useEffect(() => {
     setActivityArr([
