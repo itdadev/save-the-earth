@@ -9,6 +9,7 @@ export const CALENDAR_LIST_QUERY_KEY = "environmentEvents";
 export const MEDIA_LIST_QUERY_KEY = "mediaList";
 export const ACCOUNT_REPORT_LIST_QUERY_KEY = "accountReport";
 export const EXECUTIVE_LIST_QUERY_KEY = "executiveList";
+export const HOME_BANNER_QUERY_KEY = "homeBanner";
 
 // NOTE: LOAD SIZES
 export const LOAD_SIZE_4 = 4;

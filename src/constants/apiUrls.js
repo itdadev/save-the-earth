@@ -7,3 +7,4 @@ export const MEDIA_LIST_API = "/api/v1/media";
 export const ACCOUNT_REPORT_API_URL = "/api/v1/account-report";
 export const FILE_DOWNLOAD_API_URL = "/api/v1/file";
 export const EXECUTIVE_LIST_API_URL = "/api/v1/executive";
+export const HOME_BANNER_API_URL = "/api/v1/home-banner";
