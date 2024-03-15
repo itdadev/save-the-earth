@@ -6,6 +6,6 @@
       "jsx": true
     }
   },
-  "plugins": ["react"],
-  "extends": ["plugin:prettier/recommended"]
+  "plugins": ["import", "react"],
+  "extends": ["prettier", "plugin:prettier/recommended"]
 }

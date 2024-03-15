@@ -156,8 +156,6 @@ const CampaignActivity = () => {
     ]);
   }, [campaignDetail]);
 
-  console.log(campaignDetail);
-
   return (
     <CommonPageContainer>
       <CommonContainer>
