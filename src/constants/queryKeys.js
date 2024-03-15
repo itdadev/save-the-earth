@@ -8,6 +8,7 @@ export const HISTORY_LIST_QUERY_KEY = "historyList";
 export const CALENDAR_LIST_QUERY_KEY = "environmentEvents";
 export const MEDIA_LIST_QUERY_KEY = "mediaList";
 export const ACCOUNT_REPORT_LIST_QUERY_KEY = "accountReport";
+export const EXECUTIVE_LIST_QUERY_KEY = "executiveList";
 
 // NOTE: LOAD SIZES
 export const LOAD_SIZE_4 = 4;

@@ -9,6 +9,11 @@ import { CommonTitleOne } from "@/components/ui/fonts/Fonts";
 import { Flex } from "antd";
 import styled from "@emotion/styled";
 import { mq } from "@/libs/react-responsive/mediaQuery";
+import { EXECUTIVE_LIST_QUERY_KEY } from "@/constants/queryKeys";
+
+import { useQuery } from "@tanstack/react-query";
+import { EXECUTIVE_LIST_API_URL } from "@/constants/apiUrls";
+import axios from "axios";
 
 const PageTitle = styled(CommonTitleOne)(() => ({
   lineHeight: 0.8,
@@ -212,6 +217,14 @@ const Executives = () => {
     },
   ];
 
+  const { data: executiveList } = useQuery({
+    queryKey: [EXECUTIVE_LIST_QUERY_KEY],
+    queryFn: async () => await axios.get(EXECUTIVE_LIST_API_URL),
+    select: data => {
+      return data?.data?.data;
+    },
+  });
+
   return (
     <CommonPageContainer>
       <CommonContainer>
@@ -222,25 +235,27 @@ const Executives = () => {
         </Flex>
 
         <ExecutiveList>
-          {executiveArr.map(executive => {
+          {executiveList?.map(executive => {
             return (
-              <ExecutiveItem vertical key={executive.id}>
+              <ExecutiveItem vertical key={executive.executive_seq}>
                 <ExecutiveName align="flex-end" gap="0 0.8rem">
-                  {executive.title}
+                  {executive.executive_name}
 
-                  <ExecutivePosition>{executive.position}</ExecutivePosition>
+                  <ExecutivePosition>
+                    {executive.executive_position}
+                  </ExecutivePosition>
                 </ExecutiveName>
 
                 <ExecutiveWrapper>
                   <ul>
-                    {executive.now?.map(now => {
-                      return <li key={now.id}>{now.description}</li>;
+                    {executive.current_experience?.map((now, idx) => {
+                      return <li key={idx}>{now.experience}</li>;
                     })}
                   </ul>
 
                   <ExecutiveBefore>
-                    {executive.before?.map(before => {
-                      return <li key={before.id}>{before.description}</li>;
+                    {executive.past_experience?.map((before, idx) => {
+                      return <li key={idx}>{before.experience}</li>;
                     })}
                   </ExecutiveBefore>
                 </ExecutiveWrapper>
