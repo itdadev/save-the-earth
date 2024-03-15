@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-
+import styled from "@emotion/styled";
 import { color } from "@/theme";
+import { mq } from "@/libs/react-responsive/mediaQuery";
+import { useMediaQuery } from "react-responsive";
+
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { ACTIVITY_LIST_QUERY_KEY, LOAD_SIZE_4 } from "@/constants/queryKeys";
+import { ACTIVITY_API_URL } from "@/constants/apiUrls";
+import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
+
 import {
   CommonContainer,
   CommonPageContainer,
@@ -8,16 +17,8 @@ import {
 import { CustomPagination, TitleTag } from "@/components/shared/item";
 import { Flex } from "antd";
 import { CommonTitleFour } from "@/components/ui/fonts/Fonts";
-import styled from "@emotion/styled";
 import { ImageFigure } from "@/components/ui/image";
-import { useMediaQuery } from "react-responsive";
-import { mq } from "@/libs/react-responsive/mediaQuery";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { ACTIVITY_LIST_QUERY_KEY, LOAD_SIZE_4 } from "@/constants/queryKeys";
-import axios from "axios";
-import { ACTIVITY_API_URL } from "@/constants/apiUrls";
-import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
 
 const Container = styled.div(() => ({
   marginTop: "8rem",

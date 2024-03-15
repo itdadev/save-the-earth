@@ -41,7 +41,7 @@ const Header = () => {
         return {
           id: campaignMenu?.campaign_seq,
           title: campaignMenu?.campaign_menu_title,
-          url: `/campaign/${campaignMenu?.campaign_menu_title.replaceAll(" ", "-")}`,
+          url: `/campaign/${campaignMenu?.campaign_seq}`,
         };
       });
       // 캠페인 & 활동 항목 찾기

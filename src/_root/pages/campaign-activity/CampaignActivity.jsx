@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Flex } from "antd";
-
 import { color, image } from "@/theme";
+import { useParams } from "react-router-dom";
+
+import { useQuery } from "@tanstack/react-query";
+import { CAMPAIGN_DETAIL_QUERY_KEY } from "@/constants/queryKeys";
+import axios from "axios";
+import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
+
+import { ImageFigure } from "@/components/ui/image";
 import {
   CommonContainer,
   CommonPageContainer,
@@ -10,19 +17,11 @@ import {
 import { TitleTag } from "@/components/shared/item";
 import {
   CommonDescriptionOne,
-  CommonTitleTwo,
   CommonTitleThree,
+  CommonTitleTwo,
 } from "@/components/ui/fonts/Fonts";
-import { ImageFigure } from "@/components/ui/image";
 import { mq } from "@/libs/react-responsive/mediaQuery";
-import { useQuery } from "@tanstack/react-query";
-import {
-  CAMPAIGN_DETAIL_QUERY_KEY,
-  CAMPAIGN_LIST_QUERY_KEY,
-} from "@/constants/queryKeys";
-import axios from "axios";
 import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
-import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
 
 const PageTitle = styled(CommonTitleTwo)(({ theme }) => ({
   margin: "2rem 0",
@@ -108,6 +107,7 @@ const PlanItem = styled(Flex)(() => ({
 }));
 
 const PlanNumber = styled(Flex)(({ theme }) => ({
+  display: "flex",
   alignItems: "center",
   justifyContent: "center",
   width: "2rem",
@@ -115,62 +115,73 @@ const PlanNumber = styled(Flex)(({ theme }) => ({
   borderRadius: "0.2rem",
   background: theme.color.black01,
   color: "white",
-  fontSize: "1.8rem",
+  fontSize: "1.4rem",
   textAlign: "center",
   fontWeight: theme.fontWeight.bold,
 
   [mq("desktop")]: {
     width: "2rem",
     height: "3rem",
+    fontSize: "1.8rem",
   },
 }));
 
 const CampaignActivity = () => {
   const [activityArr, setActivityArr] = useState([]);
+  const { campaignId } = useParams();
 
-  const { data: campaignDetail } = useQuery({
+  const { data: campaignDetail, refetch } = useQuery({
     queryKey: [CAMPAIGN_DETAIL_QUERY_KEY],
-    queryFn: async () => await axios.get(`${CAMPAIGN_API_URL}/26`),
+    queryFn: async () => await axios.get(`${CAMPAIGN_API_URL}/${campaignId}`),
     select: data => {
-      return data?.data?.data?.detail_data;
+      return data?.data?.data;
     },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [campaignId]);
 
   useEffect(() => {
     setActivityArr([
       {
         id: 1,
         title: "행사일",
-        description: <div>{campaignDetail?.campaign_date}</div>,
+        description: <div>{campaignDetail?.detail_data.campaign_date}</div>,
       },
       {
         id: 2,
         title: "장소",
-        description: <div>{campaignDetail?.campaign_location}</div>,
+        description: <div>{campaignDetail?.detail_data.campaign_location}</div>,
       },
       {
         id: 3,
         title: "참여대상",
-        description: <div>{campaignDetail?.campaign_participants}</div>,
+        description: (
+          <div>{campaignDetail?.detail_data.campaign_participants}</div>
+        ),
       },
     ]);
   }, [campaignDetail]);
-
-  console.log(campaignDetail);
 
   return (
     <CommonPageContainer>
       <CommonContainer>
         <TitleTag title="환경활동" bgColor={color.primary02} />
 
-        <PageTitle>{campaignDetail?.campaign_title}</PageTitle>
+        <PageTitle>{campaignDetail?.detail_data.campaign_title}</PageTitle>
 
-        {/*<ImageFigure ratio="2 / 1">*/}
-        {/*  <img src={mainImage} alt={title} />*/}
-        {/*</ImageFigure>*/}
+        <ImageFigure ratio="2 / 1">
+          <img
+            src={campaignDetail?.file_list[0].file_url}
+            alt={campaignDetail?.detail_data.campaign_title}
+          />
+        </ImageFigure>
 
         <ActivityDescription>
-          <DangerouslyInnerHtml value={campaignDetail?.campaign_content} />
+          <DangerouslyInnerHtml
+            value={campaignDetail?.detail_data.campaign_content}
+          />
 
           <div>
             <ActivityInfoList>
@@ -194,37 +205,31 @@ const CampaignActivity = () => {
           </div>
         </ActivityDescription>
 
-        {/*{planArr && (*/}
-        {/*  <PlanWrapper>*/}
-        {/*    <CommonTitleThree textColor={color.primary02}>*/}
-        {/*      세부 추진계획*/}
-        {/*    </CommonTitleThree>*/}
+        {campaignDetail?.plan_list && (
+          <PlanWrapper>
+            <CommonTitleThree textColor={color.primary02}>
+              세부 추진계획
+            </CommonTitleThree>
 
-        {/*    <Flex vertical gap="2rem 0">*/}
-        {/*      {planArr?.map(plan => {*/}
-        {/*        return (*/}
-        {/*          <PlanItem key={plan.id} gap="0 0.8rem" align="center">*/}
-        {/*            <PlanNumber>{plan.id}</PlanNumber>*/}
+            <Flex vertical gap="2rem 0">
+              {campaignDetail?.plan_list?.map((plan, idx) => {
+                return (
+                  <PlanItem
+                    key={plan.campaign_plan_seq}
+                    gap="0 0.8rem"
+                    align="center"
+                  >
+                    <PlanNumber>{idx}</PlanNumber>
 
-        {/*            <CommonDescriptionOne>*/}
-        {/*              <span*/}
-        {/*                style={*/}
-        {/*                  {*/}
-        {/*                    // display: "inline-block",*/}
-        {/*                    // lineHeight: "normal",*/}
-        {/*                    // verticalAlign: "middle",*/}
-        {/*                  }*/}
-        {/*                }*/}
-        {/*              >*/}
-        {/*                {plan.description}*/}
-        {/*              </span>*/}
-        {/*            </CommonDescriptionOne>*/}
-        {/*          </PlanItem>*/}
-        {/*        );*/}
-        {/*      })}*/}
-        {/*    </Flex>*/}
-        {/*  </PlanWrapper>*/}
-        {/*)}*/}
+                    <CommonDescriptionOne>
+                      {plan.campaign_plan_content}
+                    </CommonDescriptionOne>
+                  </PlanItem>
+                );
+              })}
+            </Flex>
+          </PlanWrapper>
+        )}
       </CommonContainer>
     </CommonPageContainer>
   );
