@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { TextInput } from "@/components/ui/form/index";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
@@ -78,7 +78,7 @@ export const NameField = ({ control }) => {
   );
 };
 
-export const BirthField = ({ control }) => {
+export const BirthField = ({ control, setValue }) => {
   return (
     <TextInput
       control={control}
@@ -86,11 +86,19 @@ export const BirthField = ({ control }) => {
       placeholder={BIRTH_PH}
       maxLength={10}
       label="생년월일(8자리)"
+      setValue={setValue}
+      inputMode="decimal"
     />
   );
 };
 
-export const PhoneField = ({ control, readOnly, children, addonAfter }) => {
+export const PhoneField = ({
+  control,
+  readOnly,
+  children,
+  addonAfter,
+  setValue,
+}) => {
   return (
     <TextInput
       name="user_phone"
@@ -98,12 +106,14 @@ export const PhoneField = ({ control, readOnly, children, addonAfter }) => {
       labelrequired="true"
       inputMode="decimal"
       control={control}
+      maxLength={13}
       placeholder={readOnly ? "" : PHONE_PH}
       readOnly={readOnly}
       pattern="[0-9]+"
       addonAfter={addonAfter}
       bordered={false}
       customborder="true"
+      setValue={setValue}
     >
       {children}
     </TextInput>

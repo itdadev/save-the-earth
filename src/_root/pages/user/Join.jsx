@@ -1,12 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { useTheme } from "@emotion/react";
+import styled from "@emotion/styled";
+import { Flex } from "antd";
+import { useForm } from "react-hook-form";
 
+import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import {
   CommonContainer,
   CommonPageContainer,
 } from "@/components/ui/container";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
-import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import { PrimaryButton } from "@/components/ui/buttons";
 import {
   BirthField,
@@ -15,14 +18,11 @@ import {
   PasswordConfirmField,
   PasswordField,
 } from "@/components/ui/form/Fields";
-import { Flex } from "antd";
-import styled from "@emotion/styled";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { zodJoin } from "@/libs/zod/zodValidation";
 import { PhoneVerificationFields, SelectAllBoxes } from "@/components/ui/form";
 import { TermModal } from "@/components/ui/modal";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { mq } from "@/libs/react-responsive/mediaQuery";
+import { zodJoin } from "@/libs/zod/zodValidation";
 
 const TermButton = styled.button(({ theme }) => ({
   color: theme.color.grey01,
@@ -42,6 +42,7 @@ export const NameBirthContainer = styled(Flex)(() => ({
 
 const Join = () => {
   const theme = useTheme();
+
   const [termModalOpen, setTermModalOpen] = useState("");
 
   const {
@@ -58,6 +59,9 @@ const Join = () => {
     defaultValues: {
       user_email: "",
       user_password: "",
+      user_name: "",
+      user_birth: "",
+      user_phone: "",
       phone_verified: true,
     },
   });
@@ -134,7 +138,7 @@ const Join = () => {
               <NameBirthContainer justify="space-between" gap="1rem">
                 <NameField control={control} />
 
-                <BirthField control={control} />
+                <BirthField control={control} setValue={setValue} />
               </NameBirthContainer>
 
               <PhoneVerificationFields

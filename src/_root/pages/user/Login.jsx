@@ -90,6 +90,7 @@ const Login = () => {
         email: "lilly@itdadev.com",
         phone: "01049555429",
         birth: "19970305",
+        emailSend: true,
       });
 
       navigate("/mypage");

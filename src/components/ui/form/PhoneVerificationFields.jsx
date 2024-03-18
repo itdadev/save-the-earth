@@ -24,7 +24,7 @@ const SendButton = styled.div(({ theme, disabled }) => ({
   padding: "0 2rem",
 }));
 
-const PhoneVerificationFields = ({ watch, control, errors }) => {
+const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
   const [targetDate, setTargetDate] = useState(
     new Date().getTime() + CODE_EXPIRE_TIME,
   );
@@ -79,6 +79,7 @@ const PhoneVerificationFields = ({ watch, control, errors }) => {
         <PhoneField
           control={control}
           readOnly={codeSent || codeVerified}
+          setValue={setValue}
           addonAfter={
             <SendButton
               type="primary"

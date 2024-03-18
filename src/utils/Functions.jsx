@@ -54,3 +54,33 @@ export function changeDateKorean(dateString) {
 
   return `${year}년 ${month}월 ${day}일`;
 }
+
+export function changeBirthFormat(data) {
+  return dayjs(data).format("YYYY-MM-DD");
+}
+
+export function changePhoneFormat(data) {
+  return data
+    .replace(/[^0-9]/g, "")
+    .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+    .replace(/(-{1,2})$/g, "");
+}
+
+// FUNCTION : 핸드폰 번호 입력시 "-" 추가
+export function changeInputPhoneFormat(e, setValue) {
+  e.target.value = e.target.value
+    .replace(/[^0-9]/g, "")
+    .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+    .replace(/(-{1,2})$/g, "");
+
+  setValue("user_phone", e.target.value);
+}
+
+export function changeInputBirthFormat(e, setValue) {
+  e.target.value = e.target.value
+    .replace(/[^0-9]/g, "")
+    .replace(/^(\d{0,4})(\d{0,2})(\d{0,2})$/g, "$1-$2-$3")
+    .replace(/(-{1,2})$/g, "");
+
+  setValue("user_birth", e.target.value);
+}

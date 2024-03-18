@@ -10,6 +10,7 @@ import { SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { color } from "@/theme";
 import { useNavigate } from "react-router-dom";
+import { changeBirthFormat, changePhoneFormat } from "@/utils/Functions";
 
 const Wrapper = styled.div(() => ({
   maxWidth: "50rem",
@@ -40,7 +41,13 @@ const MyPage = () => {
       data: user?.name,
     },
     { id: 3, title: "이메일", data: user?.email },
-    { id: 4, title: "휴대폰 번호", data: user?.phone },
+    { id: 4, title: "휴대폰 번호", data: changePhoneFormat(user?.phone) },
+    { id: 5, title: "생년월일", data: changeBirthFormat(user?.birth) },
+    {
+      id: 6,
+      title: "이메일 수신동의",
+      data: user?.emailSend ? "O" : "X",
+    },
   ];
 
   const editNavigate = useCallback(

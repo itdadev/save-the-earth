@@ -121,8 +121,6 @@ const AccountReport = () => {
     },
   });
 
-  console.log(accountReportNotice);
-
   const downloadReport = async (seq, originalFile, serverFile, uploadPath) => {
     try {
       const res = await axios.get(

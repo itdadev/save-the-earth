@@ -11,15 +11,14 @@ import {
 } from "@/components/ui/container";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { BirthField, EmailField, NameField } from "@/components/ui/form/Fields";
-import { PhoneVerificationFields } from "@/components/ui/form";
+import { PhoneVerificationFields, SingleCheckBox } from "@/components/ui/form";
 import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { NameBirthContainer } from "@/_root/pages/user/Join";
+import { changeBirthFormat, changePhoneFormat } from "@/utils/Functions";
 
 const ChangeAccount = () => {
   const { user } = useUserStore();
-
-  console.log(user);
 
   const {
     control,
@@ -45,14 +44,17 @@ const ChangeAccount = () => {
     if (user) {
       setValue("user_email", user.email);
       setValue("user_name", user.name);
-      setValue("user_phone", user.phone);
-      setValue("user_birth", user.birth);
+      setValue("user_phone", changePhoneFormat(user.phone));
+      setValue("user_birth", changeBirthFormat(user.birth));
+      setValue("user_email_send", user.emailSend);
     }
   }, [user]);
 
   const onSubmit = useCallback(data => {
     console.log(data);
   }, []);
+
+  console.log(user);
 
   return (
     <CommonPageContainer>
@@ -67,7 +69,7 @@ const ChangeAccount = () => {
               <NameBirthContainer justify="space-between" gap="1rem">
                 <NameField control={control} />
 
-                <BirthField control={control} />
+                <BirthField control={control} setValue={setValue} />
               </NameBirthContainer>
 
               <PhoneVerificationFields
@@ -78,6 +80,12 @@ const ChangeAccount = () => {
                 setValue={setValue}
                 watch={watch}
                 errors={errors}
+              />
+
+              <SingleCheckBox
+                name="user_email_send"
+                control={control}
+                label="이메일 수신동의"
               />
             </div>
           </div>
