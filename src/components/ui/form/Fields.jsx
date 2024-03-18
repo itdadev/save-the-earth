@@ -12,7 +12,7 @@ import {
   PHONE_PH,
 } from "@/constants/placeholderTexts";
 
-export const EmailField = ({ control }) => {
+export const EmailField = ({ control, disabled = false }) => {
   return (
     <TextInput
       control={control}
@@ -21,6 +21,7 @@ export const EmailField = ({ control }) => {
       maxLength={50}
       label="이메일"
       type="email"
+      disabled={disabled}
     />
   );
 };

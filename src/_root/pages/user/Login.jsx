@@ -89,6 +89,7 @@ const Login = () => {
         name: "유화경",
         email: "lilly@itdadev.com",
         phone: "01049555429",
+        birth: "19970305",
       });
 
       navigate("/mypage");

@@ -81,3 +81,18 @@ export const zodFindAccount = z.object({
     message: VERIFICATION_CODE_INCOMPLETE,
   }),
 });
+
+export const zodChangeAccount = z.object({
+  user_name: z.string().min(1, { message: NAME_REQUIRED }),
+  user_birth: z.string().min(1, { message: BIRTH_REQUIRED }),
+  user_phone: z
+    .string()
+    .min(1, { message: PHONE_REQUIRED })
+    .regex(/^[0-9]+$/, { message: PHONE_FORMAT }),
+  auth_code: z.string().min(1, { message: VERIFICATION_CODE_REQUIRED }),
+  phone_verified: z.boolean().refine(value => value === true, {
+    message: VERIFICATION_CODE_INCOMPLETE,
+  }),
+  user_key: z.optional(z.string()),
+  personal_info: z.boolean(),
+});

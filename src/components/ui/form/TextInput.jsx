@@ -23,6 +23,7 @@ const TextInput = ({
   type = "text",
   addonAfter,
   labelafter,
+  disabled,
 }) => {
   return (
     <Controller
@@ -46,6 +47,7 @@ const TextInput = ({
               name={name}
               type={type}
               addonAfter={addonAfter}
+              disabled={disabled}
             />
 
             <ErrorMessage>{errors[name]?.message}</ErrorMessage>

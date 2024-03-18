@@ -32,7 +32,7 @@ const TermButton = styled.button(({ theme }) => ({
   marginLeft: "0.6rem",
 }));
 
-const NameBirthContainer = styled(Flex)(() => ({
+export const NameBirthContainer = styled(Flex)(() => ({
   flexDirection: "column",
 
   [mq("desktop")]: {
