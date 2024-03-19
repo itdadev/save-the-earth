@@ -129,7 +129,7 @@ const Login = () => {
     if (state?.joinSuccess) {
       api.success({
         message: `회원가입 완료되었습니다.`,
-        description: "가입하신 정보로 로그인해주세요.",
+        description: "세이브더얼스 회원이 되신 걸 환영합니다.",
         top,
       });
     }
