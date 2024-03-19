@@ -31,7 +31,6 @@ import { replaceAllDash } from "@/utils/Functions";
 import {
   DUPLICATE_USER_EMAIL,
   DUPLICATE_USER_PHONE,
-  INVALID_LOGIN_INFO,
   SUCCESS_CODE,
 } from "@/constants/responseResults";
 
@@ -180,12 +179,12 @@ const Join = () => {
         login_type: loginType,
         user_password: loginType !== "email" ? "" : data.user_password,
         confirm_password: loginType !== "email" ? "" : data.confirm_password,
-        sns_key: loginType === "email" ? "" : userData.id,
+        sns_key: loginType === "email" ? "" : userData?.id,
       };
 
       joinUser(modifiedData);
     },
-    [joinUser, loginType, userData.id],
+    [joinUser, loginType, userData?.id],
   );
 
   return (
