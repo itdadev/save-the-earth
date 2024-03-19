@@ -54,7 +54,7 @@ const Footer = () => {
   const footerNavArr = [
     { id: 1, title: "개인정보 보호정책", url: "/privacy-policy" },
     { id: 2, title: "고유번호증", url: "/" },
-    { id: 3, title: "국세청 바로가기", url: "/" },
+    { id: 3, title: "국세청 바로가기", outerLink: "https://www.nts.go.kr/" },
   ];
 
   return (
@@ -80,13 +80,13 @@ const Footer = () => {
         </p>
 
         <Flex align="center">
-          {footerNavArr.map(nav => {
-            return (
-              <StyledLink to={nav.url} key={nav.id}>
-                {nav.title}
-              </StyledLink>
-            );
-          })}
+          <StyledLink to="/privacy-policy">개인정보 보호정책</StyledLink>
+
+          <StyledLink to="/">고유번호증</StyledLink>
+
+          <a href="https://www.nts.go.kr/" target="_blank" rel="noreferrer">
+            국세청 바로가기
+          </a>
         </Flex>
       </Flex>
 

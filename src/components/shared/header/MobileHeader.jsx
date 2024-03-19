@@ -130,7 +130,13 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
           height={30}
         />
 
-        <img src={image.headerLogo.default} alt="Save the Earth" width={180} />
+        <Link to="/">
+          <img
+            src={image.headerLogo.default}
+            alt="Save the Earth"
+            width={180}
+          />
+        </Link>
 
         <Button type="button" onClick={showHeaderHandler}>
           <img
@@ -151,13 +157,30 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
           </Flex>
 
           <UtilMenuList>
-            {utilMenu.map(util => {
-              return (
-                <Link to={util.url} key={util.id}>
-                  {util.title}
-                </Link>
-              );
-            })}
+            {utilMenu
+              .filter(el => !el.outerLink)
+              .map(util => {
+                return (
+                  <Link to={util.url} key={util.id}>
+                    {util.title}
+                  </Link>
+                );
+              })}
+
+            {utilMenu
+              .filter(el => el.outerLink)
+              .map(util => {
+                return (
+                  <a
+                    href={util.outerLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    key={util.id}
+                  >
+                    {util.title}
+                  </a>
+                );
+              })}
           </UtilMenuList>
         </UtilMenuWrapper>
 
@@ -176,7 +199,16 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
                   open={openSubMenu[idx]}
                   onClick={() => toggleSubmenuHandler(idx)}
                 >
-                  <Link to={menu.url}>{menu.title}</Link>
+                  <Link
+                    to={menu.url}
+                    onClick={() => {
+                      if (!menu.subMenus) {
+                        hideHeaderHandler();
+                      }
+                    }}
+                  >
+                    {menu.title}
+                  </Link>
 
                   {menu.subMenus && (
                     <img src={image.arrowIcon.default} alt="메뉴 보기" />
@@ -188,7 +220,11 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
                     <SubMenuList vertical>
                       {menu.subMenus.map(submenu => {
                         return (
-                          <Link to={submenu.url} key={submenu.id}>
+                          <Link
+                            to={submenu.url}
+                            key={submenu.id}
+                            onClick={hideHeaderHandler}
+                          >
                             {submenu.title}
                           </Link>
                         );

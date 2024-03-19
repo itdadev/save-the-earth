@@ -1,32 +1,7 @@
 import { css, Global } from "@emotion/react";
 import { color } from "@/theme";
-import "../fonts/fonts.css";
 
 const style = css`
-  //@font-face {
-  //  font-family: "Gmarket-Sans", sans-serif;
-  //  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff")
-  //    format("woff");
-  //  font-weight: 300;
-  //  font-style: normal;
-  //}
-  //
-  //@font-face {
-  //  font-family: "Gmarket-Sans", sans-serif;
-  //  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
-  //    format("woff");
-  //  font-weight: 500;
-  //  font-style: normal;
-  //}
-  //
-  //@font-face {
-  //  font-family: "Gmarket-Sans", sans-serif;
-  //  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff")
-  //    format("woff");
-  //  font-weight: 700;
-  //  font-style: normal;
-  //}
-
   @import url("https://webfontworld.github.io/gmarket/GmarketSans.css");
 
   html {
@@ -46,6 +21,7 @@ const style = css`
     margin: 0;
     word-break: keep-all;
     font-family: "GmarketSans", sans-serif;
+    font-weight: 400;
     color: #000;
     line-height: 1.5;
   }

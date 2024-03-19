@@ -12,7 +12,6 @@ const Container = styled.div(({ theme, bgColor, textColor, fit }) => ({
   color: textColor,
   textAlign: "center",
   lineHeight: 1,
-  fontWeight: theme.fontWeight.bold,
   whiteSpace: "nowrap",
 
   [mq("desktop")]: {

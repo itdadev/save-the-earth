@@ -1,7 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Flex } from "antd";
 import axios from "axios";
-import dayjs from "dayjs";
 import styled from "@emotion/styled";
 import { useQuery } from "@tanstack/react-query";
 
@@ -12,6 +11,7 @@ import {
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { ENVIRONMENT_API_URL } from "@/constants/apiUrls";
 import { CustomFullCalendar } from "@/components/ui/calendar";
+import { CALENDAR_LIST_QUERY_KEY } from "@/constants/queryKeys";
 import {
   changeCalendarDateFormat,
   GetDate,
@@ -19,7 +19,6 @@ import {
   GetMonth,
 } from "@/utils/Functions";
 import { mq } from "@/libs/react-responsive/mediaQuery";
-import { CALENDAR_LIST_QUERY_KEY } from "@/constants/queryKeys";
 
 const EventList = styled.div(() => ({
   marginTop: "6rem",
@@ -85,7 +84,7 @@ const EnvironmentCalendar = () => {
     select: data => {
       return changeCalendarDateFormat(data);
     },
-    enabled: !!body.calendarEvent,
+    enabled: body.calendarEvent !== {},
   });
 
   const { data: currentMonthEvents } = useQuery({
@@ -97,7 +96,7 @@ const EnvironmentCalendar = () => {
     select: data => {
       return changeCalendarDateFormat(data);
     },
-    enabled: !!body,
+    enabled: body.currentMonthEvent !== {},
   });
 
   return (
@@ -115,19 +114,21 @@ const EnvironmentCalendar = () => {
           <EventList ref={listRef}>
             <Month>{GetMonth(currentMonthEvents?.[0]?.start)}</Month>
 
-            {currentMonthEvents?.map((event, idx) => {
-              return (
-                <EventItem gap="0 2rem" align="center" key={event.title}>
-                  <Flex vertical align="center">
-                    <Day>{GetDay(event.start)}</Day>
+            {currentMonthEvents
+              ?.sort((a, b) => new Date(a.start) - new Date(b.start))
+              ?.map(event => {
+                return (
+                  <EventItem gap="0 2rem" align="center" key={event.title}>
+                    <Flex vertical align="center">
+                      <Day>{GetDay(event.start)}</Day>
 
-                    <DateText>{GetDate(event.start)}</DateText>
-                  </Flex>
+                      <DateText>{GetDate(event.start)}</DateText>
+                    </Flex>
 
-                  <EventTitle>{event.title}</EventTitle>
-                </EventItem>
-              );
-            })}
+                    <EventTitle>{event.title}</EventTitle>
+                  </EventItem>
+                );
+              })}
           </EventList>
         )}
       </CommonContainer>

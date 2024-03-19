@@ -25,6 +25,10 @@ const style = css`
     margin-bottom: 3px;
   }
 
+  .fc-daygrid-event {
+    white-space: break-spaces;
+  }
+
   .slick-slide > div {
     margin: 0 20px;
   }

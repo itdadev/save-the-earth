@@ -91,7 +91,7 @@ export const AppTheme = {
     // NOTE: 공통 폰트 굵기
     light: 300,
     regular: 500,
-    bold: 700,
+    bold: 600,
   },
   shadow: {},
   radius: {},
