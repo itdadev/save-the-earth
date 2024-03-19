@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Divider, Flex, notification } from "antd";
 import styled from "@emotion/styled";
@@ -21,7 +21,7 @@ import { SingleCheckBox } from "@/components/ui/form";
 import { zodLogin } from "@/libs/zod/zodValidation";
 import { useMutation } from "@tanstack/react-query";
 import { USER_SIGNIN_API_URL } from "@/constants/apiUrls";
-import { LOGIN_FAIL_CODE, SUCCESS_CODE } from "@/constants/responseResults";
+import { INVALID_LOGIN_INFO, SUCCESS_CODE } from "@/constants/responseResults";
 
 export const FormContainer = styled.form(() => ({
   maxWidth: "50rem",
@@ -65,6 +65,11 @@ export const SnsLoginButton = styled.button(({ theme }) => ({
 
 const Login = () => {
   const state = useLocation().state;
+
+  const [snsData, setSnsData] = useState({
+    kakao: {},
+    google: {},
+  });
   const [api, contextHolder] = notification.useNotification();
 
   const navigate = useNavigate();
@@ -100,12 +105,22 @@ const Login = () => {
       }
     },
     onError: error => {
-      if (error.response.data.code === LOGIN_FAIL_CODE) {
-        setError("user_email", {
-          message: "이메일 또는 비밀번호가 일치하지 않습니다.",
-        });
+      if (error.response.data.code === INVALID_LOGIN_INFO) {
+        if (error.response.data.data === "email") {
+          setError("user_email", {
+            message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+          });
 
-        setFocus("user_email");
+          setFocus("user_email");
+        }
+
+        if (error.response.data.data === "kakao") {
+          navigate("/join/kakao", { state: { userData: snsData.kakao } });
+        }
+
+        if (error.response.data.data === "google") {
+          navigate("/join/google", { state: { userData: snsData.google } });
+        }
       }
     },
   });
@@ -145,7 +160,7 @@ const Login = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async tokenResponse => {
       try {
-        const userData = await axios.get(
+        const res = await axios.get(
           "https://www.googleapis.com/oauth2/v2/userinfo",
           {
             headers: {
@@ -154,7 +169,19 @@ const Login = () => {
           },
         );
 
-        console.log(userData, "구글 회원 정보");
+        console.log(res, "구글 회원 정보");
+
+        if (res.status === 200) {
+          const modifiedData = {
+            login_type: "google",
+            user_email: res.data.email,
+            sns_key: res.data.id,
+          };
+
+          setSnsData(prev => ({ ...prev, google: res.data }));
+
+          signInUser(modifiedData);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -165,21 +192,30 @@ const Login = () => {
   // NOTE: 카카오 로그인 (Success)
   const kakaoOnSuccess = useCallback(
     async data => {
-      const res = await axios.get("https://kapi.kakao.com/v2/user/me", {
-        headers: {
-          Authorization: `Bearer ${data?.response.access_token}`,
-        },
-      });
+      try {
+        // 전달받은 access token으로 회원 정보 요청 (이메일, 이름, 전화번호, 생년월일)
+        const res = await axios.get("https://kapi.kakao.com/v2/user/me", {
+          headers: {
+            Authorization: `Bearer ${data?.response.access_token}`,
+          },
+        });
 
-      console.log(res);
-      if (res.status === 200) {
-        const modifiedData = {
-          login_type: "kakao",
-          user_email: res?.data.kakao_account.email,
-        };
+        if (res.status === 200) {
+          // 카카오 이메일로 로그인 요청
+          const modifiedData = {
+            login_type: "kakao",
+            user_email: res?.data.kakao_account.email,
+            sns_key: res?.data.id,
+          };
 
-        signInUser(modifiedData);
-      }
+          setSnsData(prev => ({
+            ...prev,
+            kakao: { ...res?.data.kakao_account, id: res?.data.id },
+          }));
+
+          signInUser(modifiedData);
+        }
+      } catch (e) {}
     },
     [signInUser],
   );
@@ -216,7 +252,7 @@ const Login = () => {
 
                 <span>|</span>
 
-                <Link to="/join">회원가입</Link>
+                <Link to="/join/email">회원가입</Link>
               </Flex>
             </LoginUtilGroup>
           </div>

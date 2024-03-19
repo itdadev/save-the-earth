@@ -18,6 +18,9 @@ import {
   VERIFICATION_CODE_REQUIRED,
 } from "@/constants/inputErrorMessage";
 
+const PHONE_REGEX = /[0-9]/g;
+const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/;
+
 // NOTE: 로그인
 export const zodLogin = z.object({
   user_email: z
@@ -27,7 +30,7 @@ export const zodLogin = z.object({
   user_password: z
     .string()
     .min(1, PASSWORD_REQUIRED)
-    .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, { message: PASSWORD_FORMAT }),
+    .regex(PASSWORD_REGEX, { message: PASSWORD_FORMAT }),
   auto_login: z.boolean(),
 });
 
@@ -41,13 +44,13 @@ export const zodJoin = z
     user_password: z
       .string()
       .min(1, { message: PASSWORD_REQUIRED })
-      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, {
+      .regex(PASSWORD_REGEX, {
         message: PASSWORD_FORMAT,
       }),
     confirm_password: z
       .string()
       .min(1, { message: PASSWORD_CONFIRM_REQUIRED })
-      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, {
+      .regex(PASSWORD_REGEX, {
         message: PASSWORD_FORMAT,
       }),
     user_name: z.string().min(1, { message: NAME_REQUIRED }),
@@ -55,7 +58,7 @@ export const zodJoin = z
     user_phone: z
       .string()
       .min(1, { message: PHONE_REQUIRED })
-      .regex(/[0-9]/g, { message: PHONE_FORMAT }),
+      .regex(PHONE_REGEX, { message: PHONE_FORMAT }),
     auth_code: z.string().min(1, { message: VERIFICATION_CODE_REQUIRED }),
     phone_verified: z.boolean().refine(value => value === true, {
       message: VERIFICATION_CODE_INCOMPLETE,
@@ -80,7 +83,7 @@ export const zodFindAccount = z.object({
   user_phone: z
     .string()
     .min(1, { message: PHONE_REQUIRED })
-    .regex(/^[0-9]+$/, { message: PHONE_FORMAT }),
+    .regex(PHONE_REGEX, { message: PHONE_FORMAT }),
   auth_code: z.string().min(1, { message: VERIFICATION_CODE_REQUIRED }),
   phone_verified: z.boolean().refine(value => value === true, {
     message: VERIFICATION_CODE_INCOMPLETE,
@@ -93,13 +96,13 @@ export const zodChangePassword = z
     user_password: z
       .string()
       .min(1, { message: PASSWORD_REQUIRED })
-      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, {
+      .regex(PASSWORD_REGEX, {
         message: PASSWORD_FORMAT,
       }),
     confirm_password: z
       .string()
       .min(1, { message: PASSWORD_CONFIRM_REQUIRED })
-      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, {
+      .regex(PASSWORD_REGEX, {
         message: PASSWORD_FORMAT,
       }),
   })
@@ -115,7 +118,7 @@ export const zodChangeAccount = z.object({
   user_phone: z
     .string()
     .min(1, { message: PHONE_REQUIRED })
-    .regex(/^[0-9]+$/, { message: PHONE_FORMAT }),
+    .regex(PHONE_REGEX, { message: PHONE_FORMAT }),
   auth_code: z.string().min(1, { message: VERIFICATION_CODE_REQUIRED }),
   phone_verified: z.boolean().refine(value => value === true, {
     message: VERIFICATION_CODE_INCOMPLETE,
@@ -130,19 +133,19 @@ export const zodChangeMyPassword = z
     user_password: z
       .string()
       .min(1, { message: PASSWORD_REQUIRED })
-      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, {
+      .regex(PASSWORD_REGEX, {
         message: PASSWORD_FORMAT,
       }),
     new_password: z
       .string()
       .min(1, { message: NEW_PASSWORD_REQUIRED })
-      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, {
+      .regex(PASSWORD_REGEX, {
         message: PASSWORD_FORMAT,
       }),
     confirm_password: z
       .string()
       .min(1, { message: PASSWORD_CONFIRM_REQUIRED })
-      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/, {
+      .regex(PASSWORD_REGEX, {
         message: PASSWORD_FORMAT,
       }),
   })

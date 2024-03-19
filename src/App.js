@@ -68,7 +68,7 @@ function App() {
               <Route element={<RootLayout />}>
                 {/* 로그인 + 회원가입 관련 */}
                 <Route path="/login" element={<Login />} />
-                <Route path="/join" element={<Join />} />
+                <Route path="/join/:loginType" element={<Join />} />
                 <Route path="/find-account" element={<FindAccount />} />
                 <Route
                   path="/find-account-fail"

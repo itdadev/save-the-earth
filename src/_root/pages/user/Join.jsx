@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex } from "antd";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import {
@@ -24,10 +25,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 import { zodJoin } from "@/libs/zod/zodValidation";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { USER_API_URL } from "@/constants/apiUrls";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { replaceAllDash } from "@/utils/Functions";
+import {
+  DUPLICATE_USER_EMAIL,
+  DUPLICATE_USER_PHONE,
+  INVALID_LOGIN_INFO,
+  SUCCESS_CODE,
+} from "@/constants/responseResults";
 
 const TermButton = styled.button(({ theme }) => ({
   color: theme.color.grey01,
@@ -46,6 +52,11 @@ export const NameBirthContainer = styled(Flex)(() => ({
 }));
 
 const Join = () => {
+  const userData = useLocation().state?.userData;
+
+  console.log(userData, "user data");
+
+  const loginType = useParams().loginType;
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -65,7 +76,8 @@ const Join = () => {
     resolver: zodResolver(zodJoin),
     defaultValues: {
       user_email: "",
-      user_password: "",
+      user_password: loginType !== "email" ? "qweqwe123" : "",
+      confirm_password: loginType !== "email" ? "qweqwe123" : "",
       user_name: "",
       user_birth: "",
       user_phone: "",
@@ -117,23 +129,39 @@ const Join = () => {
 
   const { mutate: joinUser } = useMutation({
     mutationFn: async data => {
-      return await axios.post(USER_API_URL, data);
+      return await axios.post(USER_API_URL, { ...data, login_type: loginType });
     },
     onSuccess: data => {
-      if (data?.status === 201) {
+      console.log(data);
+      if (data?.data.code === SUCCESS_CODE) {
         navigate("/login", {
           state: { joinSuccess: true },
         });
       }
     },
     onError: error => {
-      if (error.response.data.code === 1001) {
+      if (error.response.data.code === DUPLICATE_USER_EMAIL) {
         setError("user_email", { message: "이미 가입된 이메일입니다." });
 
         setFocus("user_email");
       }
+
+      if (error.response.data.code === DUPLICATE_USER_PHONE) {
+        setError("user_phone", { message: "이미 가입된 휴대폰 번호입니다." });
+
+        setFocus("user_phone");
+      }
     },
   });
+
+  useEffect(() => {
+    if (userData) {
+      setValue("user_email", userData?.email);
+      setValue("user_name", userData?.name);
+      setValue("user_birth", userData?.birthyear);
+      setValue("user_phone", userData?.phone_number);
+    }
+  }, []);
 
   const handleTermModal = useCallback(type => {
     setTermModalOpen(type);
@@ -149,11 +177,15 @@ const Join = () => {
         ...data,
         user_phone: replaceAllDash(data.user_phone),
         user_birth: replaceAllDash(data.user_birth),
+        login_type: loginType,
+        user_password: loginType !== "email" ? "" : data.user_password,
+        confirm_password: loginType !== "email" ? "" : data.confirm_password,
+        sns_key: loginType === "email" ? "" : userData.id,
       };
 
       joinUser(modifiedData);
     },
-    [joinUser],
+    [joinUser, loginType, userData.id],
   );
 
   return (
@@ -161,16 +193,27 @@ const Join = () => {
       <CommonContainer>
         <TermModal onCancel={onCancel} termModalOpen={termModalOpen} />
 
-        <CommonTitleTwo>이메일 회원가입</CommonTitleTwo>
+        <CommonTitleTwo>
+          {loginType === "kakao"
+            ? "카카오"
+            : loginType === "google"
+              ? "구글"
+              : "이메일"}{" "}
+          회원가입
+        </CommonTitleTwo>
 
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
           <div>
             <div>
               <EmailField control={control} />
 
-              <PasswordField control={control} />
+              {loginType === "email" && (
+                <>
+                  <PasswordField control={control} />
 
-              <PasswordConfirmField control={control} />
+                  <PasswordConfirmField control={control} />
+                </>
+              )}
 
               <NameBirthContainer justify="space-between" gap="1rem">
                 <NameField control={control} />

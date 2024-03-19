@@ -13,7 +13,7 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import { useTheme } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { zodFindAccount, zodJoin } from "@/libs/zod/zodValidation";
+import { zodFindAccount } from "@/libs/zod/zodValidation";
 
 const FindAccount = () => {
   const theme = useTheme();
@@ -29,7 +29,7 @@ const FindAccount = () => {
     setValue,
     formState: { errors },
   } = useForm({
-    // resolver: zodResolver(zodFindAccount),
+    resolver: zodResolver(zodFindAccount),
     defaultValues: {
       user_name: "",
       auth_code: "",
