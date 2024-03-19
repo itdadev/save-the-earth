@@ -141,7 +141,7 @@ const DeclarationEstablishment = () => {
           <PageImage src={image.declarationEstablishment} alt="" />
         </Wrapper>
 
-        <CommonDescriptionOne weight="light">
+        <CommonDescriptionOne>
           <p>
             ‘세이브더얼스’는 시민 각자의 작은 실천을 통해 탄소중립을 실현하고,
             지구환경의 보다 나은 미래를 만들어가기 위하여 설립되었습니다.

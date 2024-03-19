@@ -40,6 +40,7 @@ const CoreValueList = styled(Flex)(({ theme }) => ({
   flexDirection: "column",
   marginTop: "5rem",
   gap: "5rem 0",
+  justifyContent: "center",
 
   [mq("desktop")]: {
     flexDirection: "row",
@@ -80,7 +81,7 @@ const BalancedCoexistence = () => {
         <CommonContainer>
           <Title>자연과 인간의 균형있는 공존</Title>
 
-          <CommonDescriptionOne weight="light">
+          <CommonDescriptionOne>
             <p>
               우리의 삶은 자연에서 시작되며, 자연의 다양성과 생태계는 우리
               생존과 번영의 기반입니다. 그러나 인간의 활동으로 인해 자연에 대한

@@ -46,7 +46,7 @@ const ChangeAccount = () => {
       setValue("user_name", user.name);
       setValue("user_phone", changePhoneFormat(user.phone));
       setValue("user_birth", changeBirthFormat(user.birth));
-      setValue("user_email_send", user.emailSend);
+      setValue("email_receive_yn", user.emailSend);
     }
   }, [user]);
 
@@ -83,7 +83,7 @@ const ChangeAccount = () => {
               />
 
               <SingleCheckBox
-                name="user_email_send"
+                name="email_receive_yn"
                 control={control}
                 label="이메일 수신동의"
               />

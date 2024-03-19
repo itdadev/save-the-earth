@@ -9,7 +9,7 @@ import { PhoneField } from "@/components/ui/form/Fields";
 
 import { TextInput } from ".";
 
-export const CODE_EXPIRE_TIME = 5 * 60 * 1000;
+export const CODE_EXPIRE_TIME = 5 * 60 * 1000; // 5분
 
 const SendButton = styled.div(({ theme, disabled }) => ({
   background: theme.color.primary01,
@@ -19,18 +19,18 @@ const SendButton = styled.div(({ theme, disabled }) => ({
   alignItems: "center",
   cursor: disabled ? "default" : "pointer",
   pointerEvents: disabled ? "none" : "auto",
-  height: "4.2rem",
+  height: "4rem",
   borderRadius: "0.8rem",
   padding: "0 2rem",
 }));
 
 const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
+  const timerRef = useRef(null);
+
   const [targetDate, setTargetDate] = useState(
     new Date().getTime() + CODE_EXPIRE_TIME,
   );
 
-  const timerRef = useRef(null);
-  // const [phoneActive, setPhoneActive] = useState(true);
   const [codeActive, setCodeActive] = useState(false);
 
   const [codeSent, setCodeSent] = useState(false);
@@ -51,7 +51,7 @@ const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
   }, []);
   useEffect(() => {
     const subscription = watch((value, { name }) => {
-      if ((name = "auth_code" && value.auth_code !== "")) {
+      if (name === "auth_code" && value.auth_code !== "") {
         setCodeActive(true);
       } else {
         setCodeActive(false);

@@ -23,6 +23,11 @@ import { TermModal } from "@/components/ui/modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 import { zodJoin } from "@/libs/zod/zodValidation";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { USER_API_URL } from "@/constants/apiUrls";
+import { useNavigate } from "react-router-dom";
+import { replaceAllDash } from "@/utils/Functions";
 
 const TermButton = styled.button(({ theme }) => ({
   color: theme.color.grey01,
@@ -41,6 +46,7 @@ export const NameBirthContainer = styled(Flex)(() => ({
 }));
 
 const Join = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
 
   const [termModalOpen, setTermModalOpen] = useState("");
@@ -53,6 +59,7 @@ const Join = () => {
     clearErrors,
     resetField,
     setValue,
+    setFocus,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(zodJoin),
@@ -63,12 +70,9 @@ const Join = () => {
       user_birth: "",
       user_phone: "",
       phone_verified: true,
+      login_type: "email",
     },
   });
-
-  const onSubmit = useCallback(data => {
-    console.log(data);
-  }, []);
 
   const termOptions = [
     {
@@ -107,9 +111,29 @@ const Join = () => {
           <span>[선택] 이메일 수신 동의</span>
         </div>
       ),
-      value: "personal_info",
+      value: "email_receive_yn",
     },
   ];
+
+  const { mutate: joinUser } = useMutation({
+    mutationFn: async data => {
+      return await axios.post(USER_API_URL, data);
+    },
+    onSuccess: data => {
+      if (data?.status === 201) {
+        navigate("/login", {
+          state: { joinSuccess: true },
+        });
+      }
+    },
+    onError: error => {
+      if (error.response.data.code === 1001) {
+        setError("user_email", { message: "이미 가입된 이메일입니다." });
+
+        setFocus("user_email");
+      }
+    },
+  });
 
   const handleTermModal = useCallback(type => {
     setTermModalOpen(type);
@@ -118,6 +142,19 @@ const Join = () => {
   const onCancel = useCallback(() => {
     setTermModalOpen("");
   }, []);
+
+  const onSubmit = useCallback(
+    data => {
+      const modifiedData = {
+        ...data,
+        user_phone: replaceAllDash(data.user_phone),
+        user_birth: replaceAllDash(data.user_birth),
+      };
+
+      joinUser(modifiedData);
+    },
+    [joinUser],
+  );
 
   return (
     <CommonPageContainer>

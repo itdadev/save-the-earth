@@ -58,7 +58,6 @@ const CampaignItem = styled.div(() => ({
 const CampaignTexts = styled.div(({ theme }) => ({
   padding: "2rem",
   color: theme.color.grey02,
-  fontWeight: theme.fontWeight.light,
   fontSize: "1.5rem",
 }));
 
@@ -195,6 +194,12 @@ const HomeSection02 = () => {
         breakpoint: 1240,
         settings: {
           slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 1080,
+        settings: {
+          slidesToShow: 2,
         },
       },
       {

@@ -29,7 +29,6 @@ const PageTitle = styled(CommonTitleTwo)(({ theme }) => ({
 
 const ActivityDescription = styled(CommonDescriptionOne)(({ theme }) => ({
   marginTop: "3.2rem",
-  fontWeight: theme.fontWeight.light,
 
   [mq("desktop")]: {
     marginTop: "5.4rem",

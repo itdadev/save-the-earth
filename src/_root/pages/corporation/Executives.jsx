@@ -79,10 +79,6 @@ const ExecutiveWrapper = styled.div(() => ({
   },
 }));
 
-const ExecutiveBefore = styled.ul(({ theme }) => ({
-  fontWeight: theme.fontWeight.light,
-}));
-
 const Executives = () => {
   const executiveArr = [
     {
@@ -253,11 +249,11 @@ const Executives = () => {
                     })}
                   </ul>
 
-                  <ExecutiveBefore>
+                  <ul>
                     {executive.past_experience?.map((before, idx) => {
                       return <li key={idx}>{before.experience}</li>;
                     })}
-                  </ExecutiveBefore>
+                  </ul>
                 </ExecutiveWrapper>
               </ExecutiveItem>
             );

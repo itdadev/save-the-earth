@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export function DividePerPage(array, itemsPerPage) {
   const length = array.length;
@@ -61,7 +63,7 @@ export function changeBirthFormat(data) {
 
 export function changePhoneFormat(data) {
   return data
-    .replace(/[^0-9]/g, "")
+    ?.replace(/[^0-9]/g, "")
     .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
     .replace(/(-{1,2})$/g, "");
 }
@@ -83,4 +85,8 @@ export function changeInputBirthFormat(e, setValue) {
     .replace(/(-{1,2})$/g, "");
 
   setValue("user_birth", e.target.value);
+}
+
+export function replaceAllDash(data) {
+  return data.replaceAll("-", "");
 }

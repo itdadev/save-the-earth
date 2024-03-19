@@ -37,8 +37,16 @@ const style = css`
   }
 
   .ant-input-outlined {
-    padding: 1rem 1.1rem 0.7rem !important;
+    padding: 0 !important;
     border-width: 2px !important;
+  }
+
+  .ant-input-suffix {
+    margin-right: 1.6rem;
+  }
+
+  .ant-input-lg {
+    padding: 1rem 1.1rem 0.7rem !important;
   }
 
   .ant-input-lg,

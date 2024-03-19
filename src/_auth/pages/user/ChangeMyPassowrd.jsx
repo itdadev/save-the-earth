@@ -3,7 +3,7 @@ import { color } from "@/theme";
 import { useForm } from "react-hook-form";
 import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { zodJoin } from "@/libs/zod/zodValidation";
+import { zodChangeMyPassword } from "@/libs/zod/zodValidation";
 
 import {
   CommonContainer,
@@ -11,22 +11,19 @@ import {
 } from "@/components/ui/container";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import {
+  NewPasswordField,
   PasswordConfirmField,
   PasswordField,
 } from "@/components/ui/form/Fields";
 import { PrimaryButton } from "@/components/ui/buttons";
-import styled from "@emotion/styled";
 
 const ChangeMyPassword = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(zodJoin),
+  const { control, handleSubmit } = useForm({
+    resolver: zodResolver(zodChangeMyPassword),
     defaultValues: {
       user_password: "",
       confirm_password: "",
+      new_password: "",
     },
   });
 
@@ -42,7 +39,9 @@ const ChangeMyPassword = () => {
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
           <div>
             <div>
-              <PasswordField control={control} />
+              <PasswordField control={control} current />
+
+              <NewPasswordField control={control} />
 
               <PasswordConfirmField control={control} />
             </div>

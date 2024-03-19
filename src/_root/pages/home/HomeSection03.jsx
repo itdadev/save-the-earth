@@ -20,6 +20,7 @@ const Wrapper = styled(Flex)(() => ({
 
 const CoreValueWrapper = styled(Flex)(() => ({
   width: "100%",
+  justifyContent: "center",
 
   [mq("desktop")]: {
     width: "60%",
@@ -29,13 +30,14 @@ const CoreValueWrapper = styled(Flex)(() => ({
 const CoreValueItem = styled(Flex)(() => ({
   width: "100%",
   maxWidth: "26rem",
-  padding: "2rem",
+  padding: "2rem 0.4rem",
   background: "white",
   borderRadius: "1rem",
   textAlign: "center",
   fontSize: "1.2rem",
 
   [mq("desktop")]: {
+    padding: "2rem 1rem",
     fontSize: "1.6rem",
   },
 }));

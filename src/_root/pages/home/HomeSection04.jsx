@@ -10,11 +10,16 @@ const TitleWrapper = styled.div(() => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  marginBottom: "9rem",
+  marginBottom: "4rem",
 
   [mq("desktop")]: {
     gap: "0 4.2rem",
+    marginBottom: "9rem",
   },
+}));
+
+const TagWrapper = styled(Flex)(() => ({
+  minWidth: "24rem",
 }));
 
 const CoreValueTitle = styled.div(({ theme }) => ({
@@ -35,11 +40,11 @@ const HomeSection04 = () => {
     <CommonContainer>
       <div>
         <TitleWrapper>
-          <Flex vertical>
+          <TagWrapper vertical justify="center" align="center">
             <TitleTag title="핵심 가치" />
 
             <CoreValueTitle>작은 행동 실현</CoreValueTitle>
-          </Flex>
+          </TagWrapper>
 
           <IsDesktop>
             <CoreValueDescription>

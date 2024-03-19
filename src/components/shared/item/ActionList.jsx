@@ -1,5 +1,5 @@
 import React from "react";
-import { IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
+import { IsDefault, IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { useMediaQuery } from "react-responsive";
 import { image } from "@/theme";
 import styled from "@emotion/styled";
@@ -51,6 +51,7 @@ const ActionTitle = styled.header(({ theme }) => ({
   fontSize: "2.2rem",
   fontWeight: theme.fontWeight.bold,
   whiteSpace: "nowrap",
+  minWidth: "20rem",
 
   [mq("desktop")]: {
     fontSize: "3.6rem",
@@ -66,7 +67,6 @@ const ActionSubTitle = styled.header(({ theme }) => ({
 const ActionDescription = styled.header(({ theme }) => ({
   fontSize: "1.6rem",
   color: theme.color.black01,
-  fontWeight: theme.fontWeight.light,
   minWidth: "18rem",
 
   li: {
@@ -133,15 +133,22 @@ const ActionList = () => {
       {actionArr.map(action => {
         return (
           <ActionItem key={action.id} align="center">
-            <img
-              src={action.src}
-              alt={action.title}
-              width={isDesktop ? 130 : 45}
-            />
+            <IsDesktop>
+              <img
+                src={action.src}
+                alt={action.title}
+                width={isDesktop ? 130 : 45}
+              />
+            </IsDesktop>
 
-            <ActionTexts gap="1rem 1.4rem">
+            <ActionTexts gap="1rem 1.4rem" wrap="wrap">
               <ActionTitle>
-                <p>{action.title}</p>
+                <Flex gap="0 1rem" align="center">
+                  <IsDefault>
+                    <img src={action.src} alt={action.title} width={20} />
+                  </IsDefault>
+                  {action.title}
+                </Flex>
 
                 <IsDesktop>
                   <ActionSubTitle>{action.subTitle}</ActionSubTitle>

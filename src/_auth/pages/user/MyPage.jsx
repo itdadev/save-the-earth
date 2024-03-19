@@ -11,6 +11,7 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import { color } from "@/theme";
 import { useNavigate } from "react-router-dom";
 import { changeBirthFormat, changePhoneFormat } from "@/utils/Functions";
+import { Flex } from "antd";
 
 const Wrapper = styled.div(() => ({
   maxWidth: "50rem",
@@ -29,9 +30,14 @@ const Item = styled.div(({ theme }) => ({
   },
 }));
 
+const LogoutButton = styled.button(({ theme }) => ({
+  color: theme.color.error,
+  marginBottom: "2rem",
+}));
+
 const MyPage = () => {
   const navigate = useNavigate();
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
 
   const mypageInfo = [
     { id: 1, title: "로그인 유형", data: "카카오 로그인", icon: "" },
@@ -46,7 +52,7 @@ const MyPage = () => {
     {
       id: 6,
       title: "이메일 수신동의",
-      data: user?.emailSend ? "O" : "X",
+      data: user?.emailSend ? "동의" : "미동의",
     },
   ];
 
@@ -57,12 +63,24 @@ const MyPage = () => {
     [navigate],
   );
 
+  const logout = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem("tokens");
+    navigate("/login");
+  }, [setUser, navigate]);
+
   return (
     <CommonPageContainer>
       <CommonContainer>
         <CommonTitleTwo>마이페이지</CommonTitleTwo>
 
         <Wrapper>
+          <Flex justify="flex-end">
+            <LogoutButton justify="flex-end" onClick={logout}>
+              로그아웃
+            </LogoutButton>
+          </Flex>
+
           <div>
             {mypageInfo?.map(info => {
               return (

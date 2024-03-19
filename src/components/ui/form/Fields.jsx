@@ -6,8 +6,10 @@ import PasswordInput from "@/components/ui/form/PasswordInput";
 import {
   BIRTH_PH,
   CONFIRM_PASSWORD_PH,
+  CURRENT_PASSWORD_PH,
   EMAIL_PH,
   NAME_PH,
+  NEW_PASSWORD_PH,
   PASSWORD_PH,
   PHONE_PH,
 } from "@/constants/placeholderTexts";
@@ -26,15 +28,15 @@ export const EmailField = ({ control, disabled = false }) => {
   );
 };
 
-export const PasswordField = ({ control }) => {
+export const PasswordField = ({ control, current }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
     <PasswordInput
       control={control}
       name="user_password"
-      label="비밀번호"
-      placeholder={PASSWORD_PH}
+      label={current ? "현재 비밀번호" : "비밀번호"}
+      placeholder={current ? CURRENT_PASSWORD_PH : PASSWORD_PH}
       iconRender={visible =>
         visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
       }
@@ -55,6 +57,26 @@ export const PasswordConfirmField = ({ control }) => {
       name="confirm_password"
       label="비밀번호 확인"
       placeholder={CONFIRM_PASSWORD_PH}
+      iconRender={visible =>
+        visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+      }
+      visibilityToggle={{
+        visible: passwordVisible,
+        onVisibleChange: setPasswordVisible,
+      }}
+    />
+  );
+};
+
+export const NewPasswordField = ({ control }) => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  return (
+    <PasswordInput
+      control={control}
+      name="new_password"
+      label="새 비밀번호"
+      placeholder={NEW_PASSWORD_PH}
       iconRender={visible =>
         visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
       }

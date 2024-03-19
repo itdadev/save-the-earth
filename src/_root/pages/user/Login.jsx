@@ -1,10 +1,13 @@
-import React, { useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Divider, Flex } from "antd";
+import React, { useCallback, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Divider, Flex, notification } from "antd";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import KakaoLogin from "react-kakao-login";
+import { useGoogleLogin } from "@react-oauth/google";
 
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import {
@@ -16,7 +19,9 @@ import { image } from "@/theme";
 import { EmailField, PasswordField } from "@/components/ui/form/Fields";
 import { SingleCheckBox } from "@/components/ui/form";
 import { zodLogin } from "@/libs/zod/zodValidation";
-import useUserStore from "@/store/useUserStore";
+import { useMutation } from "@tanstack/react-query";
+import { USER_SIGNIN_API_URL } from "@/constants/apiUrls";
+import { LOGIN_FAIL_CODE, SUCCESS_CODE } from "@/constants/responseResults";
 
 export const FormContainer = styled.form(() => ({
   maxWidth: "50rem",
@@ -59,13 +64,20 @@ export const SnsLoginButton = styled.button(({ theme }) => ({
 }));
 
 const Login = () => {
-  const { setUser } = useUserStore();
+  const state = useLocation().state;
+  const [api, contextHolder] = notification.useNotification();
 
   const navigate = useNavigate();
 
   const theme = useTheme();
 
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    setFocus,
+    setError,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(zodLogin),
     defaultValues: {
       user_email: sessionStorage?.getItem("stored_email")
@@ -76,6 +88,44 @@ const Login = () => {
     },
   });
 
+  const { mutate: signInUser } = useMutation({
+    mutationFn: async data => {
+      return await axios.post(USER_SIGNIN_API_URL, data);
+    },
+    onSuccess: data => {
+      if (data?.data?.code === SUCCESS_CODE) {
+        localStorage.setItem("tokens", JSON.stringify(data?.data.data));
+
+        navigate("/mypage");
+      }
+    },
+    onError: error => {
+      if (error.response.data.code === LOGIN_FAIL_CODE) {
+        setError("user_email", {
+          message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+        });
+
+        setFocus("user_email");
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (state?.joinSuccess) {
+      api.success({
+        message: `회원가입 완료되었습니다.`,
+        description: "가입하신 정보로 로그인해주세요.",
+        top,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    // 새로고침시 state 초기화
+    window.history.replaceState({}, document.title);
+  }, []);
+
+  // NOTE: 이메일 로그인
   const onSubmit = useCallback(
     data => {
       if (data?.auto_login) {
@@ -84,23 +134,66 @@ const Login = () => {
         sessionStorage.removeItem("stored_email");
       }
 
-      setUser({
-        id: 1,
-        name: "유화경",
-        email: "lilly@itdadev.com",
-        phone: "01049555429",
-        birth: "19970305",
-        emailSend: true,
+      const modifiedData = { ...data, login_type: "email" };
+
+      signInUser(modifiedData);
+    },
+    [signInUser],
+  );
+
+  // NOTE: 구글 로그인
+  const googleLogin = useGoogleLogin({
+    onSuccess: async tokenResponse => {
+      try {
+        const userData = await axios.get(
+          "https://www.googleapis.com/oauth2/v2/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse?.access_token}`,
+            },
+          },
+        );
+
+        console.log(userData, "구글 회원 정보");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    redirect_uri: "http://localhost:3000/mypage",
+  });
+
+  // NOTE: 카카오 로그인 (Success)
+  const kakaoOnSuccess = useCallback(
+    async data => {
+      const res = await axios.get("https://kapi.kakao.com/v2/user/me", {
+        headers: {
+          Authorization: `Bearer ${data?.response.access_token}`,
+        },
       });
 
-      navigate("/mypage");
+      console.log(res);
+      if (res.status === 200) {
+        const modifiedData = {
+          login_type: "kakao",
+          user_email: res?.data.kakao_account.email,
+        };
+
+        signInUser(modifiedData);
+      }
     },
-    [setUser, navigate],
+    [signInUser],
   );
+
+  // NOTE: 카카오 로그인 (Failure)
+  const kakaoOnFailure = useCallback(error => {
+    console.log(error);
+  }, []);
 
   return (
     <CommonPageContainer>
       <CommonContainer>
+        {contextHolder}
+
         <CommonTitleTwo>로그인</CommonTitleTwo>
 
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
@@ -139,8 +232,8 @@ const Login = () => {
 
           <Divider />
 
-          <Flex justify="space-between">
-            <SnsLoginButton type="button">
+          <Flex justify="center" wrap="wrap" gap="1rem 2rem">
+            <SnsLoginButton type="button" onClick={googleLogin}>
               <img
                 src={image.googleIcon.default}
                 alt="구글 로고"
@@ -150,15 +243,22 @@ const Login = () => {
               구글 로그인
             </SnsLoginButton>
 
-            <SnsLoginButton type="button">
-              <img
-                src={image.kakaoIcon.default}
-                alt="카카오 로고"
-                width={24}
-                height={24}
-              />
-              카카오 로그인
-            </SnsLoginButton>
+            <KakaoLogin
+              token={process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY}
+              onSuccess={kakaoOnSuccess}
+              onFail={kakaoOnFailure}
+              render={({ onClick }) => (
+                <SnsLoginButton type="button" onClick={onClick}>
+                  <img
+                    src={image.kakaoIcon.default}
+                    alt="카카오 로고"
+                    width={24}
+                    height={24}
+                  />
+                  카카오 로그인
+                </SnsLoginButton>
+              )}
+            />
           </Flex>
         </FormContainer>
       </CommonContainer>

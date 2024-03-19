@@ -54,7 +54,7 @@ const TakeAction = () => {
           <Flex gap="3rem 0" vertical>
             <CommonTitleTwo>탄소중립을 위한 작은 행동실천</CommonTitleTwo>
 
-            <CommonDescriptionOne weight="light">
+            <CommonDescriptionOne>
               탄소 중립을 달성하기 위해 우리는 다양한 작은 실천을 통해
               일상생활에서 탄소 배출을 줄일 수 있습니다. 이러한 작은 행동은 지속
               가능한 미래를 향한 중요한 단계이며 더 나은 환경을 위해 함께

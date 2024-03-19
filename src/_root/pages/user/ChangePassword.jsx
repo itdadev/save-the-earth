@@ -1,22 +1,23 @@
 import React, { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { Divider, Flex } from "antd";
+import { useForm } from "react-hook-form";
+import styled from "@emotion/styled";
 
 import {
   CommonContainer,
   CommonPageContainer,
 } from "@/components/ui/container";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
-import { Divider, Flex } from "antd";
 import {
   PasswordConfirmField,
   PasswordField,
 } from "@/components/ui/form/Fields";
-import { useForm } from "react-hook-form";
-import styled from "@emotion/styled";
-import { SnsLoginButton, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import { PrimaryButton } from "@/components/ui/buttons";
-import { useTheme } from "@emotion/react";
-import { useNavigate } from "react-router-dom";
-import { image } from "@/theme";
+import { color, image } from "@/theme";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { zodChangePassword } from "@/libs/zod/zodValidation";
+import { SnsLoginButton, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 
 const Wrapper = styled(Flex)(() => ({
   maxWidth: "50rem",
@@ -43,7 +44,6 @@ const FoundEmail = styled.div(({ theme }) => ({
 const ChangePassword = () => {
   const LOGIN_METHOD = "kakao";
 
-  const theme = useTheme();
   const navigate = useNavigate();
 
   const navigateToLogin = useCallback(() => {
@@ -51,6 +51,7 @@ const ChangePassword = () => {
   }, [navigate]);
 
   const { control, handleSubmit } = useForm({
+    resolver: zodResolver(zodChangePassword),
     defaultValues: {
       user_password: "",
       confirm_password: "",
@@ -128,7 +129,7 @@ const ChangePassword = () => {
 
                 <SubmitButtonWrapper justify="center">
                   <PrimaryButton
-                    bgColor={theme.color.secondary02}
+                    bgColor={color.secondary02}
                     buttonType="submit"
                   >
                     변경하기

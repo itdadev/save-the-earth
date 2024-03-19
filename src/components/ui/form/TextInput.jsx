@@ -53,8 +53,6 @@ const TextInput = ({
       name={name}
       control={control}
       render={({ field, formState: { errors } }) => {
-        console.log(field.onChange);
-
         return (
           <Container>
             <Flex justify="space-between">

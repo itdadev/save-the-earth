@@ -23,14 +23,14 @@ import {
 import { mq } from "@/libs/react-responsive/mediaQuery";
 import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
 
-const PageTitle = styled(CommonTitleTwo)(({ theme }) => ({
+const PageTitle = styled(CommonTitleTwo)(() => ({
   margin: "2rem 0",
   textAlign: "center",
 }));
 
 const ActivityDescription = styled(CommonDescriptionOne)(({ theme }) => ({
   marginTop: "3.2rem",
-  fontWeight: theme.fontWeight.light,
+  fontWeight: theme.fontWeight.regular,
 
   [mq("desktop")]: {
     marginTop: "5.4rem",
@@ -55,7 +55,7 @@ const ActivityInfoItem = styled.li(({ theme }) => ({
   flex: 1,
   display: "flex",
   gap: "0 4rem",
-  fontWeight: theme.fontWeight.regular,
+  fontWeight: theme.fontWeight.light,
   padding: "2rem 1.5rem",
 
   borderBottom: `1px solid ${theme.color.grey05}`,
@@ -89,6 +89,10 @@ const ActivityInfoTitle = styled.header(({ theme }) => ({
   [mq("desktop")]: {
     fontSize: "2.6rem",
   },
+}));
+
+const Description = styled.div(({ theme }) => ({
+  fontWeight: theme.fontWeight.light,
 }));
 
 const PlanWrapper = styled(Flex)(() => ({
@@ -196,7 +200,7 @@ const CampaignActivity = () => {
                     <div>
                       <ActivityInfoTitle>{activity.title}</ActivityInfoTitle>
 
-                      <div>{activity.description}</div>
+                      <Description>{activity.description}</Description>
                     </div>
                   </ActivityInfoItem>
                 );
@@ -219,7 +223,7 @@ const CampaignActivity = () => {
                     gap="0 0.8rem"
                     align="center"
                   >
-                    <PlanNumber>{idx}</PlanNumber>
+                    <PlanNumber>{idx + 1}</PlanNumber>
 
                     <CommonDescriptionOne>
                       {plan.campaign_plan_content}

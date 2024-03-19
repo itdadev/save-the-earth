@@ -143,7 +143,6 @@ const AccountReport = () => {
       // 더 이상 필요하지 않은 요소들을 제거합니다.
       window.URL.revokeObjectURL(fileUrl);
       link.remove();
-      // console.log(fileUrl);
     } catch (error) {
       console.error("Error downloading report:", error);
       // 에러 처리
