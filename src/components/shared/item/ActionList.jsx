@@ -87,6 +87,15 @@ const ActionTexts = styled(Flex)(() => ({
     flexDirection: "column",
   },
 }));
+
+const ItemBox = styled.div(() => ({
+  display: "flex",
+  gap: "0.4rem",
+
+  [mq("desktop")]: {
+    flexDirection: "row",
+  },
+}));
 const ActionList = () => {
   const isDesktop = useMediaQuery({ minWidth: 1240 });
 
@@ -157,7 +166,12 @@ const ActionList = () => {
 
               <ActionDescription>
                 {action.list.map(item => {
-                  return <li key={item}>{item}</li>;
+                  return (
+                    <ItemBox key={item}>
+                      <span>•</span>
+                      <span>{item}</span>
+                    </ItemBox>
+                  );
                 })}
               </ActionDescription>
             </ActionTexts>

@@ -29,6 +29,30 @@ export const CORE_VALUE_ARR = [
   },
 ];
 
+export const BALANCE_VAlUE_ARR = [
+  {
+    id: 1,
+    title: "존중",
+    desc1: "자연을 존중하며",
+    desc2: "조화롭게 공존합니다",
+    src: image.coreValue01.default,
+  },
+  {
+    id: 2,
+    title: "지속성",
+    desc1: "자원을 지속 가능하게",
+    desc2: "관리하여 미래를 보호합니다",
+    src: image.coreValue02.default,
+  },
+  {
+    id: 3,
+    title: "보존",
+    desc1: "생태계와 생물 다양성을",
+    desc2: "보호하고 유지합니다",
+    src: image.coreValue03.default,
+  },
+];
+
 // NOTE: 메뉴 리스트
 export const MENU_LIST = [
   {
