@@ -7,19 +7,24 @@ export const CORE_VALUE_ARR = [
   {
     id: 1,
     title: "존중",
-    description: "자연을 존중하며 조화롭게 공존합니다",
+    desc1: "자연을 존중하며",
+    desc2: "조화롭게 공존합니다",
     src: image.coreValue01.default,
   },
   {
     id: 2,
     title: "지속성",
-    description: "자원을 지속 가능하게 관리하여 미래를 보호합니다",
+    desc1: "자원을 지속 가능하게",
+    desc2: "관리하여 미래를",
+    desc3: "보호합니다",
     src: image.coreValue02.default,
   },
   {
     id: 3,
     title: "보존",
-    description: "생태계와 생물 다양성을 보호하고 유지합니다",
+    desc1: "생태계와 생물",
+    desc2: "다양성을 보호하고",
+    desc3: "유지합니다",
     src: image.coreValue03.default,
   },
 ];
