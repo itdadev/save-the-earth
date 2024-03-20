@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useQuery } from "@tanstack/react-query";
+import { useMediaQuery } from "react-responsive";
 
 import { image, color } from "@/theme";
 import {
@@ -10,7 +11,7 @@ import {
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { Flex } from "antd";
-import { mq } from "@/libs/react-responsive/mediaQuery";
+import { IsDefault, IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { ACCOUNT_REPORT_LIST_QUERY_KEY } from "@/constants/queryKeys";
 import {
   ACCOUNT_REPORT_API_URL,
@@ -96,10 +97,16 @@ const Notice = styled.div(({ theme }) => ({
   fontSize: "1.6rem",
   marginTop: "2rem",
 
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
   [mq("desktop")]: {
     marginTop: 0,
     fontSize: "2.2rem",
-    maxWidth: "44.4rem",
+    height: "28.1rem",
+    width: "50%",
+    borderBottom: `1px solid ${theme.color.black01}`,
   },
 }));
 
@@ -120,6 +127,8 @@ const AccountReport = () => {
       return data?.data.notice;
     },
   });
+
+  const { isDesktop } = useMediaQuery({ minWidth: 1240 });
 
   const downloadReport = async (seq, originalFile, serverFile, uploadPath) => {
     try {
@@ -155,8 +164,59 @@ const AccountReport = () => {
 
         <Container align="center" justify="space-between">
           {accountReportList
-            ?.sort((a, b) => b.report_title - a.report_title)
-            .sort((a, b) => a.report_type_value - b.report_type_value)
+            ?.filter(value => value.report_type_value === "01")
+            .map((report, idx, array) => {
+              return (
+                <ReportItem
+                  key={report.report_seq}
+                  align="center"
+                  full={report.report_type_value === "01"}
+                >
+                  <Icon align="center" justify="center">
+                    <img
+                      src={
+                        report.report_type_value === "01"
+                          ? image.reportIcon01.default
+                          : image.reportIcon02.default
+                      }
+                      alt="파일 아이콘"
+                    />
+                  </Icon>
+
+                  <Title>
+                    {report.report_type_name} <b>{report.report_title}</b>
+                  </Title>
+
+                  <PrimaryButton
+                    type="button"
+                    bgColor={
+                      report.report_type_value === "01"
+                        ? color.primary02
+                        : color.secondary01
+                    }
+                    clickEvent={() =>
+                      downloadReport(
+                        report.report_seq,
+                        report.original_file_name,
+                        report.server_file_name,
+                        report.upload_path,
+                      )
+                    }
+                  >
+                    다운로드
+                  </PrimaryButton>
+                </ReportItem>
+              );
+            })}
+
+          <IsDesktop>
+            <Notice>
+              <p>{accountReportNotice}</p>
+            </Notice>
+          </IsDesktop>
+
+          {accountReportList
+            ?.filter(value => value.report_type_value === "02")
             .map((report, idx, array) => {
               const isLastOdd = idx === array.length - 1 && idx % 2 === 0;
 
@@ -202,11 +262,13 @@ const AccountReport = () => {
                 </ReportItem>
               );
             })}
+        </Container>
 
+        <IsDefault>
           <Notice>
             <p>{accountReportNotice}</p>
           </Notice>
-        </Container>
+        </IsDefault>
       </CommonContainer>
     </CommonPageContainer>
   );
