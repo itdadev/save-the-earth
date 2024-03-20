@@ -23,7 +23,7 @@ const CustomPagination = ({ total, active, setActive }) => {
         defaultCurrent={active}
         defaultPageSize={LOAD_SIZE_4}
         onChange={changePageHandler}
-        size="small"
+        size="large"
       />
     </Container>
   );
