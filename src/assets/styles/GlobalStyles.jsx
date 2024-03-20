@@ -92,6 +92,14 @@ const style = css`
     -webkit-box-orient: vertical;
   }
 
+  .ellipsis-3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
   .ellipsis-5 {
     overflow: hidden;
     text-overflow: ellipsis;

@@ -94,7 +94,7 @@ const Media = () => {
                 >
                   <Title className="ellipsis-1">{media.media_title}</Title>
 
-                  <div className="ellipsis-5">{media.media_content}</div>
+                  <div className="ellipsis-3">{media.media_content}</div>
 
                   <PrimaryButton
                     bgColor="white"
