@@ -19,7 +19,7 @@ const TitleWrapper = styled.div(() => ({
 }));
 
 const TagWrapper = styled(Flex)(() => ({
-  minWidth: "24rem",
+  minWidth: "26rem",
 }));
 
 const CoreValueTitle = styled.div(({ theme }) => ({

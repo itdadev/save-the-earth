@@ -27,6 +27,7 @@ const EachRow = styled.div(({ theme }) => ({
   paddingLeft: "3.2rem",
   [mq("desktop")]: {
     paddingLeft: "6rem",
+    width: "50%",
   },
 }));
 
@@ -200,23 +201,18 @@ const History = () => {
       <CommonContainer>
         <TitleWrapper>
           <CommonTitleTwo>연혁 및 주요활동</CommonTitleTwo>
-
-          {isDesktop && (
-            <Buttons>
-              <Button>오프라인</Button>
-              <Button>온라인</Button>
-            </Buttons>
-          )}
         </TitleWrapper>
 
         <Container>
           <EachRow>
             {!isDesktop && <MobileButton>오프라인</MobileButton>}
+            {isDesktop && <MobileButton>오프라인</MobileButton>}
 
             {renderHistory(offlineHistory)}
           </EachRow>
           <EachRow>
             {!isDesktop && <MobileButton>온라인</MobileButton>}
+            {isDesktop && <MobileButton>온라인</MobileButton>}
 
             {renderHistory(onlineHistory)}
           </EachRow>

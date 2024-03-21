@@ -10,7 +10,7 @@ import {
   CommonTitleTwo,
   CommonTitleThree,
 } from "@/components/ui/fonts/Fonts";
-import { CORE_VALUE_ARR } from "@/constants/staticInformation";
+import { BALANCE_VAlUE_ARR } from "@/constants/staticInformation";
 import { CommonContainer } from "@/components/ui/container";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 
@@ -68,6 +68,14 @@ const CoreValueImage = styled.img(() => ({
   },
 }));
 
+const DescBox = styled.div(() => ({
+  display: "flex",
+  flexWrap: "wrap",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+}));
+
 const BalancedCoexistence = () => {
   const isDesktop = useMediaQuery({ minWidth: 1240 });
 
@@ -101,7 +109,7 @@ const BalancedCoexistence = () => {
           </CommonDescriptionOne>
 
           <CoreValueList>
-            {CORE_VALUE_ARR.map(value => {
+            {BALANCE_VAlUE_ARR.map(value => {
               return (
                 <CoreValueItem
                   align="center"
@@ -115,9 +123,11 @@ const BalancedCoexistence = () => {
                     {value.title}
                   </CommonTitleThree>
 
-                  <CommonDescriptionOne>
-                    {value.description}
-                  </CommonDescriptionOne>
+                  <DescBox>
+                    <p>{value.desc1}</p>
+                    <p>{value.desc2}</p>
+                    <p>{value.desc3}</p>
+                  </DescBox>
                 </CoreValueItem>
               );
             })}

@@ -104,9 +104,12 @@ const PlanWrapper = styled(Flex)(() => ({
   },
 }));
 
-const PlanItem = styled(Flex)(() => ({
+const PlanItem = styled.div(() => ({
+  display: "flex",
+  gap: "0 0.8rem",
+  alignItems: "center",
   [mq("desktop")]: {
-    alignItems: "center",
+    alignItems: "flex-start",
   },
 }));
 
@@ -127,6 +130,7 @@ const PlanNumber = styled(Flex)(({ theme }) => ({
     width: "2rem",
     height: "3rem",
     fontSize: "1.8rem",
+    marginTop: "0.6rem",
   },
 }));
 
@@ -218,11 +222,7 @@ const CampaignActivity = () => {
             <Flex vertical gap="2rem 0">
               {campaignDetail?.plan_list?.map((plan, idx) => {
                 return (
-                  <PlanItem
-                    key={plan.campaign_plan_seq}
-                    gap="0 0.8rem"
-                    align="center"
-                  >
+                  <PlanItem key={plan.campaign_plan_seq}>
                     <PlanNumber>{idx + 1}</PlanNumber>
 
                     <CommonDescriptionOne>

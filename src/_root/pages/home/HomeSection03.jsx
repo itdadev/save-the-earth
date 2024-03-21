@@ -74,6 +74,13 @@ const TextTitle = styled.header(({ theme }) => ({
   },
 }));
 
+const DescBox = styled.div(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+}));
+
 const HomeSection03 = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery({ minWidth: 1240 });
@@ -99,7 +106,11 @@ const HomeSection03 = () => {
 
                 <CoreValueTitle>{value.title}</CoreValueTitle>
 
-                <p>{value.description}</p>
+                <DescBox>
+                  <p>{value.desc1}</p>
+                  <p>{value.desc2}</p>
+                  <p>{value.desc3}</p>
+                </DescBox>
               </CoreValueItem>
             );
           })}
