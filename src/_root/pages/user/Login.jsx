@@ -20,8 +20,9 @@ import { EmailField, PasswordField } from "@/components/ui/form/Fields";
 import { SingleCheckBox } from "@/components/ui/form";
 import { zodLogin } from "@/libs/zod/zodValidation";
 import { useMutation } from "@tanstack/react-query";
-import { USER_SIGNIN_API_URL } from "@/constants/apiUrls";
+import { USER_SIGN_IN_API_URL } from "@/constants/apiUrls";
 import { INVALID_LOGIN_INFO, SUCCESS_CODE } from "@/constants/responseResults";
+import { useUserLoggedIn } from "@/store/useLoginStore";
 
 export const FormContainer = styled.form(() => ({
   maxWidth: "50rem",
@@ -70,11 +71,12 @@ const Login = () => {
     kakao: {},
     google: {},
   });
+
   const [api, contextHolder] = notification.useNotification();
-
   const navigate = useNavigate();
-
   const theme = useTheme();
+
+  const { setLoggedIn } = useUserLoggedIn();
 
   const {
     control,
@@ -90,18 +92,21 @@ const Login = () => {
         : "",
       user_password: "",
       auto_login: !!sessionStorage?.getItem("stored_email"),
+      sns_key: "",
     },
   });
 
   const { mutate: signInUser } = useMutation({
     mutationFn: async data => {
-      return await axios.post(USER_SIGNIN_API_URL, data);
+      return await axios.post(USER_SIGN_IN_API_URL, data);
     },
     onSuccess: data => {
       if (data?.data?.code === SUCCESS_CODE) {
         localStorage.setItem("tokens", JSON.stringify(data?.data.data));
 
-        navigate("/mypage");
+        setLoggedIn();
+
+        navigate("/");
       }
     },
     onError: error => {
@@ -130,7 +135,13 @@ const Login = () => {
       api.success({
         message: `회원가입 완료되었습니다.`,
         description: "세이브더얼스 회원이 되신 걸 환영합니다.",
-        top,
+      });
+    }
+
+    if (state?.changePasswordSuccess || state?.resetPasswordSuccess) {
+      api.success({
+        message: `비밀번호 변경이 완료되었습니다.`,
+        description: "변경하신 비밀번호로 다시 로그인해주세요.",
       });
     }
   }, []);
@@ -168,8 +179,6 @@ const Login = () => {
             },
           },
         );
-
-        console.log(res, "구글 회원 정보");
 
         if (res.status === 200) {
           const modifiedData = {
@@ -240,7 +249,7 @@ const Login = () => {
               <PasswordField control={control} />
             </div>
 
-            <LoginUtilGroup justify="space-between">
+            <LoginUtilGroup justify="space-between" wrap="wrap" gap="1rem 0">
               <SingleCheckBox
                 name="auto_login"
                 control={control}

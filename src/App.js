@@ -48,6 +48,13 @@ import {
 import { EnvironmentCalendar } from "@/_root/pages/environment-calendar";
 import LatestActivityDetail from "./_root/pages/campaign-activity/detail/LatestActivityDetail";
 import CampaignActivity from "@/_root/pages/campaign-activity/CampaignActivity";
+import { useQuery } from "@tanstack/react-query";
+import { USER_DATA_QUERY_KEY } from "@/constants/queryKeys";
+import Interceptor from "@/libs/axios/AxiosInterceptor";
+import { USER_API_URL } from "@/constants/apiUrls";
+import { useEffect } from "react";
+import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
+import useUserStore from "@/store/useUserStore";
 
 const Container = styled.div(() => ({
   minHeight: "100svh",

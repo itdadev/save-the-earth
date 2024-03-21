@@ -4,9 +4,9 @@ import { image } from "@/theme";
 import styled from "@emotion/styled";
 import { Flex } from "antd";
 
-import { ImageFigure } from "@/components/ui/image";
-import { HEADER_MENU_Z_INDEX, TEXT_Z_INDEX } from "@/constants/zIndex";
-import ProjectList from "../item/ProjectList";
+import { HEADER_MENU_Z_INDEX } from "@/constants/zIndex";
+import { ProjectList } from "@/components/shared/item";
+import { UtilMenu } from "@/components/shared/header/index";
 
 const Container = styled(Flex)(() => ({
   position: "fixed",
@@ -26,27 +26,13 @@ const UtilMenuWrapper = styled(Flex)(() => ({
   background: "white",
 }));
 
-const UtilMenuList = styled(Flex)(({ theme }) => ({
-  gap: "0 2rem",
-
-  "& a": {
-    lineHeight: "normal",
-    height: "20px",
-  },
-
-  "& a:not(:last-of-type)": {
-    borderRight: `1px solid ${theme.color.grey02}`,
-    paddingRight: "2rem",
-  },
-}));
-
 const MainMenuWrapper = styled(Flex)(({ theme }) => ({
   position: "relative",
   background: theme.color.primary01,
   height: "7rem",
   paddingLeft: "10rem",
   color: "white",
-  fontSize: "2.4rem",
+  fontSize: "2rem",
   zIndex: HEADER_MENU_Z_INDEX,
 }));
 
@@ -124,35 +110,10 @@ const WebHeader = ({ menuTree, utilMenu }) => {
           <img src={image.headerLogo.default} alt="Save the Earth" />
         </Link>
 
-        <UtilMenuList>
-          {utilMenu
-            .filter(el => !el.outerLink)
-            .map(util => {
-              return (
-                <Link to={util.url} key={util.id}>
-                  {util.title}
-                </Link>
-              );
-            })}
-
-          {utilMenu
-            .filter(el => el.outerLink)
-            .map(util => {
-              return (
-                <a
-                  href={util.outerLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  key={util.id}
-                >
-                  {util.title}
-                </a>
-              );
-            })}
-        </UtilMenuList>
+        <UtilMenu utilMenu={utilMenu} />
       </UtilMenuWrapper>
 
-      <MainMenuWrapper align="center" justify="space-between">
+      <MainMenuWrapper align="center" justify="space-between" gap="1rem">
         {menuTree?.map(menu => {
           return (
             <MainMenuItem

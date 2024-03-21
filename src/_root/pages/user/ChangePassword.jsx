@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Divider, Flex } from "antd";
 import { useForm } from "react-hook-form";
 import styled from "@emotion/styled";
+import axios from "axios";
 
 import {
   CommonContainer,
@@ -10,14 +11,18 @@ import {
 } from "@/components/ui/container";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import {
+  NewPasswordField,
   PasswordConfirmField,
-  PasswordField,
 } from "@/components/ui/form/Fields";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { color, image } from "@/theme";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { zodChangePassword } from "@/libs/zod/zodValidation";
 import { SnsLoginButton, SubmitButtonWrapper } from "@/_root/pages/user/Login";
+import { translateLoginType } from "@/utils/Functions";
+import { useMutation } from "@tanstack/react-query";
+import { RESET_PASSWORD_API_URL } from "@/constants/apiUrls";
+import { SUCCESS_CODE } from "@/constants/responseResults";
 
 const Wrapper = styled(Flex)(() => ({
   maxWidth: "50rem",
@@ -35,14 +40,17 @@ const Description = styled.p(() => ({
 
 const FoundEmail = styled.div(({ theme }) => ({
   width: "100%",
-  marginBottom: "3rem",
+  margin: "1rem 0 3rem",
   padding: "2rem 0",
   textAlign: "center",
   background: theme.color.pink,
   fontSize: "2rem",
 }));
 const ChangePassword = () => {
-  const LOGIN_METHOD = "kakao";
+  const state = useLocation().state;
+
+  const LOGIN_METHOD = state.userData.login_type;
+  const EMAIL = state.userData.user_email;
 
   const navigate = useNavigate();
 
@@ -53,18 +61,30 @@ const ChangePassword = () => {
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(zodChangePassword),
     defaultValues: {
-      user_password: "",
+      new_password: "",
       confirm_password: "",
+    },
+  });
+
+  const { mutate: resetPassword } = useMutation({
+    mutationFn: async data => {
+      return await axios.patch(RESET_PASSWORD_API_URL, {
+        user_email: EMAIL,
+        new_password: data.new_password,
+      });
+    },
+    onSuccess: data => {
+      if (data?.data?.code === SUCCESS_CODE) {
+        navigate("/login", { state: { resetPasswordSuccess: true } });
+      }
     },
   });
 
   const onSubmit = useCallback(
     data => {
-      if (data) {
-        navigate("/login");
-      }
+      resetPassword(data);
     },
-    [navigate],
+    [resetPassword],
   );
 
   return (
@@ -79,7 +99,9 @@ const ChangePassword = () => {
                 입력하신 휴대폰 번호로 가입된 계정은 아래와 같습니다.
               </Description>
 
-              <FoundEmail>lilly@itdadev.com</FoundEmail>
+              <p>로그인 타입: {translateLoginType(LOGIN_METHOD)}</p>
+
+              <FoundEmail>{EMAIL}</FoundEmail>
             </div>
           ) : LOGIN_METHOD === "kakao" ? (
             <Description>카카오로 가입된 계정입니다.</Description>
@@ -88,10 +110,7 @@ const ChangePassword = () => {
           )}
 
           {LOGIN_METHOD === "email" ? (
-            <PrimaryButton
-              bgColor={theme.color.grey05}
-              clickEvent={navigateToLogin}
-            >
+            <PrimaryButton bgColor={color.grey05} clickEvent={navigateToLogin}>
               로그인하기
             </PrimaryButton>
           ) : LOGIN_METHOD === "kakao" ? (
@@ -123,7 +142,7 @@ const ChangePassword = () => {
               <CommonTitleTwo>비밀번호 변경하기</CommonTitleTwo>
 
               <Form onSubmit={handleSubmit(onSubmit)}>
-                <PasswordField control={control} />
+                <NewPasswordField control={control} />
 
                 <PasswordConfirmField control={control} />
 

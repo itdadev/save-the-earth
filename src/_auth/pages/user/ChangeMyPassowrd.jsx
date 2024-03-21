@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
 import { color } from "@/theme";
 import { useForm } from "react-hook-form";
-import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { zodChangeMyPassword } from "@/libs/zod/zodValidation";
+import { useMutation } from "@tanstack/react-query";
 
+import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import {
   CommonContainer,
   CommonPageContainer,
@@ -16,9 +16,17 @@ import {
   PasswordField,
 } from "@/components/ui/form/Fields";
 import { PrimaryButton } from "@/components/ui/buttons";
+import { CHANGE_PASSWORD_API_URL } from "@/constants/apiUrls";
+import { INVALID_PASSWORD, SUCCESS_CODE } from "@/constants/responseResults";
+import Interceptor from "@/libs/axios/AxiosInterceptor";
+import { zodChangeMyPassword } from "@/libs/zod/zodValidation";
+import { CURRENT_PASSWORD_INVALID } from "@/constants/inputErrorMessage";
+import { useLogoutUser } from "@/hooks/useAuth";
 
 const ChangeMyPassword = () => {
-  const { control, handleSubmit } = useForm({
+  const logoutUser = useLogoutUser();
+
+  const { control, handleSubmit, setError, setFocus } = useForm({
     resolver: zodResolver(zodChangeMyPassword),
     defaultValues: {
       user_password: "",
@@ -27,9 +35,31 @@ const ChangeMyPassword = () => {
     },
   });
 
-  const onSubmit = useCallback(data => {
-    console.log(data);
-  }, []);
+  // NOTE: 비밀번호 변경
+  const { mutate: changeMyPassword } = useMutation({
+    mutationFn: async data => {
+      return await Interceptor.patch(CHANGE_PASSWORD_API_URL, data);
+    },
+    onSuccess: data => {
+      if (data?.data.code === SUCCESS_CODE) {
+        logoutUser();
+      }
+    },
+    onError: error => {
+      if (error.response.data.code === INVALID_PASSWORD) {
+        setError("user_password", { message: CURRENT_PASSWORD_INVALID });
+
+        setFocus("user_password");
+      }
+    },
+  });
+
+  const onSubmit = useCallback(
+    data => {
+      changeMyPassword(data);
+    },
+    [changeMyPassword],
+  );
 
   return (
     <CommonPageContainer>

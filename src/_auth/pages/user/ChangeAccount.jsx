@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { zodChangeAccount } from "@/libs/zod/zodValidation";
-import useUserStore from "@/store/useUserStore";
+import { useUserStore } from "@/store/useUserStore";
 
 import { color } from "@/theme";
 import {
@@ -12,13 +13,25 @@ import {
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { BirthField, EmailField, NameField } from "@/components/ui/form/Fields";
 import { PhoneVerificationFields, SingleCheckBox } from "@/components/ui/form";
-import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
+import { USER_API_URL } from "@/constants/apiUrls";
+import { SUCCESS_CODE } from "@/constants/responseResults";
+import { USER_DATA_QUERY_KEY } from "@/constants/queryKeys";
+import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
 import { PrimaryButton } from "@/components/ui/buttons";
+import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import { NameBirthContainer } from "@/_root/pages/user/Join";
-import { changeBirthFormat, changePhoneFormat } from "@/utils/Functions";
+import {
+  changeBirthFormat,
+  changePhoneFormat,
+  replaceAllDash,
+} from "@/utils/Functions";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Interceptor from "@/libs/axios/AxiosInterceptor";
 
 const ChangeAccount = () => {
   const { user } = useUserStore();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const {
     control,
@@ -36,25 +49,55 @@ const ChangeAccount = () => {
       user_birth: "",
       user_name: "",
       user_phone: "",
-      phone_verified: false,
+      phone_verified: true,
     },
   });
-
   useEffect(() => {
     if (user) {
-      setValue("user_email", user.email);
-      setValue("user_name", user.name);
-      setValue("user_phone", changePhoneFormat(user.phone));
-      setValue("user_birth", changeBirthFormat(user.birth));
-      setValue("email_receive_yn", user.emailSend);
+      setValue("user_email", user.user_email);
+      setValue("user_name", user.user_name);
+      setValue("user_phone", changePhoneFormat(user.user_phone));
+      setValue("user_birth", changeBirthFormat(user.user_birth));
+      setValue("email_receive_yn", user.email_receive_yn === 1);
     }
   }, [user]);
 
-  const onSubmit = useCallback(data => {
-    console.log(data);
-  }, []);
+  const { mutate: updateUserAccount } = useMutation({
+    mutationFn: async data => {
+      return await Interceptor.patch(USER_API_URL, {
+        ...data,
+        user_birth: replaceAllDash(data?.user_birth),
+        user_phone: replaceAllDash(data?.user_phone),
+      });
+    },
+    onSuccess: data => {
+      const refreshToken = JSON.parse(
+        localStorage.getItem(LOCAL_STORAGE_TOKENS),
+      ).refresh_token;
 
-  console.log(user);
+      const newToken = JSON.stringify({
+        access_token: data?.data.data.access_token,
+        refresh_token: refreshToken,
+      });
+
+      localStorage.setItem(LOCAL_STORAGE_TOKENS, newToken);
+
+      if (data?.data.code === SUCCESS_CODE) {
+        navigate("/mypage", { state: { changeAccountSuccess: true } });
+        queryClient.removeQueries(USER_DATA_QUERY_KEY);
+      }
+    },
+    onError: error => {
+      console.log(error);
+    },
+  });
+
+  const onSubmit = useCallback(
+    data => {
+      updateUserAccount(data);
+    },
+    [updateUserAccount],
+  );
 
   return (
     <CommonPageContainer>
@@ -92,7 +135,7 @@ const ChangeAccount = () => {
 
           <SubmitButtonWrapper justify="center">
             <PrimaryButton bgColor={color.secondary02} buttonType="submit">
-              회원가입
+              수정하기
             </PrimaryButton>
           </SubmitButtonWrapper>
         </FormContainer>

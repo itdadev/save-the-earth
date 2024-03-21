@@ -11,5 +11,7 @@ export const ACCOUNT_REPORT_LIST_QUERY_KEY = "accountReport";
 export const EXECUTIVE_LIST_QUERY_KEY = "executiveList";
 export const HOME_BANNER_QUERY_KEY = "homeBanner";
 
+export const USER_DATA_QUERY_KEY = "userData";
+
 // NOTE: LOAD SIZES
 export const LOAD_SIZE_4 = 4;

@@ -90,3 +90,17 @@ export function changeInputBirthFormat(e, setValue) {
 export function replaceAllDash(data) {
   return data.replaceAll("-", "");
 }
+
+export function translateLoginType(type) {
+  if (type === "email") {
+    return "이메일";
+  }
+
+  if (type === "kakao") {
+    return "카카오";
+  }
+
+  if (type === "google") {
+    return "구글";
+  }
+}

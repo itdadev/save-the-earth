@@ -1,7 +1,9 @@
 import { z } from "zod";
 import {
   BIRTH_REQUIRED,
+  CHANGE_PASSWORD_INVALID,
   CURRENT_PASSWORD_INVALID,
+  EMAIL_CHECK_REQUIRED,
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
   NAME_REQUIRED,
@@ -75,11 +77,14 @@ export const zodJoin = z
   .refine(data => data.user_password === data.confirm_password, {
     message: PASSWORD_CONFIRM_INVALID,
     path: ["confirm_password"],
+  })
+  .refine(data => data.user_email_check === true, {
+    message: EMAIL_CHECK_REQUIRED,
+    path: ["user_email"],
   });
 
 // NOTE: 계정 찾기
 export const zodFindAccount = z.object({
-  user_name: z.string().min(1, { message: NAME_REQUIRED }),
   user_phone: z
     .string()
     .min(1, { message: PHONE_REQUIRED })
@@ -93,7 +98,7 @@ export const zodFindAccount = z.object({
 // NOTE: 비밀번호 변경하기 - 계정 찾기
 export const zodChangePassword = z
   .object({
-    user_password: z
+    new_password: z
       .string()
       .min(1, { message: PASSWORD_REQUIRED })
       .regex(PASSWORD_REGEX, {
@@ -106,7 +111,7 @@ export const zodChangePassword = z
         message: PASSWORD_FORMAT,
       }),
   })
-  .refine(data => data.user_password === data.confirm_password, {
+  .refine(data => data.new_password === data.confirm_password, {
     message: PASSWORD_CONFIRM_INVALID,
     path: ["confirm_password"],
   });
@@ -150,6 +155,6 @@ export const zodChangeMyPassword = z
       }),
   })
   .refine(data => data.new_password === data.confirm_password, {
-    message: CURRENT_PASSWORD_INVALID,
+    message: CHANGE_PASSWORD_INVALID,
     path: ["confirm_password"],
   });

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import { TextInput } from "@/components/ui/form/index";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
@@ -13,7 +13,71 @@ import {
   PASSWORD_PH,
   PHONE_PH,
 } from "@/constants/placeholderTexts";
+import { SendButton } from "@/components/ui/form/PhoneVerificationFields";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { CHECK_EMAIL_API_URL } from "@/constants/apiUrls";
+import { INVALID_LOGIN_INFO, SUCCESS_CODE } from "@/constants/responseResults";
 
+export const EmailCheckField = ({
+  control,
+  watch,
+  trigger,
+  setError,
+  setValue,
+}) => {
+  const [emailChecked, setEmailChecked] = useState(false);
+
+  const { mutate: checkEmail } = useMutation({
+    mutationFn: async data => {
+      return await axios.get(`${CHECK_EMAIL_API_URL}?user_email=${data}`);
+    },
+    onSuccess: data => {
+      if (data?.data?.code === SUCCESS_CODE) {
+        const result = data?.data?.data.result;
+
+        if (result) {
+          setEmailChecked(true);
+          setValue("user_email_checked", true);
+        } else {
+          setError("user_email", { message: "이미 사용중인 이메일입니다." });
+          setValue("user_email_checked", false);
+        }
+      }
+    },
+    onError: error => {
+      if (error.response.data.code === INVALID_LOGIN_INFO) {
+      }
+    },
+  });
+  const validate = useCallback(async () => {
+    const result = await trigger(["user_email"]);
+
+    if (result) {
+      checkEmail(watch("user_email"));
+    }
+
+    return undefined;
+  }, [trigger, checkEmail, watch]);
+
+  return (
+    <TextInput
+      control={control}
+      name="user_email"
+      placeholder={EMAIL_PH}
+      maxLength={50}
+      label="이메일"
+      type="email"
+      disabled={emailChecked}
+      customMessage={emailChecked ? "사용 가능한 이메일입니다." : undefined}
+      addonAfter={
+        <SendButton type="primary" size="large" onClick={validate}>
+          중복 확인
+        </SendButton>
+      }
+    />
+  );
+};
 export const EmailField = ({ control, disabled = false }) => {
   return (
     <TextInput

@@ -11,7 +11,7 @@ import { TextInput } from ".";
 
 export const CODE_EXPIRE_TIME = 5 * 60 * 1000; // 5분
 
-const SendButton = styled.div(({ theme, disabled }) => ({
+export const SendButton = styled.div(({ theme, disabled }) => ({
   background: theme.color.primary01,
   wordBreak: "keep-all",
   whiteSpace: "nowrap",

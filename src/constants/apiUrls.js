@@ -10,4 +10,9 @@ export const EXECUTIVE_LIST_API_URL = "/api/v1/executive";
 export const HOME_BANNER_API_URL = "/api/v1/home-banner";
 export const USER_API_URL = "/api/v1/user";
 
-export const USER_SIGNIN_API_URL = "/api/v1/user/login";
+export const USER_SIGN_IN_API_URL = "/api/v1/user/login";
+export const CHANGE_PASSWORD_API_URL = "/api/v1/user/password";
+export const RESET_PASSWORD_API_URL = "/api/v1/user/password/reset";
+export const REFRESH_TOKEN_API_URL = "/api/v1/token/refresh";
+export const FIND_USER_ACCOUNT_API_URL = "/api/v1/user/account";
+export const CHECK_EMAIL_API_URL = "/api/v1/user/check-user-email";

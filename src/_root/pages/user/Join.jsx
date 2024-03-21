@@ -14,6 +14,7 @@ import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { PrimaryButton } from "@/components/ui/buttons";
 import {
   BirthField,
+  EmailCheckField,
   EmailField,
   NameField,
   PasswordConfirmField,
@@ -64,6 +65,7 @@ const Join = () => {
   const {
     control,
     handleSubmit,
+    trigger,
     watch,
     setError,
     clearErrors,
@@ -82,6 +84,7 @@ const Join = () => {
       user_phone: "",
       phone_verified: true,
       login_type: "email",
+      user_email_checked: false,
     },
   });
 
@@ -158,7 +161,7 @@ const Join = () => {
       setValue("user_email", userData?.email);
       setValue("user_name", userData?.name);
       setValue("user_birth", userData?.birthyear);
-      setValue("user_phone", userData?.phone_number);
+      setValue("user_phone", userData?.phone_number.replace("+82 ", "0"));
     }
   }, []);
 
@@ -204,7 +207,13 @@ const Join = () => {
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
           <div>
             <div>
-              <EmailField control={control} />
+              <EmailCheckField
+                control={control}
+                watch={watch}
+                trigger={trigger}
+                setError={setError}
+                setValue={setValue}
+              />
 
               {loginType === "email" && (
                 <>

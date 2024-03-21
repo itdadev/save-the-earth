@@ -15,6 +15,13 @@ export const ErrorMessage = styled.div(({ theme }) => ({
   color: theme.color.error,
 }));
 
+export const SuccessMessage = styled.div(({ theme }) => ({
+  minHeight: "2rem",
+  fontSize: "1.2rem",
+  paddingTop: "0.2rem",
+  color: theme.color.primary01,
+}));
+
 const Container = styled.div(() => ({
   flex: 1,
 }));
@@ -31,6 +38,7 @@ const TextInput = ({
   disabled,
   setValue,
   maxLength,
+  customMessage,
   inputMode,
 }) => {
   const inputFormatChangeHandler = useCallback(
@@ -76,7 +84,11 @@ const TextInput = ({
               maxLength={maxLength}
             />
 
-            <ErrorMessage>{errors[name]?.message}</ErrorMessage>
+            {customMessage ? (
+              <SuccessMessage>{customMessage}</SuccessMessage>
+            ) : (
+              <ErrorMessage>{errors[name]?.message}</ErrorMessage>
+            )}
           </Container>
         );
       }}

@@ -2,20 +2,40 @@
   NOTE: 헤더 부모 컴포넌트입니다. menu 트리 배열을 내보내고 WebHeader.jsx와 MobileHeader.jsx를 가져옵니다.
 */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
+import axios from "axios";
+
 import { MobileHeader, WebHeader } from "@/components/shared/header/index";
 import { IsDefault, IsDesktop } from "@/libs/react-responsive/mediaQuery";
 import { useQuery } from "@tanstack/react-query";
-import { CAMPAIGN_LIST_QUERY_KEY } from "@/constants/queryKeys";
-import axios from "axios";
-import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
+import {
+  CAMPAIGN_LIST_QUERY_KEY,
+  USER_DATA_QUERY_KEY,
+} from "@/constants/queryKeys";
+import { CAMPAIGN_API_URL, USER_API_URL } from "@/constants/apiUrls";
 import { MENU_LIST } from "@/constants/staticInformation";
-import useUserStore from "@/store/useUserStore";
+import { useUserStore } from "@/store/useUserStore";
+import Interceptor from "@/libs/axios/AxiosInterceptor";
+import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
+import { useUserLoggedIn } from "@/store/useLoginStore";
 
 const Header = () => {
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
+  const { loggedIn } = useUserLoggedIn();
 
-  const [menuTree, setMenuTree] = useState(MENU_LIST);
+  const { data: userData, isSuccess } = useQuery({
+    queryKey: [USER_DATA_QUERY_KEY],
+    queryFn: async () => await Interceptor.get(`${USER_API_URL}`),
+    select: data => {
+      return data?.data?.data;
+    },
+    enabled: !!localStorage.getItem(LOCAL_STORAGE_TOKENS) || loggedIn,
+  });
+  useEffect(() => {
+    if (isSuccess || loggedIn) {
+      setUser(userData);
+    }
+  }, [isSuccess, loggedIn]);
 
   const { data: campaignList } = useQuery({
     queryKey: [CAMPAIGN_LIST_QUERY_KEY],
@@ -29,13 +49,13 @@ const Header = () => {
     { id: 1, title: "홈", url: "/" },
     {
       id: 2,
-      title: user ? `${user?.name}님` : "로그인",
+      title: user ? `${user?.user_name}님` : "로그인",
       url: user ? "/mypage" : "/login",
     },
     { id: 3, title: "국세청", outerLink: "https://www.nts.go.kr/" },
   ];
 
-  useEffect(() => {
+  const menuList = useMemo(() => {
     if (campaignList) {
       const campaignMenuList = campaignList?.map(campaignMenu => {
         return {
@@ -45,17 +65,17 @@ const Header = () => {
         };
       });
       // 캠페인 & 활동 항목 찾기
-      const campaignActivityIndex = menuTree.findIndex(item => item.id === 2);
+      const campaignActivityIndex = MENU_LIST.findIndex(item => item.id === 2);
 
       if (campaignActivityIndex !== -1) {
         // 새로운 캠페인 메뉴를 기존 subMenus에 추가
         const updatedSubMenu = [
           ...campaignMenuList,
-          ...menuTree[campaignActivityIndex].subMenus,
+          ...MENU_LIST[campaignActivityIndex].subMenus,
         ];
 
         // 캠페인 & 활동 항목의 subMenus 업데이트
-        const updatedMenuTree = [...menuTree];
+        const updatedMenuTree = [...MENU_LIST];
 
         updatedMenuTree[campaignActivityIndex] = {
           ...updatedMenuTree[campaignActivityIndex],
@@ -63,7 +83,7 @@ const Header = () => {
         };
 
         // 메뉴 트리 업데이트
-        setMenuTree(updatedMenuTree);
+        return updatedMenuTree;
       }
     }
   }, [campaignList]);
@@ -71,11 +91,11 @@ const Header = () => {
   return (
     <>
       <IsDesktop>
-        <WebHeader menuTree={menuTree} utilMenu={utilMenu} />
+        <WebHeader menuTree={menuList} utilMenu={utilMenu} />
       </IsDesktop>
 
       <IsDefault>
-        <MobileHeader menuTree={menuTree} utilMenu={utilMenu} />
+        <MobileHeader menuTree={menuList} utilMenu={utilMenu} />
       </IsDefault>
     </>
   );

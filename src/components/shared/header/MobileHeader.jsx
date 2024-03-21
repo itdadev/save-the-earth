@@ -8,6 +8,7 @@ import {
   HEADER_MENU_Z_INDEX,
   HEADER_SUB_MENU_Z_INDEX,
 } from "@/constants/zIndex";
+import { UtilMenu } from "@/components/shared/header/index";
 
 const Container = styled.div(() => ({}));
 
@@ -156,32 +157,7 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
             </button>
           </Flex>
 
-          <UtilMenuList>
-            {utilMenu
-              .filter(el => !el.outerLink)
-              .map(util => {
-                return (
-                  <Link to={util.url} key={util.id}>
-                    {util.title}
-                  </Link>
-                );
-              })}
-
-            {utilMenu
-              .filter(el => el.outerLink)
-              .map(util => {
-                return (
-                  <a
-                    href={util.outerLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    key={util.id}
-                  >
-                    {util.title}
-                  </a>
-                );
-              })}
-          </UtilMenuList>
+          <UtilMenu utilMenu={utilMenu} />
         </UtilMenuWrapper>
 
         <MainMenuWrapper>
