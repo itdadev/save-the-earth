@@ -39,6 +39,7 @@ const FindAccount = () => {
     defaultValues: {
       auth_code: "",
       phone_verified: true,
+      user_phone: "",
     },
   });
 

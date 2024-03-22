@@ -12,12 +12,7 @@ import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { ENVIRONMENT_API_URL } from "@/constants/apiUrls";
 import { CustomFullCalendar } from "@/components/ui/calendar";
 import { CALENDAR_LIST_QUERY_KEY } from "@/constants/queryKeys";
-import {
-  changeCalendarDateFormat,
-  GetDate,
-  GetDay,
-  GetMonth,
-} from "@/utils/Functions";
+import { changeCalendarDateFormat, GetDate, GetDay } from "@/utils/Functions";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const EventList = styled.div(() => ({

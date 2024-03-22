@@ -20,10 +20,14 @@ const style = css`
     padding: 0;
     margin: 0;
     word-break: keep-all;
-    font-family: "GmarketSans", sans-serif;
+    font-family: "GmarketSans", sans-serif !important;
     font-weight: 400;
     color: #000;
     line-height: 1.5;
+  }
+
+  * {
+    font-family: "GmarketSans", sans-serif !important;
   }
 
   img {

@@ -50,6 +50,8 @@ const ChangeAccount = () => {
       user_name: "",
       user_phone: "",
       phone_verified: true,
+      auth_code: "",
+      email_receive_yn: false,
     },
   });
   useEffect(() => {
