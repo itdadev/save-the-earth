@@ -130,7 +130,7 @@ const PlanNumber = styled(Flex)(({ theme }) => ({
     width: "2rem",
     height: "3rem",
     fontSize: "1.8rem",
-    marginTop: "0.6rem",
+    marginTop: "0.4rem",
   },
 }));
 

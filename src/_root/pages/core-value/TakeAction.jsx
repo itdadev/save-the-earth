@@ -38,7 +38,7 @@ const ListWrapper = styled.div(({ theme }) => ({
   borderBottom: `1px solid ${theme.color.grey05}`,
 
   [mq("desktop")]: {
-    padding: "7.2rem 4.8rem",
+    padding: "7.2rem 0",
     borderTop: `1px solid ${theme.color.black01}`,
     borderBottom: `1px solid ${theme.color.black01}`,
   },

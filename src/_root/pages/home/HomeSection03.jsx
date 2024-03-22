@@ -81,6 +81,10 @@ const DescBox = styled.div(({ theme }) => ({
   alignItems: "center",
 }));
 
+const Description = styled.p(() => ({
+  textAlign: "center",
+}));
+
 const HomeSection03 = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery({ minWidth: 1240 });
@@ -132,13 +136,13 @@ const HomeSection03 = () => {
           </TextTitle>
 
           <IsDesktop>
-            <p>
+            <Description>
               자연의 경계를 존중하며, 인간의 발전과 자연의 복원을 조화롭게
               이루어 낼 때 우리는 균형있는 공존을 할 수 있을 것입니다.사단법인
               세이브더얼스는 지속 가능한 미래를 위해 위해 움직이고, 행동하며,
               실천하여 자연과 인간의 조화로운 공존을 추구하고 더 나은 세상을
               만들어 나가도록 노력할 것입니다.
-            </p>
+            </Description>
           </IsDesktop>
         </TextWrapper>
       </Wrapper>

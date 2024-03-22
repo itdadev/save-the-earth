@@ -30,7 +30,6 @@ const CustomFullCalendar = ({ events, setBody, listRef }) => {
   useEffect(() => {
     if (calendarRef.current && isMobile) {
       calendarRef.current.getApi().changeView("listWeek");
-      console.log(calendarRef);
     } else {
       calendarRef.current.getApi().changeView("dayGridMonth");
     }
@@ -50,12 +49,21 @@ const CustomFullCalendar = ({ events, setBody, listRef }) => {
       eventContent={renderEventContent}
       initialView="dayGridMonth"
       locale="kr"
+      buttonText={{
+        today: "오늘",
+      }}
       ref={calendarRef}
       events={events}
       datesSet={function (dateInfo) {
-        const dateFrom = dayjs(dateInfo.startStr).format("YYYY-MM");
-        const dateTo = dayjs(dateInfo.startStr)
-          .add(2, "month")
+        const dateFrom =
+          dayjs(dateInfo.startStr).get("date") > 1
+            ? dayjs(dateInfo.startStr).format("YYYY-MM")
+            : dayjs(dateInfo.startStr).subtract(1, "month").format("YYYY-MM");
+
+        const dateTo = dayjs(dateInfo.endStr).format("YYYY-MM");
+
+        const dateCurrent = dayjs(dateInfo.endStr)
+          .subtract(1, "month")
           .format("YYYY-MM");
 
         setBody({
@@ -63,17 +71,15 @@ const CustomFullCalendar = ({ events, setBody, listRef }) => {
             date_from: dateFrom,
             date_to: dateTo,
             month_prev: dayjs(dateFrom).format("MM"),
-            month_current: dayjs(dateInfo.startStr).format("MM"),
+            month_current: dayjs(dateCurrent).format("MM"),
             month_next: dayjs(dateTo).format("MM"),
           },
           currentMonthEvent: {
-            date_from: dateTo,
-            date_to: dateTo,
-            month_prev: dayjs(dateInfo.startStr).add(1, "month").format("MM"),
-            month_current: dayjs(dateInfo.startStr)
-              .add(1, "month")
-              .format("MM"),
-            month_next: dayjs(dateInfo.startStr).add(1, "month").format("MM"),
+            date_from: dateCurrent,
+            date_to: dateCurrent,
+            month_prev: dayjs(dateCurrent).format("MM"),
+            month_current: dayjs(dateCurrent).format("MM"),
+            month_next: dayjs(dateCurrent).format("MM"),
           },
         });
       }}

@@ -112,7 +112,9 @@ const EnvironmentCalendar = () => {
 
         {currentMonthEvents && (
           <EventList ref={listRef}>
-            <Month>{GetMonth(currentMonthEvents?.[0]?.start)}</Month>
+            <Month>
+              {body?.currentMonthEvent.month_current.replace("0", "")}월
+            </Month>
 
             {currentMonthEvents
               ?.sort((a, b) => new Date(a.start) - new Date(b.start))

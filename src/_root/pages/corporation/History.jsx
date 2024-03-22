@@ -22,12 +22,21 @@ const Container = styled(Flex)(() => ({
   },
 }));
 
+const Block = styled(Flex)(() => ({
+  width: "100%",
+
+  [mq("desktop")]: {
+    width: "50%",
+    marginBottom: "3rem",
+  },
+}));
+
 const EachRow = styled.div(({ theme }) => ({
   borderLeft: `1px solid ${theme.color.black01}`,
   paddingLeft: "3.2rem",
+
   [mq("desktop")]: {
     paddingLeft: "6rem",
-    width: "50%",
   },
 }));
 
@@ -40,6 +49,7 @@ const Year = styled.div(({ theme }) => ({
   fontWeight: theme.fontWeight.bold,
   color: theme.color.primary02,
   fontSize: "2.2rem",
+
   [mq("desktop")]: {
     fontSize: "3.6rem",
     marginBottom: "3rem",
@@ -53,6 +63,7 @@ const Month = styled.div(({ theme }) => ({
   lineHeight: 1,
   fontWeight: theme.fontWeight.bold,
   fontSize: "2rem",
+
   ":before": {
     position: "absolute",
     content: '" "',
@@ -65,6 +76,7 @@ const Month = styled.div(({ theme }) => ({
     borderRadius: "50%",
     background: theme.color.black01,
   },
+
   [mq("desktop")]: {
     fontSize: "3rem",
     minWidth: "5rem",
@@ -78,6 +90,7 @@ const Month = styled.div(({ theme }) => ({
 
 const TitleWrapper = styled.header(() => ({
   marginBottom: "4.8rem",
+
   [mq("desktop")]: {
     marginBottom: "8rem",
   },
@@ -85,6 +98,7 @@ const TitleWrapper = styled.header(() => ({
 
 const Title = styled.header(() => ({
   fontSize: "1.6rem",
+
   [mq("desktop")]: {
     fontSize: "2.2rem",
   },
@@ -93,33 +107,6 @@ const Title = styled.header(() => ({
 const Description = styled.div(({ theme }) => ({
   fontSize: "1.4rem",
   color: theme.color.primary02,
-}));
-
-const Buttons = styled(Flex)(() => ({
-  gap: "0 1rem",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  [mq("desktop")]: {
-    gap: "0 2rem",
-  },
-}));
-
-const Button = styled.div(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  borderRadius: "6rem",
-  fontSize: "1.4rem",
-  minWidth: "10rem",
-  height: "3rem",
-  fontWeight: theme.fontWeight.bold,
-  border: `1px solid ${theme.color.black01}`,
-  [mq("desktop")]: {
-    minWidth: "20rem",
-    height: "6rem",
-    fontSize: "2.4rem",
-  },
 }));
 
 const MobileButton = styled.div(({ theme }) => ({
@@ -204,18 +191,19 @@ const History = () => {
         </TitleWrapper>
 
         <Container>
-          <EachRow>
+          <Block vertical>
             {!isDesktop && <MobileButton>오프라인</MobileButton>}
             {isDesktop && <MobileButton>오프라인</MobileButton>}
 
-            {renderHistory(offlineHistory)}
-          </EachRow>
-          <EachRow>
+            <EachRow>{renderHistory(offlineHistory)}</EachRow>
+          </Block>
+
+          <Block vertical>
             {!isDesktop && <MobileButton>온라인</MobileButton>}
             {isDesktop && <MobileButton>온라인</MobileButton>}
 
-            {renderHistory(onlineHistory)}
-          </EachRow>
+            <EachRow>{renderHistory(onlineHistory)}</EachRow>
+          </Block>
         </Container>
       </CommonContainer>
     </CommonPageContainer>

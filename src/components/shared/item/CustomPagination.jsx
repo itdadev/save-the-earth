@@ -17,15 +17,17 @@ const CustomPagination = ({ total, active, setActive }) => {
   );
 
   return (
-    <Container justify="flex-end">
-      <Pagination
-        total={total}
-        defaultCurrent={active}
-        defaultPageSize={LOAD_SIZE_4}
-        onChange={changePageHandler}
-        size="large"
-      />
-    </Container>
+    total > 0 && (
+      <Container justify="flex-end">
+        <Pagination
+          total={total}
+          defaultCurrent={active}
+          defaultPageSize={LOAD_SIZE_4}
+          onChange={changePageHandler}
+          size="large"
+        />
+      </Container>
+    )
   );
 };
 

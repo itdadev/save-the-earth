@@ -10,6 +10,7 @@ const Container = styled.div(() => ({
   flexDirection: "column",
   flexWrap: "wrap",
   gap: "2rem",
+  justifyContent: "center",
 
   [mq("desktop")]: {
     flexDirection: "row",

@@ -8,7 +8,6 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { ACTIVITY_LIST_QUERY_KEY, LOAD_SIZE_4 } from "@/constants/queryKeys";
 import { ACTIVITY_API_URL } from "@/constants/apiUrls";
-import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
 
 import {
   CommonContainer,
@@ -61,6 +60,7 @@ const LatestActivities = () => {
     },
   });
 
+  console.log(activityList);
   return (
     <CommonPageContainer>
       <CommonContainer>
@@ -90,7 +90,6 @@ const LatestActivities = () => {
                   <Flex vertical justify="space-between">
                     <CommonTitleFour>{activity.activity_title}</CommonTitleFour>
 
-                    <DangerouslyInnerHtml value={activity.activity_content} />
                     <ul>
                       <li>일시: {activity.activity_date}</li>
                       <li>장소: {activity.activity_location}</li>
