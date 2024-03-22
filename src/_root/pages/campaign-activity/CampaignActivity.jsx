@@ -118,6 +118,7 @@ const PlanNumber = styled(Flex)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   width: "2rem",
+  minWidth: "2rem",
   height: "2rem",
   borderRadius: "0.2rem",
   background: theme.color.black01,
