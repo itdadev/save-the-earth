@@ -12,7 +12,7 @@ import { TextInput } from ".";
 export const CODE_EXPIRE_TIME = 5 * 60 * 1000; // 5분
 
 export const SendButton = styled.div(({ theme, disabled }) => ({
-  background: theme.color.primary01,
+  background: disabled ? theme.color.grey05 : theme.color.primary01,
   wordBreak: "keep-all",
   whiteSpace: "nowrap",
   display: "flex",
@@ -72,6 +72,10 @@ const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
       );
     }
   };
+
+  const sendCodeHandler = useCallback(() => {
+    startTimer();
+  }, [startTimer]);
 
   return (
     <>
