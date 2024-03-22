@@ -9,6 +9,7 @@ const Container = styled(Modal)(() => ({
 
   "&>div": {
     margin: 0,
+    overflow: "scroll",
   },
 }));
 
