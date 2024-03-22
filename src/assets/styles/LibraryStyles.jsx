@@ -71,6 +71,7 @@ const style = css`
 
   .ant-modal-content {
     max-height: 80svh;
+    overflow-x: hidden !important;
   }
 
   .ant-checkbox-wrapper {

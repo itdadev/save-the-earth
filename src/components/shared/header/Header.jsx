@@ -85,6 +85,8 @@ const Header = () => {
         // 메뉴 트리 업데이트
         return updatedMenuTree;
       }
+    } else {
+      return MENU_LIST;
     }
   }, [campaignList]);
 
