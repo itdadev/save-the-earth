@@ -85,6 +85,7 @@ const Join = () => {
       phone_verified: true,
       login_type: "email",
       user_email_checked: false,
+      auth_code: "",
     },
   });
 
