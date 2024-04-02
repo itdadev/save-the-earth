@@ -28,7 +28,6 @@ const style = css`
 
   img {
     display: inline-block;
-    content: "";
     border: 0;
     outline: none;
   }

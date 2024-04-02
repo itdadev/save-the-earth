@@ -6,7 +6,6 @@ import {
   changeInputBirthFormat,
   changeInputPhoneFormat,
 } from "@/utils/Functions";
-import { log } from "@craco/craco/dist/lib/logger";
 
 export const ErrorMessage = styled.div(({ theme }) => ({
   minHeight: "2rem",
@@ -40,6 +39,8 @@ const TextInput = ({
   maxLength,
   customMessage,
   inputMode,
+  autoComplete,
+  readOnly,
 }) => {
   const inputFormatChangeHandler = useCallback(
     (e, onChange) => {
@@ -79,15 +80,18 @@ const TextInput = ({
               name={name}
               type={type}
               addonAfter={addonAfter}
-              disabled={disabled}
+              disabled={disabled || readOnly}
               onChange={e => inputFormatChangeHandler(e, field.onChange)}
               maxLength={maxLength}
+              autoComplete={autoComplete ? "one-time-code" : ""}
             />
 
             {customMessage ? (
               <SuccessMessage>{customMessage}</SuccessMessage>
             ) : (
-              <ErrorMessage>{errors[name]?.message}</ErrorMessage>
+              <ErrorMessage>
+                {errors[name]?.message || errors[`${name}_checked`]?.message}
+              </ErrorMessage>
             )}
           </Container>
         );

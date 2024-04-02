@@ -18,6 +18,8 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { CHECK_EMAIL_API_URL } from "@/constants/apiUrls";
 import { INVALID_LOGIN_INFO, SUCCESS_CODE } from "@/constants/responseResults";
+import { EMAIL_REGEX } from "@/libs/zod/zodValidation";
+import { EMAIL_FORMAT } from "@/constants/inputErrorMessage";
 
 export const EmailCheckField = ({
   control,
@@ -50,15 +52,16 @@ export const EmailCheckField = ({
       }
     },
   });
-  const validate = useCallback(async () => {
-    const result = await trigger(["user_email"]);
+  const validate = useCallback(() => {
+    const userEmail = watch("user_email");
 
-    if (result) {
-      checkEmail(watch("user_email"));
+    if (!userEmail.match(EMAIL_REGEX)) {
+      setError("user_email", { message: EMAIL_FORMAT });
+      return undefined;
     }
 
-    return undefined;
-  }, [trigger, checkEmail, watch]);
+    checkEmail(watch("user_email"));
+  }, [watch, checkEmail, setError]);
 
   return (
     <TextInput
@@ -68,6 +71,7 @@ export const EmailCheckField = ({
       maxLength={50}
       label="이메일"
       type="email"
+      inputMode="text"
       disabled={emailChecked}
       customMessage={emailChecked ? "사용 가능한 이메일입니다." : undefined}
       addonAfter={
@@ -87,6 +91,7 @@ export const EmailField = ({ control, disabled = false }) => {
       maxLength={50}
       label="이메일"
       type="email"
+      inputMode="email"
       disabled={disabled}
     />
   );
@@ -100,6 +105,7 @@ export const PasswordField = ({ control, current }) => {
       control={control}
       name="user_password"
       label={current ? "현재 비밀번호" : "비밀번호"}
+      inputMode="text"
       placeholder={current ? CURRENT_PASSWORD_PH : PASSWORD_PH}
       iconRender={visible =>
         visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -120,6 +126,7 @@ export const PasswordConfirmField = ({ control }) => {
       control={control}
       name="confirm_password"
       label="비밀번호 확인"
+      inputMode="text"
       placeholder={CONFIRM_PASSWORD_PH}
       iconRender={visible =>
         visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -140,6 +147,7 @@ export const NewPasswordField = ({ control }) => {
       control={control}
       name="new_password"
       label="새 비밀번호"
+      inputMode="text"
       placeholder={NEW_PASSWORD_PH}
       iconRender={visible =>
         visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -160,6 +168,7 @@ export const NameField = ({ control }) => {
       placeholder={NAME_PH}
       maxLength={10}
       label="이름"
+      inputMode="text"
     />
   );
 };

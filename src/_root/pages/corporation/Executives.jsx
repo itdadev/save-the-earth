@@ -61,9 +61,11 @@ const ExecutiveName = styled(Flex)(({ theme }) => ({
 const ExecutivePosition = styled.div(({ theme }) => ({
   fontWeight: theme.fontWeight.regular,
   fontSize: "1.4rem",
+  lineHeight: "2.4rem",
 
   [mq("desktop")]: {
     fontSize: "2.4rem",
+    lineHeight: "4rem",
   },
 }));
 

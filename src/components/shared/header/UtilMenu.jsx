@@ -13,7 +13,7 @@ const UtilMenuList = styled.div(() => ({
     marginRight: "1.2rem",
   },
 }));
-const UtilMenu = ({ utilMenu }) => {
+const UtilMenu = ({ utilMenu, hideHeader }) => {
   const { user } = useUserStore();
 
   const logoutUser = useLogoutUser();
@@ -24,7 +24,7 @@ const UtilMenu = ({ utilMenu }) => {
         .filter(el => !el.outerLink)
         .map(util => {
           return (
-            <Link to={util.url} key={util.id}>
+            <Link to={util.url} key={util.id} onClick={hideHeader}>
               {util.title}
             </Link>
           );

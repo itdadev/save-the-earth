@@ -22,6 +22,8 @@ import {
 
 const PHONE_REGEX = /[0-9]/g;
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/;
+export const EMAIL_REGEX =
+  "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
 
 // NOTE: 로그인
 export const zodLogin = z.object({
@@ -73,15 +75,18 @@ export const zodJoin = z
       message: PRIVACY_POLICY_REQUIRED,
     }),
     email_receive_yn: z.boolean(),
+    user_email_checked: z.boolean().refine(value => value === true, {
+      message: EMAIL_CHECK_REQUIRED,
+    }),
   })
   .refine(data => data.user_password === data.confirm_password, {
     message: PASSWORD_CONFIRM_INVALID,
     path: ["confirm_password"],
-  })
-  .refine(data => data.user_email_check === true, {
-    message: EMAIL_CHECK_REQUIRED,
-    path: ["user_email"],
   });
+// .refine(data => data.user_email_checked === true, {
+//   message: EMAIL_CHECK_REQUIRED,
+//   path: ["user_email"],
+// });
 
 // NOTE: 계정 찾기
 export const zodFindAccount = z.object({

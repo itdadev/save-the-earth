@@ -16,3 +16,6 @@ export const RESET_PASSWORD_API_URL = "/api/v1/user/password/reset";
 export const REFRESH_TOKEN_API_URL = "/api/v1/token/refresh";
 export const FIND_USER_ACCOUNT_API_URL = "/api/v1/user/account";
 export const CHECK_EMAIL_API_URL = "/api/v1/user/check-user-email";
+export const SEND_CODE_API_URL = "/api/v1/sms/send";
+export const FIND_SEND_CODE_API_URL = "/api/v1/sms/send/test";
+export const CHECK_CODE_API_URL = "/api/v1/sms/verify";

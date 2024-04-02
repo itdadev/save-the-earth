@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { image } from "@/theme";
 import styled from "@emotion/styled";
-import { Flex } from "antd";
+import { Flex, Image } from "antd";
 
 import { HEADER_MENU_Z_INDEX } from "@/constants/zIndex";
 import { ProjectList } from "@/components/shared/item";
@@ -48,7 +48,7 @@ const MainMenuItem = styled(Link)(() => ({
 const SubMenuWrapper = styled(Flex)(({ open }) => ({
   position: "absolute",
   width: "100%",
-  right: 0,
+  left: "0",
   top: open ? "14.6rem" : "-100vh",
   zIndex: -1,
   paddingLeft: "10rem",
@@ -89,7 +89,7 @@ const SubMenuList = styled.nav(({ theme }) => ({
 const ProjectWrapper = styled(Flex)(() => ({
   width: "36rem",
   padding: "0 2.4rem",
-  background: "rgba(247, 216, 226, 0.8)",
+  // background: "rgba(247, 216, 226, 0.8)",
 }));
 
 const WebHeader = ({ menuTree, utilMenu }) => {
@@ -170,7 +170,7 @@ const WebHeader = ({ menuTree, utilMenu }) => {
         })}
 
         <ProjectWrapper align="center" justify="space-between">
-          <ProjectList />
+          <ProjectList hide />
         </ProjectWrapper>
       </SubMenuWrapper>
     </Container>

@@ -54,7 +54,7 @@ export const NameBirthContainer = styled(Flex)(() => ({
 const Join = () => {
   const userData = useLocation().state?.userData;
 
-  console.log(userData, "user data");
+  // console.log(userData, "user data");
 
   const loginType = useParams().loginType;
   const navigate = useNavigate();
@@ -75,6 +75,8 @@ const Join = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(zodJoin),
+    mode: "onSubmit",
+    reValidateMode: "onBlur",
     defaultValues: {
       user_email: "",
       user_password: loginType !== "email" ? "qweqwe123" : "",
@@ -86,6 +88,10 @@ const Join = () => {
       login_type: "email",
       user_email_checked: false,
       auth_code: "",
+      sns_key: "",
+      use_term: false,
+      privacy_policy: false,
+      email_receive_yn: false,
     },
   });
 
@@ -135,7 +141,6 @@ const Join = () => {
       return await axios.post(USER_API_URL, { ...data, login_type: loginType });
     },
     onSuccess: data => {
-      console.log(data);
       if (data?.data.code === SUCCESS_CODE) {
         navigate("/login", {
           state: { joinSuccess: true },
@@ -162,7 +167,13 @@ const Join = () => {
       setValue("user_email", userData?.email);
       setValue("user_name", userData?.name);
       setValue("user_birth", userData?.birthyear);
-      setValue("user_phone", userData?.phone_number.replace("+82 ", "0"));
+      setValue("user_phone", userData?.phone_number?.replace("+82 ", "0"));
+      setValue("login_type", loginType);
+      setValue("user_email_checked", false);
+      if (loginType !== "email") {
+        setValue("user_password", "qweqwe123");
+        setValue("confirm_password", "qweqwe123");
+      }
     }
   }, []);
 
@@ -183,12 +194,12 @@ const Join = () => {
         login_type: loginType,
         user_password: loginType !== "email" ? "" : data.user_password,
         confirm_password: loginType !== "email" ? "" : data.confirm_password,
-        sns_key: loginType === "email" ? "" : userData?.id,
+        sns_key: loginType === "email" ? "" : String(userData?.id),
       };
 
       joinUser(modifiedData);
     },
-    [joinUser, loginType, userData?.id],
+    [loginType, userData, joinUser],
   );
 
   return (

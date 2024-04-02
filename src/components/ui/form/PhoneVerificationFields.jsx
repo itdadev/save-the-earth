@@ -3,11 +3,26 @@ import { Flex } from "antd";
 import Countdown, { zeroPad } from "react-countdown";
 import styled from "@emotion/styled";
 
+import axios from "axios";
 import { ErrorMessage } from "@/components/ui/form/TextInput";
 import { VERIFICATION_CODE_PH } from "@/constants/placeholderTexts";
 import { PhoneField } from "@/components/ui/form/Fields";
 
 import { TextInput } from ".";
+import { useMutation } from "@tanstack/react-query";
+import {
+  DIFFERENT_PHONE_INVALID,
+  PHONE_ALREADY_EXISTS,
+  PHONE_DOESNT_EXISTS,
+  PHONE_REQUIRED,
+  VERIFICATION_CODE_INVALID,
+} from "@/constants/inputErrorMessage";
+import {
+  CHECK_CODE_API_URL,
+  FIND_SEND_CODE_API_URL,
+  SEND_CODE_API_URL,
+} from "@/constants/apiUrls";
+import { replaceAllDash } from "@/utils/Functions";
 
 export const CODE_EXPIRE_TIME = 5 * 60 * 1000; // 5분
 
@@ -22,9 +37,20 @@ export const SendButton = styled.div(({ theme, disabled }) => ({
   height: "4rem",
   borderRadius: "0.8rem",
   padding: "0 2rem",
+  color: theme.color.black02,
 }));
 
-const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
+const PhoneVerificationFields = ({
+  watch,
+  control,
+  errors,
+  setValue,
+  findAccount,
+  resetField,
+  setError,
+  initialPhoneValue,
+  clearErrors,
+}) => {
   const timerRef = useRef(null);
 
   const [targetDate, setTargetDate] = useState(
@@ -49,6 +75,83 @@ const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
   const stopTimer = useCallback(() => {
     timerRef.current.stop();
   }, []);
+
+  const { mutate: sendCodeFunction, isLoading: sendLoading } = useMutation({
+    mutationFn: async data => {
+      if (codeSent) {
+        // CASE: 휴대폰 번호 다시 입력
+        return "resend";
+      }
+
+      if (data === "") {
+        // 전화 번호 입력 안하고 인증 코드 전송 눌렀을 때
+        return PHONE_REQUIRED;
+      }
+
+      if (initialPhoneValue && data === initialPhoneValue) {
+        // 회원 정보 수정시 기존의 유저 번호와 동일한 번호를 입력했을 때
+        return DIFFERENT_PHONE_INVALID;
+      }
+
+      return await axios.post(
+        findAccount ? FIND_SEND_CODE_API_URL : SEND_CODE_API_URL,
+        {
+          user_phone: replaceAllDash(data),
+        },
+      );
+    },
+    onSuccess: data => {
+      if (data === "resend") {
+        setCodeSent(true);
+        setCodeActive(false);
+
+        resetTimer();
+        startTimer();
+        resetField("auth_code");
+        return;
+      }
+
+      if (typeof data === "string" && !!data && data !== "resend") {
+        setError("phone", { message: data });
+        return;
+      }
+
+      clearErrors("phone");
+
+      startTimer();
+      resetTimer();
+      setCodeSent(true);
+    },
+    onError: error => {
+      if (error.response.status === 400) {
+        setError("phone", {
+          message: findAccount ? PHONE_DOESNT_EXISTS : PHONE_ALREADY_EXISTS,
+        });
+        stopTimer();
+      }
+    },
+  });
+
+  const { mutate: verifyCodeFunction, isLoading: verifyLoading } = useMutation({
+    mutationFn: async data => {
+      return await axios.post(CHECK_CODE_API_URL, { ...data });
+    },
+    onSuccess: () => {
+      resetTimer();
+      setCodeVerified(true);
+      stopTimer();
+      clearErrors("auth_code");
+      setValue("phone_verified", true, { shouldValidate: true });
+    },
+    onError: error => {
+      if (error?.response.status === 400) {
+        setError("auth_code", { message: VERIFICATION_CODE_INVALID });
+        setCodeVerified(false);
+        // stopTimer();
+      }
+    },
+  });
+
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === "auth_code" && value.auth_code !== "") {
@@ -73,6 +176,26 @@ const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
     }
   };
 
+  const handleSendCode = useCallback(() => {
+    sendCodeFunction(watch("user_phone"));
+  }, [sendCodeFunction, watch]);
+
+  const handleResendCode = useCallback(() => {
+    setCodeActive(false);
+    setCodeExpired(false);
+    resetTimer();
+    stopTimer();
+    resetField("auth_code");
+    handleSendCode();
+  }, [resetTimer, resetField, handleSendCode, stopTimer]);
+
+  const handleVerifyCode = useCallback(() => {
+    verifyCodeFunction({
+      user_phone: replaceAllDash(watch("user_phone")),
+      auth_code: watch("auth_code"),
+    });
+  }, [verifyCodeFunction, watch]);
+
   const sendCodeHandler = useCallback(() => {
     startTimer();
   }, [startTimer]);
@@ -89,9 +212,21 @@ const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
               type="primary"
               size="large"
               disabled={codeVerified}
-              onClick={() => startTimer()}
+              onClick={() => {
+                if (codeSent) {
+                  setCodeSent(false);
+                  resetTimer();
+                  stopTimer();
+                } else {
+                  sendCodeFunction(watch("user_phone"));
+                }
+              }}
             >
-              코드 전송
+              {codeSent && !codeVerified
+                ? "휴대폰 번호 다시 입력"
+                : codeVerified
+                  ? "인증 완료"
+                  : "코드전송"}
             </SendButton>
           }
         />
@@ -107,6 +242,8 @@ const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
           bordered={false}
           customborder="true"
           readOnly={codeVerified || !codeSent}
+          inputMode="numeric"
+          autoComplete="one-time-code"
           labelafter={
             <ErrorMessage
               custom={{
@@ -131,8 +268,13 @@ const PhoneVerificationFields = ({ watch, control, errors, setValue }) => {
             <SendButton
               type="button"
               disabled={(!codeActive && !codeExpired) || codeVerified}
+              onClick={codeExpired ? handleResendCode : handleVerifyCode}
             >
-              인증번호 확인
+              {codeExpired
+                ? "재전송"
+                : codeVerified
+                  ? "인증 완료"
+                  : "인증번호 확인"}
             </SendButton>
           }
         />

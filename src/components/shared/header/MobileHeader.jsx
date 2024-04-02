@@ -10,7 +10,9 @@ import {
 } from "@/constants/zIndex";
 import { UtilMenu } from "@/components/shared/header/index";
 
-const Container = styled.div(() => ({}));
+const Container = styled.div(() => ({
+  overflowY: "scroll",
+}));
 
 const ButtonWrapper = styled(Flex)(() => ({
   position: "fixed",
@@ -157,7 +159,11 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
             </button>
           </Flex>
 
-          <UtilMenu utilMenu={utilMenu} />
+          <UtilMenu
+            utilMenu={utilMenu}
+            setMenu={setMenuOpen}
+            hideHeader={hideHeaderHandler}
+          />
         </UtilMenuWrapper>
 
         <MainMenuWrapper>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "@emotion/styled";
 
 import { useMediaQuery } from "react-responsive";
@@ -12,7 +12,7 @@ const Container = styled.div(() => ({}));
 
 const VideoWrapper = styled.video(() => ({
   width: "100%",
-  height: "52rem",
+  height: "64rem",
   marginTop: "4.8rem",
   objectFit: "cover",
 

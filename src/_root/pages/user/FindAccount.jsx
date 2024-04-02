@@ -37,8 +37,9 @@ const FindAccount = () => {
   } = useForm({
     resolver: zodResolver(zodFindAccount),
     defaultValues: {
+      user_phone: "",
       auth_code: "",
-      phone_verified: true,
+      phone_verified: false,
     },
   });
 
@@ -84,6 +85,7 @@ const FindAccount = () => {
             setValue={setValue}
             watch={watch}
             errors={errors}
+            findAccount
           />
 
           <SubmitButtonWrapper justify="center">

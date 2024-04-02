@@ -214,7 +214,7 @@ const Login = () => {
           const modifiedData = {
             login_type: "kakao",
             user_email: res?.data.kakao_account.email,
-            sns_key: res?.data.id,
+            sns_key: String(res?.data.id),
           };
 
           setSnsData(prev => ({

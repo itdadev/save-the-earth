@@ -50,7 +50,7 @@ const Dollar = styled.div(({ theme, big }) => ({
   },
 }));
 
-const ProjectList = ({ big }) => {
+const ProjectList = ({ big, hide }) => {
   const projectList = [
     {
       id: 1,
@@ -84,21 +84,25 @@ const ProjectList = ({ big }) => {
             key={project.id}
             big={big ? "true" : "false"}
           >
-            <ImageFigure>
-              <img src={project.src} alt={project.title} />
-            </ImageFigure>
+            {!hide && (
+              <>
+                <ImageFigure>
+                  <img src={project.src} alt={project.title} />
+                </ImageFigure>
 
-            <Text
-              vertical
-              align="center"
-              justify="center"
-              gap="0.4rem 0"
-              big={big ? "true" : "false"}
-            >
-              {project.title}
+                <Text
+                  vertical
+                  align="center"
+                  justify="center"
+                  gap="0.4rem 0"
+                  big={big ? "true" : "false"}
+                >
+                  {/*{project.title}*/}
 
-              <Dollar big={big ? "true" : "false"}>{project.dollar}</Dollar>
-            </Text>
+                  <Dollar big={big ? "true" : "false"}>{project.title}</Dollar>
+                </Text>
+              </>
+            )}
           </Item>
         );
       })}
