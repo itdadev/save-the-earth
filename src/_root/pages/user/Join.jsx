@@ -15,7 +15,6 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import {
   BirthField,
   EmailCheckField,
-  EmailField,
   NameField,
   PasswordConfirmField,
   PasswordField,
@@ -53,8 +52,6 @@ export const NameBirthContainer = styled(Flex)(() => ({
 
 const Join = () => {
   const userData = useLocation().state?.userData;
-
-  // console.log(userData, "user data");
 
   const loginType = useParams().loginType;
   const navigate = useNavigate();

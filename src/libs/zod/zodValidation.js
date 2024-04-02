@@ -1,8 +1,6 @@
 import { z } from "zod";
 import {
-  BIRTH_REQUIRED,
   CHANGE_PASSWORD_INVALID,
-  CURRENT_PASSWORD_INVALID,
   EMAIL_CHECK_REQUIRED,
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
@@ -22,8 +20,14 @@ import {
 
 const PHONE_REGEX = /[0-9]/g;
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/;
+<<<<<<< HEAD
 export const EMAIL_REGEX =
   "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+=======
+const BIRTH_FORMAT_REGEX = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD 형식의 정규식
+const BIRTH_VALID_REGEX =
+  /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/; // YYYY-MM-DD 각 자리에 유효한 생년월일인지 확인
+>>>>>>> origin
 
 // NOTE: 로그인
 export const zodLogin = z.object({
@@ -58,7 +62,16 @@ export const zodJoin = z
         message: PASSWORD_FORMAT,
       }),
     user_name: z.string().min(1, { message: NAME_REQUIRED }),
-    user_birth: z.string().min(1, { message: BIRTH_REQUIRED }),
+    user_birth: z.optional(
+      z
+        .string()
+        .regex(BIRTH_FORMAT_REGEX, {
+          message: "연월일 총 8자리를 입력해주세요.",
+        })
+        .regex(BIRTH_VALID_REGEX, {
+          message: "유효한 생년월일을 입력해주세요.",
+        }),
+    ),
     user_phone: z
       .string()
       .min(1, { message: PHONE_REQUIRED })
@@ -74,10 +87,14 @@ export const zodJoin = z
     privacy_policy: z.boolean().refine(value => value === true, {
       message: PRIVACY_POLICY_REQUIRED,
     }),
+<<<<<<< HEAD
     email_receive_yn: z.boolean(),
     user_email_checked: z.boolean().refine(value => value === true, {
       message: EMAIL_CHECK_REQUIRED,
     }),
+=======
+    email_receive_yn: z.boolean().optional(),
+>>>>>>> origin
   })
   .refine(data => data.user_password === data.confirm_password, {
     message: PASSWORD_CONFIRM_INVALID,
@@ -124,7 +141,7 @@ export const zodChangePassword = z
 // NOTE: 계정 변경하기 - 마이페이지
 export const zodChangeAccount = z.object({
   user_name: z.string().min(1, { message: NAME_REQUIRED }),
-  user_birth: z.string().min(1, { message: BIRTH_REQUIRED }),
+  user_birth: z.string(),
   user_phone: z
     .string()
     .min(1, { message: PHONE_REQUIRED })

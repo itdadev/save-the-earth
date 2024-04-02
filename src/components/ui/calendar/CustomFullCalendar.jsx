@@ -27,13 +27,13 @@ const CustomFullCalendar = ({ events, setBody, listRef }) => {
     });
   }, [listRef?.current]);
 
-  useEffect(() => {
-    if (calendarRef.current && isMobile) {
-      calendarRef.current.getApi().changeView("listWeek");
-    } else {
-      calendarRef.current.getApi().changeView("dayGridMonth");
-    }
-  }, [isMobile]);
+  // useEffect(() => {
+  //   if (calendarRef.current && isMobile) {
+  //     calendarRef.current.getApi().changeView("listWeek");
+  //   } else {
+  //     calendarRef.current.getApi().changeView("dayGridMonth");
+  //   }
+  // }, [isMobile]);
 
   const renderEventContent = eventInfo => {
     return (

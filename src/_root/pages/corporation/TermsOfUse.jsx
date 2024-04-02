@@ -14,11 +14,12 @@ export const TermsContainer = styled.header(({ theme }) => ({
   maxWidth: "90rem",
   margin: "8rem auto 0",
   fontFamily: theme.fontFamily.secondary,
-  fontWeight: theme.fontWeight.bold,
+  fontWeight: theme.fontWeight.regular,
 
   ".ant-collapse-header": {
     borderBottom: `1px solid ${theme.color.black01}`,
     borderRadius: "0 !important",
+    fontWeight: theme.fontWeight.bold,
   },
 }));
 

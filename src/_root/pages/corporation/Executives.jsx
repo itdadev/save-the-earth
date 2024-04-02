@@ -94,8 +94,6 @@ const Executives = () => {
     },
   });
 
-  console.log(executiveList);
-
   return (
     <CommonPageContainer>
       <CommonContainer>

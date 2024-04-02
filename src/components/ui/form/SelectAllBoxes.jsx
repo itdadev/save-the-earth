@@ -16,10 +16,8 @@ const SelectAllCheckBoxes = ({
   setValue,
   watch,
   errors,
-  handleTermModal,
 }) => {
   const [allChecked, setAllChecked] = useState(false);
-
   const onCheckAllChange = e => {
     if (e.target.checked) {
       options.forEach(element => {
