@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Flex } from "antd";
 
@@ -51,6 +51,7 @@ const DonateButton = styled.button(({ theme }) => ({
   zIndex: DONATE_BUTTON_Z_INDEX,
 }));
 const Footer = () => {
+  const navigate = useNavigate();
   const footerNavArr = [
     { id: 1, title: "개인정보 보호정책", url: "/privacy-policy" },
     { id: 2, title: "고유번호증", url: "/" },
@@ -60,7 +61,7 @@ const Footer = () => {
   return (
     <Container vertical align="center" justify="center" gap="1.6rem 0">
       <IsDefault>
-        <DonateButton type="button">
+        <DonateButton type="button" onClick={() => navigate("/donate")}>
           <img
             src={image.heartIcon.default}
             alt="하트 아이콘"

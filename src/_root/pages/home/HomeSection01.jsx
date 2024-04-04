@@ -8,7 +8,7 @@ import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled(Flex)(() => ({
   flexDirection: "column",
-  padding: "9rem 0",
+  padding: "0 0 9rem 0",
   alignItems: "center",
   justifyContent: "center",
   textAlign: "center",

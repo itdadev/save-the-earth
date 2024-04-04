@@ -98,7 +98,7 @@ const Notice = styled.div(({ theme }) => ({
   marginTop: "2rem",
 
   display: "flex",
-  alignItems: "center",
+  paddingTop: " 1.2rem",
   justifyContent: "center",
 
   [mq("desktop")]: {

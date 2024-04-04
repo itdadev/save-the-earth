@@ -14,6 +14,7 @@ const Container = styled.div(() => ({
 
   [mq("desktop")]: {
     flexDirection: "row",
+    justifyContent: "space-between",
     gap: "8rem",
   },
 }));

@@ -96,6 +96,14 @@ const DirectionTag = styled.div(({ theme }) => ({
   },
 }));
 
+const DescBox = styled.div(() => ({
+  display: "flex",
+  flexWrap: "wrap",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+}));
+
 const DeclarationEstablishment = () => {
   const directionArr = [
     {
@@ -106,7 +114,8 @@ const DeclarationEstablishment = () => {
     {
       id: 2,
       title: "둘째",
-      description: "환경보전과 탄소중립에 관한 교육 세미나 및 연구사업",
+      description: "환경보전과 탄소중립에 관한",
+      description2: "교육세미나 및 연구사업",
     },
     {
       id: 3,
@@ -121,7 +130,8 @@ const DeclarationEstablishment = () => {
     {
       id: 5,
       title: "다섯째",
-      description: "기타 본회의 목적을 달성하는데 필요한 사업",
+      description: "기타 본회의 목적을 달성하는데",
+      description2: "필요한 사업",
     },
   ];
 
@@ -161,7 +171,7 @@ const DeclarationEstablishment = () => {
             되었습니다.
           </p>
           <p>
-            우리는 지구환경의 위기에 대해 모르지 않는다. 그럼에도 직구를 위해,
+            우리는 지구환경의 위기에 대해 모르지 않습니다. 그럼에도 지구를 위해,
             우리의 미래를 위해 무엇을 해야 할지 물었을 때, 명확하게 대답하기
             쉽지 않습니다. 어쩌면 지구와의 공존을 위해 함께 해 달라는
             ‘세이브더얼스’가 거창해 보일지도 모르지만 서두르지 않으려 합니다.
@@ -184,8 +194,8 @@ const DeclarationEstablishment = () => {
           <CommonTitleTwo align="left">사업목적 및 방향성</CommonTitleTwo>
 
           <CommonDescriptionOne>
-            ‘세이브더얼스’는 자연환경보전 탄소중립 실천을 위한 지속적인 환경보
-            호 활동과 캠페인 시민운동 및 환경교육을 실행하며 시민 환경 의식을
+            ‘세이브더얼스’는 자연환경보전 탄소중립 실천을 위한 지속적인 환경보호
+            활동과 캠페인 시민운동 및 환경교육을 실행하며 시민 환경 의식을
             증진시키고 자연과 인간의 균형적 공존을 이루어 후손에게 맑고 깨끗한
             환경을 물려주기 위하여 다음과 같은 사업방향을 설정하였습니다.
           </CommonDescriptionOne>
@@ -196,9 +206,15 @@ const DeclarationEstablishment = () => {
                 <DirectionItem key={direction.id}>
                   <DirectionTag>{direction.title}</DirectionTag>
 
-                  <CommonDescriptionOne>
-                    {direction.description}
-                  </CommonDescriptionOne>
+                  <DescBox>
+                    <CommonDescriptionOne>
+                      {direction.description}
+                    </CommonDescriptionOne>
+
+                    <CommonDescriptionOne>
+                      {direction.description2}
+                    </CommonDescriptionOne>
+                  </DescBox>
                 </DirectionItem>
               );
             })}

@@ -167,8 +167,8 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
         </UtilMenuWrapper>
 
         <MainMenuWrapper>
-          <LinkButton>
-            <DonateButton>후원하기</DonateButton>
+          <LinkButton onClick={hideHeaderHandler}>
+            <DonateButton to="/donate">후원하기</DonateButton>
           </LinkButton>
 
           {menuTree?.map((menu, idx) => {
