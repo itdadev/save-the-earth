@@ -51,7 +51,11 @@ const MainBanner = () => {
   });
 
   return (
-    <Container>
+    <Container
+      onContextMenu={e => {
+        e.preventDefault();
+      }}
+    >
       <div className="player-wrapper" style={{ position: "relative" }}>
         {homeBanner?.file_url !== undefined && (
           <VideoWrapper
