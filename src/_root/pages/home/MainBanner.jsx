@@ -22,6 +22,21 @@ const VideoWrapper = styled(ReactPlayer)(() => ({
   },
 }));
 
+const PipWrapper = styled.div(() => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+
+  width: "100%",
+  height: "100%",
+
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 1,
+  [mq("desktop")]: {},
+}));
+
 const MainBanner = () => {
   const isDesktop = useMediaQuery({ minWidth: 1240 });
 
@@ -37,7 +52,7 @@ const MainBanner = () => {
 
   return (
     <Container>
-      <div className="player-wrapper">
+      <div className="player-wrapper" style={{ position: "relative" }}>
         {homeBanner?.file_url !== undefined && (
           <VideoWrapper
             url={homeBanner?.file_url}
@@ -56,22 +71,9 @@ const MainBanner = () => {
         )}
 
         {pipActive && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              backgroundColor: "rgba(0,0,0,0.5)",
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 10000,
-            }}
-          >
+          <PipWrapper>
             <p style={{ color: "white" }}>PIP Mode Active</p>
-          </div>
+          </PipWrapper>
         )}
       </div>
     </Container>
