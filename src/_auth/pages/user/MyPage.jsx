@@ -17,6 +17,11 @@ import {
   changePhoneFormat,
   translateLoginType,
 } from "@/utils/Functions";
+import { useQuery } from "@tanstack/react-query";
+import { USER_DATA_QUERY_KEY } from "@/constants/queryKeys";
+import Interceptor from "@/libs/axios/AxiosInterceptor";
+import { USER_API_URL } from "@/constants/apiUrls";
+import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
 
 const Wrapper = styled.div(() => ({
   maxWidth: "50rem",
@@ -43,6 +48,7 @@ const MyPage = () => {
 
   const [api, contextHolder] = notification.useNotification();
 
+  console.log(user);
   const mypageInfo = [
     {
       id: 1,
@@ -104,23 +110,23 @@ const MyPage = () => {
             })}
           </div>
 
+          {/* NOTE: 로그인 타입이 이메일일 경우만 정보 수정 가능 */}
           <SubmitButtonWrapper align="center" justify="center" gap="1rem">
-            <PrimaryButton
-              bgColor={color.grey05}
-              clickEvent={() => editNavigate("/change-my-password")}
-            >
-              비밀번호 변경
-            </PrimaryButton>
-
-            {/* NOTE: 로그인 타입이 이메일일 경우만 정보 수정 가능 */}
             {user?.login_type === "email" && (
               <PrimaryButton
                 bgColor={color.grey05}
-                clickEvent={() => editNavigate("/change-account")}
+                clickEvent={() => editNavigate("/change-my-password")}
               >
-                정보 수정
+                비밀번호 변경
               </PrimaryButton>
             )}
+
+            <PrimaryButton
+              bgColor={color.grey05}
+              clickEvent={() => editNavigate("/change-account")}
+            >
+              정보 수정
+            </PrimaryButton>
           </SubmitButtonWrapper>
         </Wrapper>
       </CommonContainer>

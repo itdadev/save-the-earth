@@ -120,7 +120,7 @@ const LatestActivityDetail = () => {
     },
     {
       id: 3,
-      title: "참여대상",
+      title: "참여인원",
       description: (
         <div>
           <p>{detailData?.activity_participants}</p>

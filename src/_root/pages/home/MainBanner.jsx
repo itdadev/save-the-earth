@@ -9,13 +9,18 @@ import axios from "axios";
 import { mq } from "@/libs/react-responsive/mediaQuery";
 import ReactPlayer from "react-player/lazy";
 
-const Container = styled.div(() => ({}));
+const Container = styled.div(() => ({
+  video: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover !important",
+    inset: 0,
+    position: "absolute",
+  },
+}));
 
 const VideoWrapper = styled(ReactPlayer)(() => ({
-  width: "100%",
-  height: "64rem",
   marginTop: "4.8rem",
-  objectFit: "cover",
 
   [mq("desktop")]: {
     marginTop: "14.6rem",
@@ -26,14 +31,21 @@ const PipWrapper = styled.div(() => ({
   position: "absolute",
   top: 0,
   left: 0,
-
   width: "100%",
-  height: "100%",
 
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   zIndex: 1,
+
+  video: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    inset: 0,
+    position: "absolute",
+  },
+
   [mq("desktop")]: {},
 }));
 
@@ -62,7 +74,7 @@ const MainBanner = () => {
             url={homeBanner?.file_url}
             loop
             width="100%"
-            height="100%"
+            height={isDesktop ? "1275px" : "640px"}
             muted={true}
             playing={true}
             light={false}

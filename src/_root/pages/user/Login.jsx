@@ -78,13 +78,7 @@ const Login = () => {
 
   const { setLoggedIn } = useUserLoggedIn();
 
-  const {
-    control,
-    setFocus,
-    setError,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, setFocus, setError, handleSubmit } = useForm({
     resolver: zodResolver(zodLogin),
     defaultValues: {
       user_email: sessionStorage?.getItem("stored_email")
@@ -211,6 +205,8 @@ const Login = () => {
 
         if (res.status === 200) {
           // 카카오 이메일로 로그인 요청
+          console.log(res.data);
+
           const modifiedData = {
             login_type: "kakao",
             user_email: res?.data.kakao_account.email,

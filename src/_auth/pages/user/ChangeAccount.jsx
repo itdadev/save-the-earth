@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,9 +29,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Interceptor from "@/libs/axios/AxiosInterceptor";
 
 const ChangeAccount = () => {
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const [phoneChanged, setPhoneChanged] = useState(false);
 
   const {
     control,
@@ -52,6 +54,7 @@ const ChangeAccount = () => {
       phone_verified: true,
       auth_code: "",
       email_receive_yn: false,
+      phone_changed: phoneChanged,
     },
   });
   useEffect(() => {
@@ -86,7 +89,7 @@ const ChangeAccount = () => {
 
       if (data?.data.code === SUCCESS_CODE) {
         navigate("/mypage", { state: { changeAccountSuccess: true } });
-        queryClient.removeQueries(USER_DATA_QUERY_KEY);
+        queryClient.invalidateQueries(USER_DATA_QUERY_KEY);
       }
     },
     onError: error => {
@@ -94,11 +97,32 @@ const ChangeAccount = () => {
     },
   });
 
+  console.log(phoneChanged);
+
+  useEffect(() => {
+    const subscription = watch(value => {
+      if (value.user_phone !== changePhoneFormat(user.user_phone)) {
+        setPhoneChanged(true);
+      } else {
+        setPhoneChanged(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [setValue, user, watch]);
+
   const onSubmit = useCallback(
     data => {
+      setUser({
+        ...data,
+        email_receive_yn: data?.email_receive_yn ? 1 : 0,
+        user_email: user?.user_email,
+        login_type: user?.login_type,
+      });
+
       updateUserAccount(data);
     },
-    [updateUserAccount],
+    [setUser, updateUserAccount, user?.user_email, user?.login_type],
   );
 
   return (

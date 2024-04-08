@@ -27,7 +27,7 @@ import { zodJoin } from "@/libs/zod/zodValidation";
 import { useMutation } from "@tanstack/react-query";
 import { USER_API_URL } from "@/constants/apiUrls";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { replaceAllDash } from "@/utils/Functions";
+import { changeBirthFormat, replaceAllDash } from "@/utils/Functions";
 import {
   DUPLICATE_USER_EMAIL,
   DUPLICATE_USER_PHONE,
@@ -163,8 +163,18 @@ const Join = () => {
     if (userData) {
       setValue("user_email", userData?.email);
       setValue("user_name", userData?.name);
-      setValue("user_birth", userData?.birthyear);
-      setValue("user_phone", userData?.phone_number?.replace("+82 ", "0"));
+
+      if (loginType === "kakao") {
+        setValue(
+          "user_birth",
+          changeBirthFormat(userData?.birthyear + userData?.birthday),
+        );
+        setValue("user_phone", userData?.phone_number?.replace("+82 ", "0"));
+      } else {
+        setValue("user_birth", "");
+        setValue("user_phone", "");
+      }
+
       setValue("login_type", loginType);
       setValue("user_email_checked", false);
       if (loginType !== "email") {
@@ -196,7 +206,7 @@ const Join = () => {
 
       joinUser(modifiedData);
     },
-    [loginType, userData, joinUser],
+    [loginType, joinUser, userData?.id],
   );
 
   return (

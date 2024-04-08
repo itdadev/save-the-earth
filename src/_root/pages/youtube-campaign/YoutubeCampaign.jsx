@@ -59,6 +59,8 @@ const YoutubeItem = styled.iframe(() => ({
 const YoutubeCampaign = () => {
   const [active, setActive] = useState(1);
 
+  console.log(active);
+
   const { data: youtubeList } = useQuery({
     queryKey: [YOUTUBE_LIST_QUERY_KEY, active],
     queryFn: async () =>

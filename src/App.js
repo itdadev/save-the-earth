@@ -55,12 +55,26 @@ import { USER_API_URL } from "@/constants/apiUrls";
 import { useEffect } from "react";
 import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
 import useUserStore from "@/store/useUserStore";
+import AuthAfterLayout from "@/_auth/AuthAfterLayout";
+import { useUserLoggedIn } from "@/store/useLoginStore";
 
 const Container = styled.div(() => ({
   minHeight: "100svh",
 }));
 
 function App() {
+  const isAuthenticated = localStorage.getItem("tokens");
+  const { setLoggedIn } = useUserLoggedIn();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log("ddd");
+      setLoggedIn();
+    }
+
+    console.log("ee");
+  }, []);
+
   return (
     <ThemeProvider theme={AppTheme}>
       <ConfigProvider theme={AntdTheme}>
@@ -74,7 +88,6 @@ function App() {
               {/* NOTE: 로그인없이 접근할 수 있는 페이지 */}
               <Route element={<RootLayout />}>
                 {/* 로그인 + 회원가입 관련 */}
-                <Route path="/login" element={<Login />} />
                 <Route path="/join/:loginType" element={<Join />} />
                 <Route path="/find-account" element={<FindAccount />} />
                 <Route
@@ -120,6 +133,11 @@ function App() {
                   path="/environment-calendar"
                   element={<EnvironmentCalendar />}
                 />
+              </Route>
+
+              {/* NOTE: 로그인한 후에는 접근할 수 없는 페이지 */}
+              <Route element={<AuthAfterLayout />}>
+                <Route path="/login" element={<Login />} />
               </Route>
 
               {/* NOTE: 로그인해야 접근할 수 있는 페이지 */}

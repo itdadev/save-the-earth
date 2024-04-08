@@ -7,7 +7,8 @@ import {
   changeInputPhoneFormat,
 } from "@/utils/Functions";
 
-export const ErrorMessage = styled.div(({ theme }) => ({
+export const ErrorMessage = styled.div(({ theme, custom }) => ({
+  ...custom,
   minHeight: "2rem",
   fontSize: "1.2rem",
   paddingTop: "0.2rem",

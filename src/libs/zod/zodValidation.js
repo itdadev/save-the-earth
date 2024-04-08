@@ -136,20 +136,30 @@ export const zodChangePassword = z
   });
 
 // NOTE: 계정 변경하기 - 마이페이지
-export const zodChangeAccount = z.object({
-  user_name: z.string().min(1, { message: NAME_REQUIRED }),
-  user_birth: z.string(),
-  user_phone: z
-    .string()
-    .min(1, { message: PHONE_REQUIRED })
-    .regex(PHONE_REGEX, { message: PHONE_FORMAT }),
-  auth_code: z.string().min(1, { message: VERIFICATION_CODE_REQUIRED }),
-  phone_verified: z.boolean().refine(value => value === true, {
-    message: VERIFICATION_CODE_INCOMPLETE,
-  }),
-  user_seq: z.optional(z.string()),
-  email_receive_yn: z.boolean(),
-});
+export const zodChangeAccount = z
+  .object({
+    user_name: z.string().min(1, { message: NAME_REQUIRED }),
+    user_birth: z.string(),
+    user_phone: z
+      .string()
+      .min(1, { message: PHONE_REQUIRED })
+      .regex(PHONE_REGEX, { message: PHONE_FORMAT }),
+    phone_verified: z.boolean().refine(value => value === true, {
+      message: VERIFICATION_CODE_INCOMPLETE,
+    }),
+    user_seq: z.optional(z.string()),
+    email_receive_yn: z.boolean(),
+    phone_changed: z.optional(z.boolean()),
+  })
+  .superRefine(({ phone_changed, phone_verified }, ctx) => {
+    if (phone_changed && !phone_verified) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: VERIFICATION_CODE_INCOMPLETE,
+        path: ["auth_code"],
+      });
+    }
+  });
 
 // NOTE: 비밀번호 변경하기 - 마이페이지
 export const zodChangeMyPassword = z

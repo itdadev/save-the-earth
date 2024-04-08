@@ -20,7 +20,7 @@ import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
 import { useUserLoggedIn } from "@/store/useLoginStore";
 
 const Header = () => {
-  const { user, setUser } = useUserStore();
+  const { user, setUser, clearUser } = useUserStore();
   const { loggedIn } = useUserLoggedIn();
 
   const { data: userData, isSuccess } = useQuery({
@@ -34,6 +34,8 @@ const Header = () => {
   useEffect(() => {
     if (isSuccess || loggedIn) {
       setUser(userData);
+    } else {
+      clearUser();
     }
   }, [isSuccess, loggedIn]);
 
@@ -54,6 +56,8 @@ const Header = () => {
     },
     { id: 3, title: "국세청", outerLink: "https://www.nts.go.kr/" },
   ];
+
+  console.log(loggedIn);
 
   const menuList = useMemo(() => {
     if (campaignList) {
