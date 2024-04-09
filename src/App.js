@@ -29,10 +29,9 @@ import { Footer } from "@/components/shared/footer";
 import { Donate } from "@/_root/pages/donate";
 import { YoutubeCampaign } from "@/_root/pages/youtube-campaign";
 import {
-  CleanShore,
-  Environment,
-  Forest,
+  CampaignDetail,
   LatestActivities,
+  LatestActivityDetail,
 } from "@/_root/pages/campaign-activity";
 import { BalancedCoexistence, TakeAction } from "@/_root/pages/core-value";
 import {
@@ -46,17 +45,10 @@ import {
   TermsOfUse,
 } from "@/_root/pages/corporation";
 import { EnvironmentCalendar } from "@/_root/pages/environment-calendar";
-import LatestActivityDetail from "./_root/pages/campaign-activity/detail/LatestActivityDetail";
-import CampaignActivity from "@/_root/pages/campaign-activity/CampaignActivity";
-import { useQuery } from "@tanstack/react-query";
-import { USER_DATA_QUERY_KEY } from "@/constants/queryKeys";
-import Interceptor from "@/libs/axios/AxiosInterceptor";
-import { USER_API_URL } from "@/constants/apiUrls";
 import { useEffect } from "react";
-import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
-import useUserStore from "@/store/useUserStore";
 import AuthAfterLayout from "@/_auth/AuthAfterLayout";
 import { useUserLoggedIn } from "@/store/useLoginStore";
+import { OurMember, OurMemberDetail } from "@/_root/pages/our-member";
 
 const Container = styled.div(() => ({
   minHeight: "100svh",
@@ -68,11 +60,8 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log("ddd");
       setLoggedIn();
     }
-
-    console.log("ee");
   }, []);
 
   return (
@@ -98,13 +87,12 @@ function App() {
 
                 <Route path="/donate" element={<Donate />} />
                 <Route path="/youtube-campaign" element={<YoutubeCampaign />} />
+
                 <Route
                   path="/campaign/:campaignId"
-                  element={<CampaignActivity />}
+                  element={<CampaignDetail />}
                 />
-                <Route path="/clean-shore" element={<CleanShore />} />
-                <Route path="/forest" element={<Forest />} />
-                <Route path="/environment" element={<Environment />} />
+
                 <Route
                   path="/latest-activities"
                   element={<LatestActivities />}
@@ -113,6 +101,13 @@ function App() {
                   path="/latest-activities/:activityId"
                   element={<LatestActivityDetail />}
                 />
+
+                <Route path="/our-member" element={<OurMember />} />
+                <Route
+                  path="/our-member/:memberId"
+                  element={<OurMemberDetail />}
+                />
+
                 <Route
                   path="/balanced-coexistence"
                   element={<BalancedCoexistence />}

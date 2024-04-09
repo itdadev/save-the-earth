@@ -31,6 +31,7 @@ const PageTitle = styled(CommonTitleTwo)(() => ({
 const ActivityDescription = styled(CommonDescriptionOne)(({ theme }) => ({
   marginTop: "3.2rem",
   fontWeight: theme.fontWeight.regular,
+  whiteSpace: "break-spaces",
 
   [mq("desktop")]: {
     marginTop: "5.4rem",
@@ -135,21 +136,17 @@ const PlanNumber = styled(Flex)(({ theme }) => ({
   },
 }));
 
-const CampaignActivity = () => {
+const CampaignDetail = () => {
   const [activityArr, setActivityArr] = useState([]);
   const { campaignId } = useParams();
 
-  const { data: campaignDetail, refetch } = useQuery({
-    queryKey: [CAMPAIGN_DETAIL_QUERY_KEY],
+  const { data: campaignDetail } = useQuery({
+    queryKey: [CAMPAIGN_DETAIL_QUERY_KEY, campaignId],
     queryFn: async () => await axios.get(`${CAMPAIGN_API_URL}/${campaignId}`),
     select: data => {
       return data?.data?.data;
     },
   });
-
-  useEffect(() => {
-    refetch();
-  }, [campaignId]);
 
   useEffect(() => {
     setActivityArr([
@@ -240,4 +237,4 @@ const CampaignActivity = () => {
   );
 };
 
-export default CampaignActivity;
+export default CampaignDetail;

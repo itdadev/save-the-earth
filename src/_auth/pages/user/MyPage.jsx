@@ -48,7 +48,6 @@ const MyPage = () => {
 
   const [api, contextHolder] = notification.useNotification();
 
-  console.log(user);
   const mypageInfo = [
     {
       id: 1,

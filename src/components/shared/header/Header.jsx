@@ -57,8 +57,6 @@ const Header = () => {
     { id: 3, title: "국세청", outerLink: "https://www.nts.go.kr/" },
   ];
 
-  console.log(loggedIn);
-
   const menuList = useMemo(() => {
     if (campaignList) {
       const campaignMenuList = campaignList?.map(campaignMenu => {

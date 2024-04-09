@@ -15,7 +15,6 @@ import { BirthField, EmailField, NameField } from "@/components/ui/form/Fields";
 import { PhoneVerificationFields, SingleCheckBox } from "@/components/ui/form";
 import { USER_API_URL } from "@/constants/apiUrls";
 import { SUCCESS_CODE } from "@/constants/responseResults";
-import { USER_DATA_QUERY_KEY } from "@/constants/queryKeys";
 import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
@@ -25,13 +24,12 @@ import {
   changePhoneFormat,
   replaceAllDash,
 } from "@/utils/Functions";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import Interceptor from "@/libs/axios/AxiosInterceptor";
 
 const ChangeAccount = () => {
   const { user, setUser } = useUserStore();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const [phoneChanged, setPhoneChanged] = useState(false);
 
@@ -51,12 +49,13 @@ const ChangeAccount = () => {
       user_birth: "",
       user_name: "",
       user_phone: "",
-      phone_verified: true,
+      phone_verified: false,
       auth_code: "",
       email_receive_yn: false,
       phone_changed: phoneChanged,
     },
   });
+
   useEffect(() => {
     if (user) {
       setValue("user_email", user.user_email);
@@ -89,15 +88,12 @@ const ChangeAccount = () => {
 
       if (data?.data.code === SUCCESS_CODE) {
         navigate("/mypage", { state: { changeAccountSuccess: true } });
-        queryClient.invalidateQueries(USER_DATA_QUERY_KEY);
       }
     },
     onError: error => {
       console.log(error);
     },
   });
-
-  console.log(phoneChanged);
 
   useEffect(() => {
     const subscription = watch(value => {

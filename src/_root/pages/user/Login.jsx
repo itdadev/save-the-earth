@@ -205,8 +205,6 @@ const Login = () => {
 
         if (res.status === 200) {
           // 카카오 이메일로 로그인 요청
-          console.log(res.data);
-
           const modifiedData = {
             login_type: "kakao",
             user_email: res?.data.kakao_account.email,

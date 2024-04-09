@@ -1,4 +1,3 @@
 export { default as LatestActivities } from "./LatestActivities";
-export { default as CleanShore } from "./CleanShore";
-export { default as Forest } from "./Forest";
-export { default as Environment } from "./Environment";
+export { default as LatestActivityDetail } from "./LatestActivityDetail";
+export { default as CampaignDetail } from "./CampaignDetail";

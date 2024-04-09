@@ -66,8 +66,6 @@ const FindAccount = () => {
   });
 
   const onSubmit = useCallback(data => {
-    console.log(data);
-
     findAccount(data);
   }, []);
 

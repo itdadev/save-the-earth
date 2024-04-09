@@ -21,6 +21,7 @@ const Container = styled.div(() => ({
 
 const VideoWrapper = styled(ReactPlayer)(() => ({
   marginTop: "4.8rem",
+  aspectRatio: "2.5 / 1",
 
   [mq("desktop")]: {
     marginTop: "14.6rem",
@@ -74,7 +75,7 @@ const MainBanner = () => {
             url={homeBanner?.file_url}
             loop
             width="100%"
-            height={isDesktop ? "1275px" : "640px"}
+            height="100%"
             muted={true}
             playing={true}
             light={false}

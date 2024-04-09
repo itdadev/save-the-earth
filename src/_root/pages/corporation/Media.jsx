@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Flex } from "antd";
+import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 import { color, image } from "@/theme";
@@ -10,29 +11,29 @@ import {
 } from "@/components/ui/container";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { PrimaryButton } from "@/components/ui/buttons";
-import { mq } from "@/libs/react-responsive/mediaQuery";
 import { ImageFigure } from "@/components/ui/image";
 import { CustomPagination } from "@/components/shared/item";
 import { LOAD_SIZE_4, MEDIA_LIST_QUERY_KEY } from "@/constants/queryKeys";
 import { MEDIA_LIST_API } from "@/constants/apiUrls";
-import axios from "axios";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
-const MediaList = styled(Flex)(() => ({
+export const MediaList = styled(Flex)(() => ({
   gap: "3.4rem 4.4rem",
   marginTop: "1.5rem",
   flexWrap: "wrap",
 }));
 
-const MediaItem = styled.div(() => ({
+export const MediaItem = styled.div(({ clickable }) => ({
   width: "100%",
   borderRadius: "1rem",
   overflow: "hidden",
+  cursor: clickable ? "pointer" : "default",
 
   [mq("desktop")]: {
     width: "calc(50% - 2.2rem)",
   },
 }));
-const Texts = styled(Flex)(({ theme, order }) => ({
+export const MediaTexts = styled(Flex)(({ theme, order }) => ({
   background: order === 0 ? theme.color.primary01 : theme.color.secondary01,
   height: "27.4rem",
   padding: "3rem 1.6rem",
@@ -46,7 +47,7 @@ const Texts = styled(Flex)(({ theme, order }) => ({
   },
 }));
 
-const Title = styled.header(({ theme }) => ({
+export const MediaTitle = styled.header(({ theme }) => ({
   fontSize: "3rem",
   fontWeight: theme.fontWeight.bold,
 }));
@@ -85,14 +86,16 @@ const Media = () => {
                   <img src={media.image_url} alt={media.media_title} />
                 </ImageFigure>
 
-                <Texts
+                <MediaTexts
                   order={idx % 2}
                   vertical
                   gap="2rem 0"
                   align="center"
                   justify="center"
                 >
-                  <Title className="ellipsis-1">{media.media_title}</Title>
+                  <MediaTitle className="ellipsis-1">
+                    {media.media_title}
+                  </MediaTitle>
 
                   <div className="ellipsis-3">{media.media_content}</div>
 
@@ -119,7 +122,7 @@ const Media = () => {
                       )}
                     </Flex>
                   </PrimaryButton>
-                </Texts>
+                </MediaTexts>
               </MediaItem>
             );
           })}
