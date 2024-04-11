@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { image } from "@/theme";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { ACTIVITY_DETAIL_QUERY_KEY } from "@/constants/queryKeys";
 import { ACTIVITY_API_URL } from "@/constants/apiUrls";
@@ -90,7 +90,7 @@ const ActivityInfoTitle = styled.header(({ theme }) => ({
 }));
 
 const LatestActivityDetail = () => {
-  const activityId = useParams().activityId;
+  const { activityId } = useParams();
 
   const { data: activityDetail } = useQuery({
     queryKey: [ACTIVITY_DETAIL_QUERY_KEY, activityId],

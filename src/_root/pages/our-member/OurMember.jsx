@@ -17,12 +17,9 @@ import {
   MediaTitle,
   MediaList,
 } from "@/_root/pages/corporation/Media";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
+import { changeUrl } from "@/utils/Functions";
 
-const StyledLink = styled(Link)(() => ({
-  width: "100%",
-}));
 const OurMember = () => {
   const navigate = useNavigate();
   const [active, setActive] = useState(1);
@@ -37,8 +34,8 @@ const OurMember = () => {
   });
 
   const goToDetail = useCallback(
-    id => {
-      navigate(`/our-member/${id}`);
+    (id, name) => {
+      navigate(`/our-member/${changeUrl(name)}/${id}`, { state: { id: id } });
     },
     [navigate],
   );
@@ -59,7 +56,9 @@ const OurMember = () => {
             return (
               <MediaItem
                 key={member.member_seq}
-                onClick={() => goToDetail(member.member_seq)}
+                onClick={() =>
+                  goToDetail(member.member_seq, member.member_title)
+                }
                 clickable
               >
                 <ImageFigure ratio="4 / 3" height="30rem">

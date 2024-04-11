@@ -1,7 +1,5 @@
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 export function DividePerPage(array, itemsPerPage) {
   const length = array.length;
@@ -103,4 +101,33 @@ export function translateLoginType(type) {
   if (type === "google") {
     return "구글";
   }
+}
+
+export function changeUrl(url) {
+  if (url) {
+    return url
+      .replaceAll(" ", "-")
+      .replaceAll("/", "-")
+      .replaceAll("&", "-")
+      .replaceAll("'", "-")
+      .replaceAll(".", "-")
+      .replaceAll(",", "-")
+      .replaceAll(":", "-")
+      .replaceAll(";", "-")
+      .replaceAll("<", "-")
+      .replaceAll(">", "-")
+      .replaceAll("=", "-")
+      .replaceAll("?", "-")
+      .replaceAll("@", "-")
+      .replaceAll("^", "-")
+      .replaceAll("{", "-")
+      .replaceAll("}", "-")
+      .replaceAll("[", "-")
+      .replaceAll("]", "-")
+      .replaceAll("₩", "-")
+      .replaceAll("|", "-")
+      .replaceAll("~", "-")
+      .replaceAll("$", "-");
+  }
+  return "";
 }

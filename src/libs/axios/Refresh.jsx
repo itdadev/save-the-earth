@@ -6,6 +6,7 @@ import { REFRESH_TOKEN_API_URL } from "@/constants/apiUrls";
 import { useQueryClient } from "@tanstack/react-query";
 import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
 import { USER_DATA_QUERY_KEY } from "@/constants/queryKeys";
+import { JWT_TOKEN_EXPIRED } from "@/constants/responseResults";
 
 export function LogoutUser() {
   const queryClient = useQueryClient();
@@ -29,12 +30,14 @@ const useRefreshToken = async config => {
   // 토큰이 만료되었고, refreshToken 이 저장되어 있을 때
   if (dayjs.unix(expireAt.exp).diff(dayjs()) < 1) {
     try {
-      const res = await axios.post(REFRESH_TOKEN_API_URL, {
-        refresh_token: refreshToken,
+      const res = await axios.get(REFRESH_TOKEN_API_URL, {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
       });
 
       if (res.status === 400) {
-        console.log("refresh token is not stored");
+        alert("refresh token is not stored");
 
         LogoutUser();
 
@@ -51,11 +54,12 @@ const useRefreshToken = async config => {
         }),
       );
     } catch (error) {
-      console.log(error);
+      if (error.response.data.code === JWT_TOKEN_EXPIRED) {
+        alert("logout");
 
-      localStorage.removeItem(LOCAL_STORAGE_TOKENS);
-
-      window.location.reload();
+        localStorage.removeItem(LOCAL_STORAGE_TOKENS);
+        window.location.reload();
+      }
     }
 
     // 토큰 갱신 서버통신

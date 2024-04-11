@@ -18,7 +18,7 @@ const ButtonWrapper = styled(Flex)(() => ({
   position: "fixed",
   top: 0,
   width: "100%",
-  maxWidth: "100svw",
+  maxWidth: "100vw",
   height: "4.8rem",
   padding: "0 1.6rem",
   zIndex: HEADER_SUB_MENU_Z_INDEX,
@@ -30,6 +30,7 @@ const MenuAllWrapper = styled.div(({ open }) => ({
   position: "fixed",
   width: "100%",
   height: "100svh",
+  minHeight: "100svh",
   maxHeight: "100svh",
   overflowY: "auto",
   zIndex: HEADER_MENU_Z_INDEX,
@@ -41,16 +42,6 @@ const MenuAllWrapper = styled.div(({ open }) => ({
 const UtilMenuWrapper = styled(Flex)(({ theme }) => ({
   background: theme.color.primary01,
   padding: "2rem 3rem",
-}));
-
-const UtilMenuList = styled.div(() => ({
-  fontSize: "1.6rem",
-
-  "& a:not(:last-of-type)": {
-    borderRight: "1px solid black",
-    paddingRight: "1.2rem",
-    marginRight: "1.2rem",
-  },
 }));
 
 const DonateButton = styled(Link)(({ theme }) => ({
@@ -87,6 +78,12 @@ const Button = styled.button(() => ({
   height: "2.2rem",
 }));
 
+const StyledLink = styled(Link)(() => ({
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+}));
+
 const MobileHeader = ({ menuTree, utilMenu }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState({});
@@ -115,7 +112,7 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
       document.body.style.cssText = `
       overflow-y: hidden;
       width: 100%;
-      max-height: 100svh`;
+      max-height: 100vh`;
     }
 
     return () => {
@@ -133,13 +130,13 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
           height={30}
         />
 
-        <Link to="/">
+        <StyledLink to="/">
           <img
             src={image.headerLogo.default}
             alt="Save the Earth"
             width={180}
           />
-        </Link>
+        </StyledLink>
 
         <Button type="button" onClick={showHeaderHandler}>
           <img

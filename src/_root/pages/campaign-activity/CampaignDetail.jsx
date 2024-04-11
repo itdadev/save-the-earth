@@ -138,7 +138,7 @@ const PlanNumber = styled(Flex)(({ theme }) => ({
 
 const CampaignDetail = () => {
   const [activityArr, setActivityArr] = useState([]);
-  const campaignId = useLocation().state?.id;
+  const { campaignId } = useParams();
 
   const { data: campaignDetail } = useQuery({
     queryKey: [CAMPAIGN_DETAIL_QUERY_KEY, campaignId],

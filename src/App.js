@@ -64,6 +64,15 @@ function App() {
     }
   }, []);
 
+  function setScreenSize() {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+
+  useEffect(() => {
+    setScreenSize();
+  });
+
   return (
     <ThemeProvider theme={AppTheme}>
       <ConfigProvider theme={AntdTheme}>
@@ -89,7 +98,7 @@ function App() {
                 <Route path="/youtube-campaign" element={<YoutubeCampaign />} />
 
                 <Route
-                  path="/campaign/:campaignName"
+                  path="/campaign/:campaignName/:campaignId"
                   element={<CampaignDetail />}
                 />
 
@@ -98,32 +107,57 @@ function App() {
                   element={<LatestActivities />}
                 />
                 <Route
-                  path="/latest-activities/:activityId"
+                  path="/latest-activities/:activityName/:activityId"
                   element={<LatestActivityDetail />}
                 />
 
                 <Route path="/our-member" element={<OurMember />} />
+
                 <Route
-                  path="/our-member/:memberId"
+                  path="/our-member/:memberName/:memberId"
                   element={<OurMemberDetail />}
                 />
 
                 <Route
-                  path="/balanced-coexistence"
+                  path="/core-values/균형있는-공존"
                   element={<BalancedCoexistence />}
                 />
-                <Route path="/take-action" element={<TakeAction />} />
                 <Route
-                  path="/declaration-establishment"
+                  path="/core-values/작은-행동-실천"
+                  element={<TakeAction />}
+                />
+                <Route
+                  path="/incorporated-association/설립선언문"
                   element={<DeclarationEstablishment />}
                 />
-                <Route path="/executives" element={<Executives />} />
-                <Route path="/history" element={<History />} />
-                <Route path="/media" element={<Media />} />
-                <Route path="/terms-of-use" element={<TermsOfUse />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/account-report" element={<AccountReport />} />
-                <Route path="/about-company" element={<AboutCompany />} />
+                <Route
+                  path="/incorporated-association/임원진"
+                  element={<Executives />}
+                />
+                <Route
+                  path="/incorporated-association/연혁-및-주요활동"
+                  element={<History />}
+                />
+                <Route
+                  path="/incorporated-association/미디어"
+                  element={<Media />}
+                />
+                <Route
+                  path="/incorporated-association/이용약관"
+                  element={<TermsOfUse />}
+                />
+                <Route
+                  path="/incorporated-association/개인정보취급방침"
+                  element={<PrivacyPolicy />}
+                />
+                <Route
+                  path="/incorporated-association/정관-회계보고서"
+                  element={<AccountReport />}
+                />
+                <Route
+                  path="/incorporated-association/회사소개"
+                  element={<AboutCompany />}
+                />
                 <Route
                   path="/environment-calendar"
                   element={<EnvironmentCalendar />}

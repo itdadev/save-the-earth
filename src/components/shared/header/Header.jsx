@@ -17,6 +17,7 @@ import { MENU_LIST } from "@/constants/staticInformation";
 import { useUserStore } from "@/store/useUserStore";
 import Interceptor from "@/libs/axios/AxiosInterceptor";
 import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
+import { changeUrl } from "@/utils/Functions";
 
 const Header = () => {
   const { user, setUser, clearUser } = useUserStore();
@@ -36,6 +37,8 @@ const Header = () => {
       clearUser();
     }
   }, [isSuccess]);
+
+  console.log(userData);
 
   const { data: campaignList } = useQuery({
     queryKey: [CAMPAIGN_LIST_QUERY_KEY],
@@ -61,7 +64,7 @@ const Header = () => {
         return {
           id: campaignMenu?.campaign_seq,
           title: campaignMenu?.campaign_menu_title,
-          url: `/campaign/${campaignMenu?.campaign_menu_title.replaceAll(" ", "-")}`,
+          url: `/campaign/${changeUrl(campaignMenu?.campaign_menu_title)}/${campaignMenu?.campaign_seq}`,
         };
       });
       // 캠페인 & 활동 항목 찾기

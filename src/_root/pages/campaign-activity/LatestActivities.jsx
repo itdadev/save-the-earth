@@ -18,6 +18,7 @@ import { Flex } from "antd";
 import { CommonTitleFour } from "@/components/ui/fonts/Fonts";
 import { ImageFigure } from "@/components/ui/image";
 import { Link } from "react-router-dom";
+import { changeUrl } from "@/utils/Functions";
 
 const Container = styled.div(() => ({
   marginTop: "8rem",
@@ -76,8 +77,9 @@ const LatestActivities = () => {
             {activityList?.data?.map(activity => {
               return (
                 <ActivityItem
-                  key={`${activity.title}${activity.activity_seq}`}
-                  to={`/latest-activities/${activity.activity_seq}`}
+                  key={`${activity.activity_title}${activity.activity_seq}`}
+                  to={`/latest-activities/${changeUrl(activity.activity_title)}/${activity.activity_seq}`}
+                  state={{ id: activity.activity_seq }}
                 >
                   <ImageFigure width={isDesktop ? "25.2rem" : "15rem"}>
                     <img

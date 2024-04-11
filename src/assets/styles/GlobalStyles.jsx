@@ -4,6 +4,10 @@ import { color } from "@/theme";
 const style = css`
   @import url("https://webfontworld.github.io/gmarket/GmarketSans.css");
 
+  :root {
+    --vh: 100%;
+  }
+
   html {
     font-size: 62.5%;
     box-sizing: border-box;

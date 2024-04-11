@@ -70,7 +70,7 @@ const style = css`
   }
 
   .ant-modal-content {
-    max-height: 80svh;
+    max-height: 80vh;
     overflow-x: hidden !important;
   }
 

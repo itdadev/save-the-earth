@@ -72,8 +72,8 @@ export const MENU_LIST = [
     id: 3,
     title: "핵심가치",
     subMenus: [
-      { id: 1, title: "균형있는 공존", url: "/balanced-coexistence" },
-      { id: 2, title: "작은 행동 실천", url: "/take-action" },
+      { id: 1, title: "균형있는 공존", url: "/core-values/균형있는-공존" },
+      { id: 2, title: "작은 행동 실천", url: "/core-values/작은-행동-실천" },
     ],
   },
   {
@@ -85,14 +85,30 @@ export const MENU_LIST = [
     id: 5,
     title: "사단법인 소개",
     subMenus: [
-      { id: 1, title: "설립선언문", url: "/declaration-establishment" },
-      { id: 2, title: "임원진", url: "/executives" },
-      { id: 3, title: "연혁 및 주요활동", url: "/history" },
-      { id: 4, title: "미디어", url: "/media" },
-      { id: 5, title: "이용약관", url: "/terms-of-use" },
-      { id: 6, title: "개인정보취급방침", url: "/privacy-policy" },
-      { id: 7, title: "정관/회계보고서", url: "/account-report" },
-      { id: 8, title: "회사소개", url: "/about-company" },
+      {
+        id: 1,
+        title: "설립선언문",
+        url: "/incorporated-association/설립선언문",
+      },
+      { id: 2, title: "임원진", url: "/incorporated-association/임원진" },
+      {
+        id: 3,
+        title: "연혁 및 주요활동",
+        url: "/incorporated-association/연혁-및-주요활동",
+      },
+      { id: 4, title: "미디어", url: "/incorporated-association/미디어" },
+      { id: 5, title: "이용약관", url: "/incorporated-association/이용약관" },
+      {
+        id: 6,
+        title: "개인정보취급방침",
+        url: "/incorporated-association/개인정보취급방침",
+      },
+      {
+        id: 7,
+        title: "정관/회계보고서",
+        url: "/incorporated-association/정관-회계보고서",
+      },
+      { id: 8, title: "회사소개", url: "/incorporated-association/회사소개" },
     ],
   },
 ];

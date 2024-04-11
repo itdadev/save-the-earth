@@ -2,16 +2,21 @@ import React, { useCallback, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import Slider from "react-slick";
 
-import { image } from "@/theme";
 import { CommonContainer } from "@/components/ui/container";
 import { Flex } from "antd";
 import { IsDefault, IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { ImageFigure } from "@/components/ui/image";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { CAMPAIGN_LIST_QUERY_KEY } from "@/constants/queryKeys";
+import {
+  ACTIVITY_LIST_QUERY_KEY,
+  CAMPAIGN_LIST_QUERY_KEY,
+  LOAD_SIZE_4,
+} from "@/constants/queryKeys";
 import axios from "axios";
-import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
+import { ACTIVITY_API_URL, CAMPAIGN_API_URL } from "@/constants/apiUrls";
+import { changeUrl } from "@/utils/Functions";
+import { log } from "@craco/craco/dist/lib/logger";
 
 const CampaignWrapper = styled.div(() => ({
   position: "relative",
@@ -57,6 +62,7 @@ const CampaignItem = styled.div(() => ({
   overflow: "hidden",
   maxWidth: "36rem",
   minHeight: "40rem",
+  cursor: "pointer",
 }));
 
 const CampaignTexts = styled.div(({ theme }) => ({
@@ -98,25 +104,29 @@ const Dot = styled.button(({ on }) => ({
 const DotList = ({ goToSlide, campaignArr, currentIdx }) => {
   return (
     <DotWrapper align="center">
-      {campaignArr.map((item, idx) => {
+      {campaignArr?.map((item, idx) => {
         return (
           <Dot
             onClick={() => goToSlide(idx)}
-            key={item.id}
+            key={item.campaign_seq}
             on={currentIdx === idx ? "true" : "false"}
           />
         );
       })}
+
+      <Dot
+        onClick={() => goToSlide(campaignArr?.length)}
+        on={currentIdx === campaignArr?.length ? "true" : "false"}
+      />
     </DotWrapper>
   );
 };
 const HomeSection02 = () => {
   const navigate = useNavigate();
+  const dotRef = useRef(null);
 
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [dragging, setDragging] = useState(false);
-
-  const dotRef = useRef(null);
+  const [dragging, setDragging] = useState(true);
 
   const handleBeforeChange = useCallback(() => {
     setDragging(true);
@@ -134,51 +144,21 @@ const HomeSection02 = () => {
     },
   });
 
+  const { data: activityList } = useQuery({
+    queryKey: [ACTIVITY_LIST_QUERY_KEY],
+    queryFn: async () =>
+      await axios.get(`${ACTIVITY_API_URL}?limit=${LOAD_SIZE_4}`),
+    select: data => {
+      return data?.data;
+    },
+  });
+
   const onClickCard = useCallback(
-    (e, path) => {
-      if (dragging) {
-        e.stopPropagation();
-        return;
-      }
-
-      navigate(path);
+    (e, path, state) => {
+      navigate(path, { state: { id: state } });
     },
-    [dragging, navigate],
+    [navigate],
   );
-
-  const campaignArr = [
-    {
-      id: 1,
-      title: "깨끗한 연안 만들기",
-      description:
-        "‘깨끗한 연안 만들기 그리고, 공존’은 해양 및 연안 환경을 보호하고 해양 쓰레기 문제에 대응하는데 핵심적인 ",
-      src: image.homeCampaign01,
-      linkTo: "/clean-shore",
-    },
-    {
-      id: 2,
-      title: "숲과 환경",
-      description:
-        "숲과 환경 그리고 둘레길 정화’는 자연 환경보전 활동과 환경 교육을 결합하여 참석자들은 숲 생태계의 중요성",
-      src: image.homeCampaign02,
-      linkTo: "/forest",
-    },
-    {
-      id: 3,
-      title: "환경 보존",
-      description:
-        "세이브더얼스 ‘환경보존 ; 불필요한 물건 바꿔쓰기’는 소비와 환경 부담을 줄이고, 친환경적인 생활 습관을 촉진",
-      src: image.homeCampaign03,
-      linkTo: "/environment",
-    },
-    {
-      id: 4,
-      title: "지난 활동",
-      description: "세이브더얼스의 지난 활동을 확인해보세요.",
-      src: image.homeCampaign01,
-      linkTo: "/latest-activities",
-    },
-  ];
 
   const goToSlide = index => {
     if (dotRef?.current) {
@@ -197,10 +177,12 @@ const HomeSection02 = () => {
     arrows: false,
     autoplay: true,
     autoplaySpeed: 5000,
+    touchThreshold: 5000,
     centerMode: false,
-    draggable: false,
-    beforeChange: handleBeforeChange,
-    afterChange: handleAfterChange,
+    draggable: dragging,
+    onTouchStart: () => console.log("start"),
+    onTouchEnd: () => console.log("end"),
+    pauseOnHover: dragging,
     responsive: [
       {
         breakpoint: 1240,
@@ -232,7 +214,7 @@ const HomeSection02 = () => {
           <IsDesktop>
             <DotList
               goToSlide={goToSlide}
-              campaignArr={campaignArr}
+              campaignArr={campaignList}
               currentIdx={currentIdx}
             />
           </IsDesktop>
@@ -244,31 +226,56 @@ const HomeSection02 = () => {
             ref={dotRef}
             afterChange={idx => setCurrentIdx(idx)}
           >
-            {campaignArr.map(item => {
+            {campaignList?.map(item => {
               return (
                 <CampaignItem
-                  key={item.id}
-                  onClick={e => onClickCard(e, item.linkTo)}
+                  key={item.campaign_seq}
+                  onClick={e =>
+                    onClickCard(
+                      e,
+                      `/campaign/${changeUrl(item.campaign_menu_title)}/${item.campaign_seq}`,
+                      item.campaign_seq,
+                    )
+                  }
                 >
                   <ImageFigure ratio="3 / 2">
-                    <img src={item.src} alt={item.title} />
+                    <img src={item.image_url} alt={item.campaign_menu_title} />
                   </ImageFigure>
 
                   <CampaignTexts>
-                    <CampaignTitle>{item.title}</CampaignTitle>
+                    <CampaignTitle>{item.campaign_menu_title}</CampaignTitle>
 
-                    <p>{item.description}</p>
+                    <p className="ellipsis-3">{item.campaign_content}</p>
                   </CampaignTexts>
                 </CampaignItem>
               );
             })}
+
+            <CampaignItem>
+              <Link to="/latest-activities">
+                <ImageFigure ratio="3 / 2">
+                  <img
+                    src={activityList?.data?.[0].image_url}
+                    alt="지난 활동"
+                  />
+                </ImageFigure>
+
+                <CampaignTexts>
+                  <CampaignTitle>지난 활동</CampaignTitle>
+
+                  <p className="ellipsis-3">
+                    세이브더얼스의 지난 활동을 확인해보세요.
+                  </p>
+                </CampaignTexts>
+              </Link>
+            </CampaignItem>
           </Slider>
         </CampaignWrapper>
 
         <IsDefault>
           <DotList
             goToSlide={goToSlide}
-            campaignArr={campaignArr}
+            campaignArr={campaignList}
             currentIdx={currentIdx}
           />
         </IsDefault>
