@@ -55,7 +55,7 @@ const MyPage = () => {
       data: user?.user_name,
     },
     { id: 3, title: "이메일", data: user?.user_email },
-    { id: 4, title: "휴대폰 번호", data: changePhoneFormat(user?.user_phone) },
+    { id: 4, title: "핸드폰 번호", data: changePhoneFormat(user?.user_phone) },
     { id: 5, title: "생년월일", data: changeBirthFormat(user?.user_birth) },
     {
       id: 6,

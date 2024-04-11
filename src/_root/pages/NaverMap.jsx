@@ -5,7 +5,7 @@ const NaverMap = () => {
     const lotteworld = new window.naver.maps.LatLng(37.6629643, 126.9520536);
 
     const contentString = [
-      '<div class="iw_inner" style="padding: 1.6rem; font-size: 1.4rem">',
+      '<div class="iw_inner" style="padding: 1.6rem; font-size: 1.4rem;">',
       "   <h3>세이브더얼스</h3>",
       "   <p>경기도 고양시 덕양구 북한산로 424-7<br>",
       "       (우편번호 : 10582)<br>",

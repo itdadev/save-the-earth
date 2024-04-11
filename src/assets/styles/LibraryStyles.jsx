@@ -50,13 +50,13 @@ const style = css`
   }
 
   .ant-input-lg {
-    padding: 1rem 1.1rem 0.7rem !important;
+    padding: 1rem 1.1rem 0.8rem !important;
   }
 
   .ant-input-lg,
   .ant-input-affix-wrapper-lg {
     border-radius: 8px !important;
-    line-height: 0.8;
+    line-height: 1.4;
   }
 
   .ant-modal-body {

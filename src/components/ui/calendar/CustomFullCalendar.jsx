@@ -36,7 +36,7 @@ const CustomFullCalendar = ({ events, setBody, listRef }) => {
 
   const renderEventContent = eventInfo => {
     return (
-      <DateItemWrapper onClick={() => scrollIntoList(0)}>
+      <DateItemWrapper onClick={eventInfo => scrollIntoList(eventInfo)}>
         <DateItem status="error" text={eventInfo.event.title} />
       </DateItemWrapper>
     );
@@ -66,12 +66,19 @@ const CustomFullCalendar = ({ events, setBody, listRef }) => {
           .format("YYYY-MM");
 
         setBody({
+          // calendarEvent: {
+          //   date_from: dateFrom,
+          //   date_to: dateTo,
+          //   month_prev: dayjs(dateFrom).format("MM"),
+          //   month_current: dayjs(dateCurrent).format("MM"),
+          //   month_next: dayjs(dateTo).format("MM"),
+          // },
           calendarEvent: {
-            date_from: dateFrom,
-            date_to: dateTo,
-            month_prev: dayjs(dateFrom).format("MM"),
+            date_from: dateCurrent,
+            date_to: dateCurrent,
+            month_prev: dayjs(dateCurrent).format("MM"),
             month_current: dayjs(dateCurrent).format("MM"),
-            month_next: dayjs(dateTo).format("MM"),
+            month_next: dayjs(dateCurrent).format("MM"),
           },
           currentMonthEvent: {
             date_from: dateCurrent,

@@ -28,15 +28,7 @@ import { useMutation } from "@tanstack/react-query";
 import { USER_API_URL } from "@/constants/apiUrls";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { changeBirthFormat, replaceAllDash } from "@/utils/Functions";
-import {
-  DUPLICATE_USER_EMAIL,
-  DUPLICATE_USER_PHONE,
-  SUCCESS_CODE,
-} from "@/constants/responseResults";
-import {
-  EMAIL_ALREADY_EXISTS,
-  PHONE_ALREADY_EXISTS,
-} from "@/constants/inputErrorMessage";
+import { SUCCESS_CODE } from "@/constants/responseResults";
 
 const TermButton = styled.button(({ theme }) => ({
   color: theme.color.grey01,
@@ -71,7 +63,6 @@ const Join = () => {
     clearErrors,
     resetField,
     setValue,
-    setFocus,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(zodJoin),

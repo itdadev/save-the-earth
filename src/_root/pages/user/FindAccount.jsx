@@ -83,6 +83,7 @@ const FindAccount = () => {
             setValue={setValue}
             watch={watch}
             errors={errors}
+            findAccount
           />
 
           <SubmitButtonWrapper justify="center">

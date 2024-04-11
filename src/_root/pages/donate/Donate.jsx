@@ -36,6 +36,7 @@ const AccountList = styled.ul(() => ({
 }));
 
 const AccountItem = styled.ul(({ theme }) => ({
+  display: "flex",
   padding: "1.5rem",
   fontSize: "1.6rem",
   borderBottom: `1px solid ${theme.color.grey04}`,
@@ -48,6 +49,12 @@ const AccountItem = styled.ul(({ theme }) => ({
     padding: "1rem 8rem",
     fontSize: "2.4rem",
   },
+}));
+
+const AccountTitle = styled.header(() => ({
+  width: "10rem",
+  letterSpacing: "0.2rem",
+  marginRight: "0.4rem",
 }));
 
 const Donate = () => {
@@ -79,7 +86,9 @@ const Donate = () => {
             {accountInfoArr.map(info => {
               return (
                 <AccountItem key={info.title}>
-                  {info.title} : {info.content}
+                  <AccountTitle>{info.title}</AccountTitle>
+
+                  <p>: {info.content}</p>
                 </AccountItem>
               );
             })}

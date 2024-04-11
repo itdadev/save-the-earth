@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Divider, Flex } from "antd";
 import { useForm } from "react-hook-form";
@@ -18,11 +18,20 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import { color, image } from "@/theme";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { zodChangePassword } from "@/libs/zod/zodValidation";
-import { SnsLoginButton, SubmitButtonWrapper } from "@/_root/pages/user/Login";
+import { SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import { translateLoginType } from "@/utils/Functions";
 import { useMutation } from "@tanstack/react-query";
-import { RESET_PASSWORD_API_URL } from "@/constants/apiUrls";
-import { SUCCESS_CODE } from "@/constants/responseResults";
+import {
+  RESET_PASSWORD_API_URL,
+  USER_SIGN_IN_API_URL,
+} from "@/constants/apiUrls";
+import { INVALID_LOGIN_INFO, SUCCESS_CODE } from "@/constants/responseResults";
+import {
+  GoogleLoginButton,
+  KakaoLoginButton,
+  SnsLoginButtons,
+} from "@/components/ui/buttons/SnsLoginButton";
+import { useUserLoggedIn } from "@/store/useLoginStore";
 
 const Wrapper = styled(Flex)(() => ({
   maxWidth: "50rem",
@@ -47,7 +56,13 @@ const FoundEmail = styled.div(({ theme }) => ({
   fontSize: "2rem",
 }));
 const ChangePassword = () => {
+  const [snsData, setSnsData] = useState({
+    kakao: {},
+    google: {},
+  });
+
   const state = useLocation().state;
+  const { setLoggedIn } = useUserLoggedIn();
 
   const LOGIN_METHOD = state.userData.login_type;
   const EMAIL = state.userData.user_email;
@@ -63,6 +78,32 @@ const ChangePassword = () => {
     defaultValues: {
       new_password: "",
       confirm_password: "",
+    },
+  });
+
+  const { mutate: signInUser } = useMutation({
+    mutationFn: async data => {
+      return await axios.post(USER_SIGN_IN_API_URL, data);
+    },
+    onSuccess: data => {
+      if (data?.data?.code === SUCCESS_CODE) {
+        localStorage.setItem("tokens", JSON.stringify(data?.data.data));
+
+        setLoggedIn();
+
+        navigate("/");
+      }
+    },
+    onError: error => {
+      if (error.response.data.code === INVALID_LOGIN_INFO) {
+        if (error.response.data.data === "kakao") {
+          navigate("/join/kakao", { state: { userData: snsData.kakao } });
+        }
+
+        if (error.response.data.data === "google") {
+          navigate("/join/google", { state: { userData: snsData.google } });
+        }
+      }
     },
   });
 
@@ -96,7 +137,7 @@ const ChangePassword = () => {
           {LOGIN_METHOD === "email" ? (
             <div>
               <Description>
-                입력하신 휴대폰 번호로 가입된 계정은 아래와 같습니다.
+                입력하신 핸드폰 번호로 가입된 계정은 아래와 같습니다.
               </Description>
 
               <p>로그인 타입: {translateLoginType(LOGIN_METHOD)}</p>
@@ -106,7 +147,7 @@ const ChangePassword = () => {
           ) : LOGIN_METHOD === "kakao" ? (
             <Description>카카오로 가입된 계정입니다.</Description>
           ) : (
-            ""
+            <Description>구글로 가입된 계정입니다.</Description>
           )}
 
           {LOGIN_METHOD === "email" ? (
@@ -114,25 +155,12 @@ const ChangePassword = () => {
               로그인하기
             </PrimaryButton>
           ) : LOGIN_METHOD === "kakao" ? (
-            <SnsLoginButton type="button">
-              <img
-                src={image.kakaoIcon.default}
-                alt="카카오 로고"
-                width={24}
-                height={24}
-              />
-              카카오 로그인
-            </SnsLoginButton>
+            <KakaoLoginButton setSnsData={setSnsData} signInUser={signInUser} />
           ) : (
-            <SnsLoginButton type="button">
-              <img
-                src={image.googleIcon.default}
-                alt="구글 로고"
-                width={24}
-                height={24}
-              />
-              구글 로그인
-            </SnsLoginButton>
+            <GoogleLoginButton
+              setSnsData={setSnsData}
+              signInUser={signInUser}
+            />
           )}
 
           {LOGIN_METHOD === "email" && (

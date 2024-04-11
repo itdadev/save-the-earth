@@ -23,6 +23,11 @@ import { useMutation } from "@tanstack/react-query";
 import { USER_SIGN_IN_API_URL } from "@/constants/apiUrls";
 import { INVALID_LOGIN_INFO, SUCCESS_CODE } from "@/constants/responseResults";
 import { useUserLoggedIn } from "@/store/useLoginStore";
+import {
+  GoogleLoginButton,
+  KakaoLoginButton,
+  SnsLoginButtons,
+} from "@/components/ui/buttons/SnsLoginButton";
 
 export const FormContainer = styled.form(() => ({
   maxWidth: "50rem",
@@ -161,73 +166,6 @@ const Login = () => {
     [signInUser],
   );
 
-  // NOTE: 구글 로그인
-  const googleLogin = useGoogleLogin({
-    onSuccess: async tokenResponse => {
-      try {
-        const res = await axios.get(
-          "https://www.googleapis.com/oauth2/v2/userinfo",
-          {
-            headers: {
-              Authorization: `Bearer ${tokenResponse?.access_token}`,
-            },
-          },
-        );
-
-        if (res.status === 200) {
-          const modifiedData = {
-            login_type: "google",
-            user_email: res.data.email,
-            sns_key: res.data.id,
-          };
-
-          setSnsData(prev => ({ ...prev, google: res.data }));
-
-          signInUser(modifiedData);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    redirect_uri: "http://localhost:3000/mypage",
-  });
-
-  // NOTE: 카카오 로그인 (Success)
-  const kakaoOnSuccess = useCallback(
-    async data => {
-      try {
-        // 전달받은 access token으로 회원 정보 요청 (이메일, 이름, 전화번호, 생년월일)
-        const res = await axios.get("https://kapi.kakao.com/v2/user/me", {
-          headers: {
-            Authorization: `Bearer ${data?.response.access_token}`,
-          },
-        });
-
-        if (res.status === 200) {
-          // 카카오 이메일로 로그인 요청
-          const modifiedData = {
-            login_type: "kakao",
-            user_email: res?.data.kakao_account.email,
-            sns_key: String(res?.data.id),
-          };
-
-          setSnsData(prev => ({
-            ...prev,
-            kakao: { ...res?.data.kakao_account, id: res?.data.id },
-          }));
-
-          signInUser(modifiedData);
-        }
-      } catch (e) {}
-    },
-    [signInUser],
-  );
-
-  // NOTE: 카카오 로그인 (Failure)
-  const kakaoOnFailure = useCallback(error => {
-    console.log(error);
-  }, []);
-
   return (
     <CommonPageContainer>
       <CommonContainer>
@@ -271,34 +209,7 @@ const Login = () => {
 
           <Divider />
 
-          <Flex justify="center" wrap="wrap" gap="1rem 2rem">
-            <SnsLoginButton type="button" onClick={googleLogin}>
-              <img
-                src={image.googleIcon.default}
-                alt="구글 로고"
-                width={24}
-                height={24}
-              />
-              구글 로그인
-            </SnsLoginButton>
-
-            <KakaoLogin
-              token={process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY}
-              onSuccess={kakaoOnSuccess}
-              onFail={kakaoOnFailure}
-              render={({ onClick }) => (
-                <SnsLoginButton type="button" onClick={onClick}>
-                  <img
-                    src={image.kakaoIcon.default}
-                    alt="카카오 로고"
-                    width={24}
-                    height={24}
-                  />
-                  카카오 로그인
-                </SnsLoginButton>
-              )}
-            />
-          </Flex>
+          <SnsLoginButtons setSnsData={setSnsData} signInUser={signInUser} />
         </FormContainer>
       </CommonContainer>
     </CommonPageContainer>

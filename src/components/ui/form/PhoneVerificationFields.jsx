@@ -24,6 +24,7 @@ import { Loading } from "@/components/shared/item";
 export const CODE_EXPIRE_TIME = 5 * 60 * 1000; // 5분
 
 export const SendButton = styled.div(({ theme, disabled }) => ({
+  alignSelf: "stretch",
   background: disabled ? theme.color.grey05 : theme.color.primary01,
   wordBreak: "keep-all",
   whiteSpace: "nowrap",
@@ -31,7 +32,7 @@ export const SendButton = styled.div(({ theme, disabled }) => ({
   alignItems: "center",
   cursor: disabled ? "default" : "pointer",
   pointerEvents: disabled ? "none" : "auto",
-  height: "4rem",
+  height: "4.4rem",
   borderRadius: "0.8rem",
   padding: "0 2rem",
   color: theme.color.black02,
@@ -46,6 +47,7 @@ const PhoneVerificationFields = ({
   setError,
   initialPhoneValue,
   clearErrors,
+  findAccount,
 }) => {
   const timerRef = useRef(null);
 
@@ -75,12 +77,12 @@ const PhoneVerificationFields = ({
   const { mutate: sendCodeFunction, status: codeSendStatus } = useMutation({
     mutationFn: async data => {
       if (codeSent) {
-        // CASE: 휴대폰 번호 다시 입력
+        // CASE: 핸드폰 번호 다시 입력
         return "resend";
       }
 
       if (data === "") {
-        // 전화 번호 입력 안하고 인증 코드 전송 눌렀을 때
+        // 핸드폰 번호 입력 안하고 인증 코드 전송 눌렀을 때
         return PHONE_REQUIRED;
       }
 
@@ -91,9 +93,12 @@ const PhoneVerificationFields = ({
 
       return await axios.post(SEND_CODE_API_URL, {
         user_phone: replaceAllDash(data),
+        duplicate_check: !findAccount,
       });
     },
     onSuccess: data => {
+      clearErrors("user_phone");
+
       if (data === "resend") {
         setCodeSent(true);
         setCodeActive(false);
@@ -108,8 +113,6 @@ const PhoneVerificationFields = ({
         setError("phone", { message: data });
         return;
       }
-
-      clearErrors("phone");
 
       startTimer();
       resetTimer();
@@ -212,7 +215,7 @@ const PhoneVerificationFields = ({
               {codeSendStatus === "pending" ? (
                 <Loading />
               ) : codeSent && !codeVerified ? (
-                "휴대폰 번호 다시 입력"
+                "핸드폰 번호 다시 입력"
               ) : codeVerified ? (
                 "인증 완료"
               ) : (
@@ -256,23 +259,23 @@ const PhoneVerificationFields = ({
             errors.phone_verified ? errors.phone_verified?.message : ""
           }
           addonAfter={
-            isPending ? (
-              <Loading />
-            ) : (
-              <SendButton
-                type="button"
-                disabled={
-                  (!codeActive && !codeExpired) || codeVerified || isPending
-                }
-                onClick={codeExpired ? handleResendCode : handleVerifyCode}
-              >
-                {codeExpired
-                  ? "재전송"
-                  : codeVerified
-                    ? "인증 완료"
-                    : "인증번호 확인"}
-              </SendButton>
-            )
+            <SendButton
+              type="button"
+              disabled={
+                (!codeActive && !codeExpired) || codeVerified || isPending
+              }
+              onClick={codeExpired ? handleResendCode : handleVerifyCode}
+            >
+              {isPending ? (
+                <Loading />
+              ) : codeExpired ? (
+                "재전송"
+              ) : codeVerified ? (
+                "인증 완료"
+              ) : (
+                "인증번호 확인"
+              )}
+            </SendButton>
           }
         />
       </Flex>
