@@ -38,8 +38,6 @@ const Header = () => {
     }
   }, [isSuccess]);
 
-  console.log(userData);
-
   const { data: campaignList } = useQuery({
     queryKey: [CAMPAIGN_LIST_QUERY_KEY],
     queryFn: async () => await axios.get(`${CAMPAIGN_API_URL}`),

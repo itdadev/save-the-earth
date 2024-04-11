@@ -16,7 +16,6 @@ import {
 import axios from "axios";
 import { ACTIVITY_API_URL, CAMPAIGN_API_URL } from "@/constants/apiUrls";
 import { changeUrl } from "@/utils/Functions";
-import { log } from "@craco/craco/dist/lib/logger";
 
 const CampaignWrapper = styled.div(() => ({
   position: "relative",
@@ -55,20 +54,29 @@ const Title = styled.header(({ theme }) => ({
   margin: "0 auto 4rem",
 }));
 
-const CampaignItem = styled.div(() => ({
+const CampaignItem = styled.div(({ dragging }) => ({
   borderRadius: "1rem",
   textAlign: "center",
   background: "white",
   overflow: "hidden",
   maxWidth: "36rem",
+  minWidth: "32rem",
+  width: "100%",
   minHeight: "40rem",
-  cursor: "pointer",
+  cursor: dragging ? "grab" : "pointer",
+  pointerEvents: dragging ? "none" : "auto",
 }));
 
 const CampaignTexts = styled.div(({ theme }) => ({
+  aspectRatio: "2 / 1",
   padding: "2rem",
   color: theme.color.grey02,
   fontSize: "1.5rem",
+  height: "15rem",
+
+  [mq("desktop")]: {
+    aspectRatio: "2.2 / 1",
+  },
 }));
 
 const CampaignTitle = styled.div(({ theme }) => ({
@@ -126,15 +134,7 @@ const HomeSection02 = () => {
   const dotRef = useRef(null);
 
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [dragging, setDragging] = useState(true);
-
-  const handleBeforeChange = useCallback(() => {
-    setDragging(true);
-  }, [setDragging]);
-
-  const handleAfterChange = useCallback(() => {
-    setDragging(false);
-  }, [setDragging]);
+  const [dragging, setDragging] = useState(false);
 
   const { data: campaignList } = useQuery({
     queryKey: [CAMPAIGN_LIST_QUERY_KEY],
@@ -155,9 +155,13 @@ const HomeSection02 = () => {
 
   const onClickCard = useCallback(
     (e, path, state) => {
+      if (dragging) {
+        return;
+      }
+
       navigate(path, { state: { id: state } });
     },
-    [navigate],
+    [dragging, navigate],
   );
 
   const goToSlide = index => {
@@ -169,20 +173,25 @@ const HomeSection02 = () => {
 
   const settings = {
     infinite: true,
+    beforeChange: () => {
+      setDragging(true);
+    },
+    afterChange: idx => {
+      setCurrentIdx(idx);
+      setDragging(false);
+    },
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
     initialSlide: 0,
-    swipeToSlide: true,
     arrows: false,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    touchThreshold: 5000,
+    swipeToSlide: true,
+    touchThreshold: 200,
     centerMode: false,
-    draggable: dragging,
-    onTouchStart: () => console.log("start"),
-    onTouchEnd: () => console.log("end"),
-    pauseOnHover: dragging,
+    draggable: true,
+    // autoplay: true,
+    // autoplaySpeed: 5000,
+
     responsive: [
       {
         breakpoint: 1240,
@@ -221,15 +230,12 @@ const HomeSection02 = () => {
         </Title>
 
         <CampaignWrapper>
-          <Slider
-            {...settings}
-            ref={dotRef}
-            afterChange={idx => setCurrentIdx(idx)}
-          >
+          <Slider {...settings} ref={dotRef}>
             {campaignList?.map(item => {
               return (
                 <CampaignItem
                   key={item.campaign_seq}
+                  dragging={dragging}
                   onClick={e =>
                     onClickCard(
                       e,
@@ -251,23 +257,18 @@ const HomeSection02 = () => {
               );
             })}
 
-            <CampaignItem>
-              <Link to="/latest-activities">
-                <ImageFigure ratio="3 / 2">
-                  <img
-                    src={activityList?.data?.[0].image_url}
-                    alt="지난 활동"
-                  />
-                </ImageFigure>
+            <CampaignItem onClick={e => onClickCard(e, "/latest-activities")}>
+              <ImageFigure ratio="3 / 2">
+                <img src={activityList?.data?.[0].image_url} alt="지난 활동" />
+              </ImageFigure>
 
-                <CampaignTexts>
-                  <CampaignTitle>지난 활동</CampaignTitle>
+              <CampaignTexts>
+                <CampaignTitle>지난 활동</CampaignTitle>
 
-                  <p className="ellipsis-3">
-                    세이브더얼스의 지난 활동을 확인해보세요.
-                  </p>
-                </CampaignTexts>
-              </Link>
+                <p className="ellipsis-3">
+                  세이브더얼스의 지난 활동을 확인해보세요.
+                </p>
+              </CampaignTexts>
             </CampaignItem>
           </Slider>
         </CampaignWrapper>
