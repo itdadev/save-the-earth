@@ -89,7 +89,7 @@ function App() {
                 <Route path="/youtube-campaign" element={<YoutubeCampaign />} />
 
                 <Route
-                  path="/campaign/:campaignId"
+                  path="/campaign/:campaignName"
                   element={<CampaignDetail />}
                 />
 

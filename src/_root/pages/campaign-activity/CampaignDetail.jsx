@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Flex } from "antd";
 import { color, image } from "@/theme";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { useQuery } from "@tanstack/react-query";
 import { CAMPAIGN_DETAIL_QUERY_KEY } from "@/constants/queryKeys";
@@ -138,7 +138,7 @@ const PlanNumber = styled(Flex)(({ theme }) => ({
 
 const CampaignDetail = () => {
   const [activityArr, setActivityArr] = useState([]);
-  const { campaignId } = useParams();
+  const campaignId = useLocation().state?.id;
 
   const { data: campaignDetail } = useQuery({
     queryKey: [CAMPAIGN_DETAIL_QUERY_KEY, campaignId],

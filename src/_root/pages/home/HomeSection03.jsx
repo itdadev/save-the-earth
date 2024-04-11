@@ -2,7 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import { useMediaQuery } from "react-responsive";
 import { Flex } from "antd";
-import { image } from "@/theme";
 
 import { TitleTag } from "@/components/shared/item";
 import { CommonContainer } from "@/components/ui/container";

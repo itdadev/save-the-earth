@@ -5,8 +5,8 @@ const useUserLoggedIn = create(
   persist(
     devtools(set => ({
       loggedIn: false,
-      setLoggedIn: () => set({ user: true }),
-      clearLoggedIn: () => set({ user: false }),
+      setLoggedIn: () => set({ loggedIn: true }),
+      clearLoggedIn: () => set({ loggedIn: false }),
     })),
     { name: "userLogin" },
   ),

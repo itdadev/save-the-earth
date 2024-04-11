@@ -205,6 +205,7 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
                           <Link
                             to={submenu.url}
                             key={submenu.id}
+                            state={{ id: submenu.id }}
                             onClick={hideHeaderHandler}
                           >
                             {submenu.title}

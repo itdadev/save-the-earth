@@ -8,6 +8,10 @@ import { Flex } from "antd";
 import { IsDefault, IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { ImageFigure } from "@/components/ui/image";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { CAMPAIGN_LIST_QUERY_KEY } from "@/constants/queryKeys";
+import axios from "axios";
+import { CAMPAIGN_API_URL } from "@/constants/apiUrls";
 
 const CampaignWrapper = styled.div(() => ({
   position: "relative",
@@ -122,8 +126,16 @@ const HomeSection02 = () => {
     setDragging(false);
   }, [setDragging]);
 
+  const { data: campaignList } = useQuery({
+    queryKey: [CAMPAIGN_LIST_QUERY_KEY],
+    queryFn: async () => await axios.get(`${CAMPAIGN_API_URL}`),
+    select: data => {
+      return data?.data?.data;
+    },
+  });
+
   const onClickCard = useCallback(
-    path => e => {
+    (e, path) => {
       if (dragging) {
         e.stopPropagation();
         return;
@@ -186,7 +198,7 @@ const HomeSection02 = () => {
     autoplay: true,
     autoplaySpeed: 5000,
     centerMode: false,
-    draggable: true,
+    draggable: false,
     beforeChange: handleBeforeChange,
     afterChange: handleAfterChange,
     responsive: [
@@ -236,7 +248,7 @@ const HomeSection02 = () => {
               return (
                 <CampaignItem
                   key={item.id}
-                  onClick={() => onClickCard(item.linkTo)}
+                  onClick={e => onClickCard(e, item.linkTo)}
                 >
                   <ImageFigure ratio="3 / 2">
                     <img src={item.src} alt={item.title} />

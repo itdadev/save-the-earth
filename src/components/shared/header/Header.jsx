@@ -17,11 +17,9 @@ import { MENU_LIST } from "@/constants/staticInformation";
 import { useUserStore } from "@/store/useUserStore";
 import Interceptor from "@/libs/axios/AxiosInterceptor";
 import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
-import { useUserLoggedIn } from "@/store/useLoginStore";
 
 const Header = () => {
   const { user, setUser, clearUser } = useUserStore();
-  const { loggedIn } = useUserLoggedIn();
 
   const { data: userData, isSuccess } = useQuery({
     queryKey: [USER_DATA_QUERY_KEY],
@@ -29,21 +27,13 @@ const Header = () => {
     select: data => {
       return data?.data?.data;
     },
-    enabled: !!localStorage.getItem(LOCAL_STORAGE_TOKENS) || loggedIn,
+    enabled: !!localStorage.getItem(LOCAL_STORAGE_TOKENS),
   });
   useEffect(() => {
     if (isSuccess) {
       setUser(userData);
     } else {
       clearUser();
-
-      console.log(
-        localStorage.getItem(LOCAL_STORAGE_TOKENS),
-        userData,
-        isSuccess,
-        loggedIn,
-        "clear user",
-      );
     }
   }, [isSuccess]);
 
@@ -71,7 +61,7 @@ const Header = () => {
         return {
           id: campaignMenu?.campaign_seq,
           title: campaignMenu?.campaign_menu_title,
-          url: `/campaign/${campaignMenu?.campaign_seq}`,
+          url: `/campaign/${campaignMenu?.campaign_menu_title.replaceAll(" ", "-")}`,
         };
       });
       // 캠페인 & 활동 항목 찾기

@@ -187,8 +187,6 @@ const PhoneVerificationFields = ({
     });
   }, [verifyCodeFunction, watch]);
 
-  console.log(isPending);
-
   return (
     <>
       <Flex>
