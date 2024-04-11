@@ -50,6 +50,7 @@ const style = css`
     padding: 0;
     border: 0;
     box-sizing: border-box;
+    scroll-margin-top: 16rem;
   }
 
   a {

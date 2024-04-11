@@ -25,6 +25,7 @@ export const VERIFICATION_CODE_REQUIRED = "인증 번호를 입력해주세요."
 export const VERIFICATION_CODE_INVALID = "인증번호를 다시 확인해주세요.";
 export const VERIFICATION_CODE_INCOMPLETE = "인증을 완료해주세요.";
 export const PHONE_ALREADY_EXISTS = "이미 가입된 전화번호입니다.";
+export const EMAIL_ALREADY_EXISTS = "이미 가입된 이메일입니다.";
 export const PHONE_DOESNT_EXISTS =
   "회원 목록에 존재하지 않는 휴대폰 번호입니다.";
 export const USE_TERM_REQUIRED = "이용약관에 동의해주세요.";

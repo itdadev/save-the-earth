@@ -19,15 +19,12 @@ import axios from "axios";
 import { CHECK_EMAIL_API_URL } from "@/constants/apiUrls";
 import { INVALID_LOGIN_INFO, SUCCESS_CODE } from "@/constants/responseResults";
 import { EMAIL_REGEX } from "@/libs/zod/zodValidation";
-import { EMAIL_FORMAT } from "@/constants/inputErrorMessage";
+import {
+  EMAIL_ALREADY_EXISTS,
+  EMAIL_FORMAT,
+} from "@/constants/inputErrorMessage";
 
-export const EmailCheckField = ({
-  control,
-  watch,
-  trigger,
-  setError,
-  setValue,
-}) => {
+export const EmailCheckField = ({ control, watch, setError, setValue }) => {
   const [emailChecked, setEmailChecked] = useState(false);
 
   const { mutate: checkEmail } = useMutation({
@@ -42,7 +39,7 @@ export const EmailCheckField = ({
           setEmailChecked(true);
           setValue("user_email_checked", true);
         } else {
-          setError("user_email", { message: "이미 사용중인 이메일입니다." });
+          setError("user_email", { message: EMAIL_ALREADY_EXISTS });
           setValue("user_email_checked", false);
         }
       }

@@ -32,12 +32,20 @@ const Header = () => {
     enabled: !!localStorage.getItem(LOCAL_STORAGE_TOKENS) || loggedIn,
   });
   useEffect(() => {
-    if (isSuccess || loggedIn) {
+    if (isSuccess) {
       setUser(userData);
     } else {
       clearUser();
+
+      console.log(
+        localStorage.getItem(LOCAL_STORAGE_TOKENS),
+        userData,
+        isSuccess,
+        loggedIn,
+        "clear user",
+      );
     }
-  }, [isSuccess, loggedIn]);
+  }, [isSuccess]);
 
   const { data: campaignList } = useQuery({
     queryKey: [CAMPAIGN_LIST_QUERY_KEY],

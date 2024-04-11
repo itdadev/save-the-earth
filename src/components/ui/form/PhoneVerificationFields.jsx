@@ -13,16 +13,13 @@ import { useMutation } from "@tanstack/react-query";
 import {
   DIFFERENT_PHONE_INVALID,
   PHONE_ALREADY_EXISTS,
-  PHONE_DOESNT_EXISTS,
   PHONE_REQUIRED,
   VERIFICATION_CODE_INVALID,
 } from "@/constants/inputErrorMessage";
-import {
-  CHECK_CODE_API_URL,
-  FIND_SEND_CODE_API_URL,
-  SEND_CODE_API_URL,
-} from "@/constants/apiUrls";
+import { CHECK_CODE_API_URL, SEND_CODE_API_URL } from "@/constants/apiUrls";
 import { replaceAllDash } from "@/utils/Functions";
+import { DUPLICATE_USER_PHONE } from "@/constants/responseResults";
+import { Loading } from "@/components/shared/item";
 
 export const CODE_EXPIRE_TIME = 5 * 60 * 1000; // 5분
 
@@ -45,7 +42,6 @@ const PhoneVerificationFields = ({
   control,
   errors,
   setValue,
-  findAccount,
   resetField,
   setError,
   initialPhoneValue,
@@ -76,7 +72,7 @@ const PhoneVerificationFields = ({
     timerRef.current.stop();
   }, []);
 
-  const { mutate: sendCodeFunction, isLoading: sendLoading } = useMutation({
+  const { mutate: sendCodeFunction, status: codeSendStatus } = useMutation({
     mutationFn: async data => {
       if (codeSent) {
         // CASE: 휴대폰 번호 다시 입력
@@ -93,12 +89,9 @@ const PhoneVerificationFields = ({
         return DIFFERENT_PHONE_INVALID;
       }
 
-      return await axios.post(
-        findAccount ? FIND_SEND_CODE_API_URL : SEND_CODE_API_URL,
-        {
-          user_phone: replaceAllDash(data),
-        },
-      );
+      return await axios.post(SEND_CODE_API_URL, {
+        user_phone: replaceAllDash(data),
+      });
     },
     onSuccess: data => {
       if (data === "resend") {
@@ -123,16 +116,15 @@ const PhoneVerificationFields = ({
       setCodeSent(true);
     },
     onError: error => {
-      if (error.response.status === 400) {
-        setError("phone", {
-          message: findAccount ? PHONE_DOESNT_EXISTS : PHONE_ALREADY_EXISTS,
-        });
-        stopTimer();
+      if (error.response.data.code === DUPLICATE_USER_PHONE) {
+        setError("user_phone", { message: PHONE_ALREADY_EXISTS });
+
+        setFocus("user_phone");
       }
     },
   });
 
-  const { mutate: verifyCodeFunction, isLoading: verifyLoading } = useMutation({
+  const { mutate: verifyCodeFunction, isPending } = useMutation({
     mutationFn: async data => {
       return await axios.post(CHECK_CODE_API_URL, { ...data });
     },
@@ -147,7 +139,6 @@ const PhoneVerificationFields = ({
       if (error?.response.status === 400) {
         setError("auth_code", { message: VERIFICATION_CODE_INVALID });
         setCodeVerified(false);
-        // stopTimer();
       }
     },
   });
@@ -196,9 +187,7 @@ const PhoneVerificationFields = ({
     });
   }, [verifyCodeFunction, watch]);
 
-  const sendCodeHandler = useCallback(() => {
-    startTimer();
-  }, [startTimer]);
+  console.log(isPending);
 
   return (
     <>
@@ -211,7 +200,7 @@ const PhoneVerificationFields = ({
             <SendButton
               type="primary"
               size="large"
-              disabled={codeVerified}
+              disabled={codeVerified || codeSendStatus === "pending"}
               onClick={() => {
                 if (codeSent) {
                   setCodeSent(false);
@@ -222,11 +211,15 @@ const PhoneVerificationFields = ({
                 }
               }}
             >
-              {codeSent && !codeVerified
-                ? "휴대폰 번호 다시 입력"
-                : codeVerified
-                  ? "인증 완료"
-                  : "코드전송"}
+              {codeSendStatus === "pending" ? (
+                <Loading />
+              ) : codeSent && !codeVerified ? (
+                "휴대폰 번호 다시 입력"
+              ) : codeVerified ? (
+                "인증 완료"
+              ) : (
+                "코드전송"
+              )}
             </SendButton>
           }
         />
@@ -265,17 +258,23 @@ const PhoneVerificationFields = ({
             errors.phone_verified ? errors.phone_verified?.message : ""
           }
           addonAfter={
-            <SendButton
-              type="button"
-              disabled={(!codeActive && !codeExpired) || codeVerified}
-              onClick={codeExpired ? handleResendCode : handleVerifyCode}
-            >
-              {codeExpired
-                ? "재전송"
-                : codeVerified
-                  ? "인증 완료"
-                  : "인증번호 확인"}
-            </SendButton>
+            isPending ? (
+              <Loading />
+            ) : (
+              <SendButton
+                type="button"
+                disabled={
+                  (!codeActive && !codeExpired) || codeVerified || isPending
+                }
+                onClick={codeExpired ? handleResendCode : handleVerifyCode}
+              >
+                {codeExpired
+                  ? "재전송"
+                  : codeVerified
+                    ? "인증 완료"
+                    : "인증번호 확인"}
+              </SendButton>
+            )
           }
         />
       </Flex>

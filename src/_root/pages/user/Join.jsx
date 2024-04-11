@@ -33,6 +33,10 @@ import {
   DUPLICATE_USER_PHONE,
   SUCCESS_CODE,
 } from "@/constants/responseResults";
+import {
+  EMAIL_ALREADY_EXISTS,
+  PHONE_ALREADY_EXISTS,
+} from "@/constants/inputErrorMessage";
 
 const TermButton = styled.button(({ theme }) => ({
   color: theme.color.grey01,
@@ -62,7 +66,6 @@ const Join = () => {
   const {
     control,
     handleSubmit,
-    trigger,
     watch,
     setError,
     clearErrors,
@@ -144,19 +147,7 @@ const Join = () => {
         });
       }
     },
-    onError: error => {
-      if (error.response.data.code === DUPLICATE_USER_EMAIL) {
-        setError("user_email", { message: "이미 가입된 이메일입니다." });
-
-        setFocus("user_email");
-      }
-
-      if (error.response.data.code === DUPLICATE_USER_PHONE) {
-        setError("user_phone", { message: "이미 가입된 휴대폰 번호입니다." });
-
-        setFocus("user_phone");
-      }
-    },
+    onError: error => {},
   });
 
   useEffect(() => {
@@ -229,7 +220,6 @@ const Join = () => {
               <EmailCheckField
                 control={control}
                 watch={watch}
-                trigger={trigger}
                 setError={setError}
                 setValue={setValue}
               />

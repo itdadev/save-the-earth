@@ -55,6 +55,7 @@ export const image = {
   rightArrowOrange: require("./assets/icons/rightArrowOrange.svg"),
   googleIcon: require("./assets/icons/google-logo.svg"),
   kakaoIcon: require("./assets/icons/kakao-logo.svg"),
+  loadingIcon: require("./assets/icons/loading.svg"),
 };
 
 // NOTE: 공통 컬러

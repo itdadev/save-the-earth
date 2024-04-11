@@ -17,11 +17,6 @@ import {
   changePhoneFormat,
   translateLoginType,
 } from "@/utils/Functions";
-import { useQuery } from "@tanstack/react-query";
-import { USER_DATA_QUERY_KEY } from "@/constants/queryKeys";
-import Interceptor from "@/libs/axios/AxiosInterceptor";
-import { USER_API_URL } from "@/constants/apiUrls";
-import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
 
 const Wrapper = styled.div(() => ({
   maxWidth: "50rem",

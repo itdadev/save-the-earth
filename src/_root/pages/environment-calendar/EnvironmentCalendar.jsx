@@ -23,6 +23,10 @@ const EventItem = styled(Flex)(() => ({
   marginBottom: "4rem",
 }));
 
+const EventDate = styled(Flex)(() => ({
+  minWidth: "3.6rem",
+}));
+
 const EventTitle = styled.div(({ theme }) => ({
   fontSize: "2rem",
   fontWeight: theme.fontWeight.bold,
@@ -108,7 +112,7 @@ const EnvironmentCalendar = () => {
         {currentMonthEvents && (
           <EventList ref={listRef}>
             <Month>
-              {body?.currentMonthEvent.month_current.replace("0", "")}월
+              {body?.currentMonthEvent.month_current?.replace("0", "")}월
             </Month>
 
             {currentMonthEvents
@@ -116,11 +120,11 @@ const EnvironmentCalendar = () => {
               ?.map(event => {
                 return (
                   <EventItem gap="0 2rem" align="center" key={event.title}>
-                    <Flex vertical align="center">
+                    <EventDate vertical align="center">
                       <Day>{GetDay(event.start)}</Day>
 
                       <DateText>{GetDate(event.start)}</DateText>
-                    </Flex>
+                    </EventDate>
 
                     <EventTitle>{event.title}</EventTitle>
                   </EventItem>

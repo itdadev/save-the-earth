@@ -99,12 +99,13 @@ const Notice = styled.div(({ theme }) => ({
 
   display: "flex",
   paddingTop: " 1.2rem",
+  alignItems: "center",
   justifyContent: "center",
 
   [mq("desktop")]: {
+    alignSelf: "stretch",
     marginTop: 0,
     fontSize: "2.2rem",
-    height: "28.1rem",
     width: "50%",
     borderBottom: `1px solid ${theme.color.black01}`,
   },

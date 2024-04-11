@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { zodChangeAccount } from "@/libs/zod/zodValidation";
 import { useUserStore } from "@/store/useUserStore";
+import { useMutation } from "@tanstack/react-query";
+import Interceptor from "@/libs/axios/AxiosInterceptor";
 
 import { color } from "@/theme";
 import {
@@ -17,15 +19,13 @@ import { USER_API_URL } from "@/constants/apiUrls";
 import { SUCCESS_CODE } from "@/constants/responseResults";
 import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
 import { PrimaryButton } from "@/components/ui/buttons";
-import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
-import { NameBirthContainer } from "@/_root/pages/user/Join";
 import {
   changeBirthFormat,
   changePhoneFormat,
   replaceAllDash,
 } from "@/utils/Functions";
-import { useMutation } from "@tanstack/react-query";
-import Interceptor from "@/libs/axios/AxiosInterceptor";
+import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
+import { NameBirthContainer } from "@/_root/pages/user/Join";
 
 const ChangeAccount = () => {
   const { user, setUser } = useUserStore();
@@ -41,6 +41,7 @@ const ChangeAccount = () => {
     clearErrors,
     resetField,
     setValue,
+    trigger,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(zodChangeAccount),
@@ -107,8 +108,16 @@ const ChangeAccount = () => {
     return () => subscription.unsubscribe();
   }, [setValue, user, watch]);
 
+  useEffect(() => {
+    if (phoneChanged) {
+      setValue("phone_changed", true);
+    } else {
+      setValue("phone_changed", false);
+    }
+  }, [phoneChanged, setValue]);
+
   const onSubmit = useCallback(
-    data => {
+    async data => {
       setUser({
         ...data,
         email_receive_yn: data?.email_receive_yn ? 1 : 0,
@@ -116,9 +125,15 @@ const ChangeAccount = () => {
         login_type: user?.login_type,
       });
 
-      updateUserAccount(data);
+      updateUserAccount({ ...data, phone_changed: phoneChanged });
     },
-    [setUser, updateUserAccount, user?.user_email, user?.login_type],
+    [
+      setUser,
+      updateUserAccount,
+      phoneChanged,
+      user?.user_email,
+      user?.login_type,
+    ],
   );
 
   return (

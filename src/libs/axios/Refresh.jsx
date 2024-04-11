@@ -34,6 +34,8 @@ const useRefreshToken = async config => {
       });
 
       if (res.status === 400) {
+        console.log("refresh token is not stored");
+
         LogoutUser();
 
         return;

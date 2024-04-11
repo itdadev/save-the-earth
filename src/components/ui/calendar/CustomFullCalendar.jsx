@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import styled from "@emotion/styled";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -6,7 +6,6 @@ import rrulePlugin from "@fullcalendar/rrule";
 import listPlugin from "@fullcalendar/list";
 import { Badge } from "antd";
 import dayjs from "dayjs";
-import { useMediaQuery } from "react-responsive";
 
 const DateItemWrapper = styled.div(() => ({
   cursor: "pointer",
@@ -17,13 +16,13 @@ const DateItem = styled(Badge)(() => ({
   color: "white !important",
 }));
 const CustomFullCalendar = ({ events, setBody, listRef }) => {
-  const isMobile = useMediaQuery({ maxWidth: 767 });
-
   const calendarRef = useRef(null);
 
   const scrollIntoList = useCallback(() => {
     listRef.current.scrollIntoView({
       behavior: "smooth",
+      block: "start",
+      inline: "nearest",
     });
   }, [listRef?.current]);
 

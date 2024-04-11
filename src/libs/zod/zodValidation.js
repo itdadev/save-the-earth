@@ -144,9 +144,9 @@ export const zodChangeAccount = z
       .string()
       .min(1, { message: PHONE_REQUIRED })
       .regex(PHONE_REGEX, { message: PHONE_FORMAT }),
-    phone_verified: z.optional(z.boolean()),
     user_seq: z.optional(z.string()),
     email_receive_yn: z.boolean(),
+    phone_verified: z.optional(z.boolean()),
     phone_changed: z.optional(z.boolean()),
   })
   .superRefine(({ phone_changed, phone_verified }, ctx) => {
