@@ -6,8 +6,6 @@ import { useTheme } from "@emotion/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import KakaoLogin from "react-kakao-login";
-import { useGoogleLogin } from "@react-oauth/google";
 
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import {
@@ -15,7 +13,6 @@ import {
   CommonPageContainer,
 } from "@/components/ui/container";
 import { PrimaryButton } from "@/components/ui/buttons";
-import { image } from "@/theme";
 import { EmailField, PasswordField } from "@/components/ui/form/Fields";
 import { SingleCheckBox } from "@/components/ui/form";
 import { zodLogin } from "@/libs/zod/zodValidation";
@@ -27,11 +24,7 @@ import {
   SUCCESS_CODE,
 } from "@/constants/responseResults";
 import { useUserLoggedIn } from "@/store/useLoginStore";
-import {
-  GoogleLoginButton,
-  KakaoLoginButton,
-  SnsLoginButtons,
-} from "@/components/ui/buttons/SnsLoginButton";
+import { SnsLoginButtons } from "@/components/ui/buttons/SnsLoginButton";
 
 export const FormContainer = styled.form(() => ({
   maxWidth: "50rem",
@@ -86,8 +79,6 @@ const Login = () => {
   const theme = useTheme();
 
   const { setLoggedIn } = useUserLoggedIn();
-
-  console.log(state);
 
   const { control, setFocus, setError, handleSubmit } = useForm({
     resolver: zodResolver(zodLogin),

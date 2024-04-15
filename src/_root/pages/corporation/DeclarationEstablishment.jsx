@@ -71,10 +71,12 @@ const DirectionItem = styled(Flex)(({ theme }) => ({
   borderRadius: "1rem",
   color: theme.color.black01,
   textAlign: "center",
+  alignSelf: "stretch",
+  minHeight: "9.5rem",
 
   [mq("desktop")]: {
     width: "calc(50% - 2rem)",
-    padding: "5rem 3rem 3rem",
+    padding: "4rem 3rem 3rem",
     borderRadius: "2rem",
   },
 }));
@@ -167,7 +169,7 @@ const DeclarationEstablishment = () => {
             더워지고, 더워야 할 곳은 뜨거워졌기 때문입니다. 폭염과 폭설, 태풍과
             해일이 몰려올 때도 우리는 그저 걱정만 하고 있고, 자연을 탓하며
             분노했고, 재해를 탓하며 안타까워만 했습니다. 이제는 그 모든 원인이
-            자구가 병들어 아프다고 비명을 지르고 있기 때문이라는 것을 알게
+            지구가 병들어 아프다고 비명을 지르고 있기 때문이라는 것을 알게
             되었습니다.
           </p>
           <p>
@@ -177,8 +179,8 @@ const DeclarationEstablishment = () => {
             ‘세이브더얼스’가 거창해 보일지도 모르지만 서두르지 않으려 합니다.
           </p>
           <p>
-            작은 한걸음이 미래를 바꾸듯 조금씩 천천히, 하지만 명확하게
-            ‘작은행동실천’을 만들어가려 합니다.
+            작은 한걸음이 미래를 바꾸듯 조금씩 천천히, 하지만 명확하게 ‘작은
+            행동 실천’을 만들어가려 합니다.
           </p>
 
           <p>
@@ -195,7 +197,7 @@ const DeclarationEstablishment = () => {
 
           <CommonDescriptionOne>
             ‘세이브더얼스’는 자연환경보전 탄소중립 실천을 위한 지속적인 환경보호
-            활동과 캠페인 시민운동 및 환경교육을 실행하며 시민 환경 의식을
+            활동과 캠페인, 시민운동 및 환경교육을 실행하며 시민 환경 의식을
             증진시키고 자연과 인간의 균형적 공존을 이루어 후손에게 맑고 깨끗한
             환경을 물려주기 위하여 다음과 같은 사업방향을 설정하였습니다.
           </CommonDescriptionOne>

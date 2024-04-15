@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { image } from "@/theme";
 import styled from "@emotion/styled";
-import { Flex, Image } from "antd";
+import { Flex } from "antd";
 
 import { HEADER_MENU_Z_INDEX } from "@/constants/zIndex";
 import { ProjectList } from "@/components/shared/item";
@@ -133,11 +133,7 @@ const WebHeader = ({ menuTree, utilMenu }) => {
           );
         })}
 
-        <DonateButton
-          to="/donate"
-          onMouseEnter={showHeaderHandler}
-          onMouseLeave={hideHeaderHandler}
-        >
+        <DonateButton to="/donate">
           <img
             src={image.heartIcon.default}
             alt="하트 아이콘"

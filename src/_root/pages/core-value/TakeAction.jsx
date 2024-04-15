@@ -52,7 +52,11 @@ const TakeAction = () => {
           <Image src={image.takeAction} alt="재활용품들고 있는 남자" />
 
           <Flex gap="3rem 0" vertical>
-            <CommonTitleTwo>탄소중립을 위한 작은 행동실천</CommonTitleTwo>
+            <CommonTitleTwo>
+              <p>탄소중립을 위한</p>
+
+              <p>작은 행동실천</p>
+            </CommonTitleTwo>
 
             <CommonDescriptionOne>
               탄소 중립을 달성하기 위해 우리는 다양한 작은 실천을 통해

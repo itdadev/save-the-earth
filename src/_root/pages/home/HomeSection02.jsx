@@ -189,8 +189,8 @@ const HomeSection02 = () => {
     touchThreshold: 200,
     centerMode: false,
     draggable: true,
-    // autoplay: true,
-    // autoplaySpeed: 5000,
+    autoplay: true,
+    autoplaySpeed: 5000,
 
     responsive: [
       {
@@ -268,6 +268,21 @@ const HomeSection02 = () => {
                 <p className="ellipsis-3">
                   세이브더얼스의 지난 활동을 확인해보세요.
                 </p>
+              </CampaignTexts>
+            </CampaignItem>
+
+            <CampaignItem onClick={e => onClickCard(e, "/our-member")}>
+              <ImageFigure ratio="3 / 2">
+                <img
+                  src={activityList?.data?.[0].image_url}
+                  alt="우리 회원 공간"
+                />
+              </ImageFigure>
+
+              <CampaignTexts>
+                <CampaignTitle>우리 회원 공간</CampaignTitle>
+
+                <p className="ellipsis-3">우리 회원 공간 내용</p>
               </CampaignTexts>
             </CampaignItem>
           </Slider>

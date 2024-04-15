@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useQuery } from "@tanstack/react-query";
-import { useMediaQuery } from "react-responsive";
+import axios from "axios";
+import { Flex } from "antd";
 
 import { image, color } from "@/theme";
 import {
@@ -10,41 +11,35 @@ import {
 } from "@/components/ui/container";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
 import { PrimaryButton } from "@/components/ui/buttons";
-import { Flex } from "antd";
-import { IsDefault, IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { ACCOUNT_REPORT_LIST_QUERY_KEY } from "@/constants/queryKeys";
 import {
   ACCOUNT_REPORT_API_URL,
   FILE_DOWNLOAD_API_URL,
 } from "@/constants/apiUrls";
-import axios from "axios";
+import { IsDefault, IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 
-const Container = styled(Flex)(({ theme }) => ({
+const Container = styled(Flex)(() => ({
   flexDirection: "column",
   flexWrap: "wrap",
   marginTop: "8rem",
-  borderTop: `1px solid ${theme.color.black01}`,
+  borderTop: "1px solid black",
 
   [mq("desktop")]: {
     flexDirection: "row",
-    borderBottom: `1px solid ${theme.color.black01}`,
   },
 }));
 
-const ReportItem = styled(Flex)(({ theme, islastodd }) => ({
+const ReportItem = styled(Flex)(() => ({
   width: "100%",
   minHeight: "11rem",
   fontSize: "1.8rem",
-  borderBottom: `1px solid ${theme.color.black01}`,
+  borderBottom: "1px solid black",
 
   [mq("desktop")]: {
     width: "50%",
     minHeight: "18rem",
     paddingRight: "5rem",
     fontSize: "3rem",
-    ...(islastodd === "true" && {
-      borderBottom: "none",
-    }),
   },
 }));
 
@@ -103,12 +98,21 @@ const Notice = styled.div(({ theme }) => ({
   justifyContent: "center",
 
   [mq("desktop")]: {
+    position: "absolute",
+    top: 0,
+    right: 0,
     alignSelf: "stretch",
     marginTop: 0,
-    fontSize: "2.2rem",
+    fontSize: "1.6rem",
     width: "50%",
-    borderBottom: `1px solid ${theme.color.black01}`,
   },
+}));
+
+const Wrapper = styled.div(() => ({
+  position: "relative",
+  display: "flex",
+  flexWrap: "wrap",
+  width: "100%",
 }));
 
 const AccountReport = () => {
@@ -128,8 +132,6 @@ const AccountReport = () => {
       return data?.data.notice;
     },
   });
-
-  const { isDesktop } = useMediaQuery({ minWidth: 1240 });
 
   const downloadReport = async (seq, originalFile, serverFile, uploadPath) => {
     try {
@@ -164,105 +166,121 @@ const AccountReport = () => {
         <CommonTitleTwo>정관/회계 보고서</CommonTitleTwo>
 
         <Container align="center" justify="space-between">
-          {accountReportList
-            ?.filter(value => value.report_type_value === "01")
-            .map((report, idx, array) => {
-              return (
-                <ReportItem
-                  key={report.report_seq}
-                  align="center"
-                  full={report.report_type_value === "01"}
-                >
-                  <Icon align="center" justify="center">
-                    <img
-                      src={
-                        report.report_type_value === "01"
-                          ? image.reportIcon01.default
-                          : image.reportIcon02.default
-                      }
-                      alt="파일 아이콘"
-                    />
-                  </Icon>
-
-                  <Title>
-                    {report.report_type_name} <b>{report.report_title}</b>
-                  </Title>
-
-                  <PrimaryButton
-                    type="button"
-                    bgColor={
-                      report.report_type_value === "01"
-                        ? color.primary02
-                        : color.secondary01
-                    }
-                    clickEvent={() =>
-                      downloadReport(
-                        report.report_seq,
-                        report.original_file_name,
-                        report.server_file_name,
-                        report.upload_path,
-                      )
-                    }
+          {/* NOTE: 정관 */}
+          <Wrapper>
+            {accountReportList
+              ?.filter(value => value.report_type_value === "01")
+              .map((report, idx, array) => {
+                return (
+                  <ReportItem
+                    key={report.report_seq}
+                    align="center"
+                    full={report.report_type_value === "01"}
                   >
-                    다운로드
-                  </PrimaryButton>
-                </ReportItem>
-              );
-            })}
+                    <Icon align="center" justify="center">
+                      <img
+                        src={
+                          report.report_type_value === "01"
+                            ? image.reportIcon01.default
+                            : image.reportIcon02.default
+                        }
+                        alt="파일 아이콘"
+                      />
+                    </Icon>
 
-          <IsDesktop>
-            <Notice>
-              <p>{accountReportNotice}</p>
-            </Notice>
-          </IsDesktop>
+                    <Title>
+                      {report.report_type_name} <b>{report.report_title}</b>
+                    </Title>
 
-          {accountReportList
-            ?.filter(value => value.report_type_value === "02")
-            .map((report, idx, array) => {
-              const isLastOdd = idx === array.length - 1 && idx % 2 === 0;
-
-              return (
-                <ReportItem
-                  key={report.report_seq}
-                  align="center"
-                  islastodd={isLastOdd ? "true" : "false"}
-                >
-                  <Icon align="center" justify="center">
-                    <img
-                      src={
+                    <PrimaryButton
+                      type="button"
+                      bgColor={
                         report.report_type_value === "01"
-                          ? image.reportIcon01.default
-                          : image.reportIcon02.default
+                          ? color.primary02
+                          : color.secondary01
                       }
-                      alt="파일 아이콘"
-                    />
-                  </Icon>
+                      clickEvent={() =>
+                        downloadReport(
+                          report.report_seq,
+                          report.original_file_name,
+                          report.server_file_name,
+                          report.upload_path,
+                        )
+                      }
+                    >
+                      다운로드
+                    </PrimaryButton>
+                  </ReportItem>
+                );
+              })}
 
-                  <Title>
-                    {report.report_type_name} <b>{report.report_title}</b>
-                  </Title>
+            <IsDesktop>
+              {accountReportList?.filter(
+                value => value.report_type_value === "01",
+              )?.length %
+                2 ===
+                1 && <ReportItem> </ReportItem>}
+            </IsDesktop>
+          </Wrapper>
 
-                  <PrimaryButton
-                    type="button"
-                    bgColor={
-                      report.report_type_value === "01"
-                        ? color.primary02
-                        : color.secondary01
-                    }
-                    clickEvent={() =>
-                      downloadReport(
-                        report.report_seq,
-                        report.original_file_name,
-                        report.server_file_name,
-                        report.upload_path,
-                      )
-                    }
-                  >
-                    다운로드
-                  </PrimaryButton>
-                </ReportItem>
-              );
-            })}
+          {/* NOTE: 회계 보고서 */}
+          <Wrapper>
+            <IsDesktop>
+              <Notice>
+                <p>{accountReportNotice}</p>
+              </Notice>
+            </IsDesktop>
+
+            {accountReportList
+              ?.filter(value => value.report_type_value === "02")
+              .map(report => {
+                return (
+                  <ReportItem key={report.report_seq} align="center">
+                    <Icon align="center" justify="center">
+                      <img
+                        src={
+                          report.report_type_value === "01"
+                            ? image.reportIcon01.default
+                            : image.reportIcon02.default
+                        }
+                        alt="파일 아이콘"
+                      />
+                    </Icon>
+
+                    <Title>
+                      {report.report_type_name} <b>{report.report_title}</b>
+                    </Title>
+
+                    <PrimaryButton
+                      type="button"
+                      bgColor={
+                        report.report_type_value === "01"
+                          ? color.primary02
+                          : color.secondary01
+                      }
+                      clickEvent={() =>
+                        downloadReport(
+                          report.report_seq,
+                          report.original_file_name,
+                          report.server_file_name,
+                          report.upload_path,
+                        )
+                      }
+                    >
+                      다운로드
+                    </PrimaryButton>
+                  </ReportItem>
+                );
+              })}
+
+            <IsDesktop>
+              {accountReportList?.filter(
+                value => value.report_type_value === "02",
+              )?.length %
+                2 ===
+                1 && <ReportItem> </ReportItem>}
+            </IsDesktop>
+          </Wrapper>
         </Container>
 
         <IsDefault>

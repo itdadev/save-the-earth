@@ -19,6 +19,7 @@ import {
 } from "@/_root/pages/corporation/Media";
 import { useNavigate } from "react-router-dom";
 import { changeUrl } from "@/utils/Functions";
+import DangerouslyInnerHtml from "@/components/ui/DangerouslyInnerHtml";
 
 const OurMember = () => {
   const navigate = useNavigate();
@@ -76,7 +77,11 @@ const OurMember = () => {
                     {member.member_title}
                   </MediaTitle>
 
-                  <div className="ellipsis-3">{member.member_content}</div>
+                  <DangerouslyInnerHtml
+                    value={member.member_content}
+                    className="ellipsis-3"
+                    noLink
+                  />
                 </MediaTexts>
               </MediaItem>
             );
