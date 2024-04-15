@@ -8,6 +8,7 @@ import styled from "@emotion/styled";
 
 const Container = styled.figure(({ ratio, radius, width, height }) => ({
   position: "relative",
+  minWidth: width ? width : "100%",
   width: width ? width : "100%",
   height: height ? height : "100%",
   minHeight: "auto",

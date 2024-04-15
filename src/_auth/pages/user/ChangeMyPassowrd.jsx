@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { color } from "@/theme";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { FormContainer, SubmitButtonWrapper } from "@/_root/pages/user/Login";
 import {
@@ -21,10 +21,15 @@ import { INVALID_PASSWORD, SUCCESS_CODE } from "@/constants/responseResults";
 import Interceptor from "@/libs/axios/AxiosInterceptor";
 import { zodChangeMyPassword } from "@/libs/zod/zodValidation";
 import { CURRENT_PASSWORD_INVALID } from "@/constants/inputErrorMessage";
-import { useLogoutUser } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { USER_DATA_QUERY_KEY } from "@/constants/queryKeys";
+import { useUserStore } from "@/store/useUserStore";
 
 const ChangeMyPassword = () => {
-  const logoutUser = useLogoutUser();
+  const queryClient = useQueryClient();
+  const { setUser } = useUserStore();
+
+  const navigate = useNavigate();
 
   const { control, handleSubmit, setError, setFocus } = useForm({
     resolver: zodResolver(zodChangeMyPassword),
@@ -42,7 +47,12 @@ const ChangeMyPassword = () => {
     },
     onSuccess: data => {
       if (data?.data.code === SUCCESS_CODE) {
-        logoutUser();
+        navigate("/login", { state: { resetPasswordSuccess: true } });
+        queryClient.removeQueries(USER_DATA_QUERY_KEY);
+
+        setUser(null);
+
+        localStorage.removeItem("tokens");
       }
     },
     onError: error => {

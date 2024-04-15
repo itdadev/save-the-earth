@@ -30,8 +30,8 @@ const MenuAllWrapper = styled.div(({ open }) => ({
   position: "fixed",
   width: "100%",
   height: "100svh",
-  minHeight: "100svh",
-  maxHeight: "100svh",
+  minHeight: "100vh",
+  maxHeight: "100vh",
   overflowY: "auto",
   zIndex: HEADER_MENU_Z_INDEX,
   left: open ? 0 : "-100%",
@@ -85,6 +85,8 @@ const StyledLink = styled(Link)(() => ({
 }));
 
 const MobileHeader = ({ menuTree, utilMenu }) => {
+  const isAuthenticated = localStorage.getItem("tokens");
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState({});
 
@@ -123,12 +125,14 @@ const MobileHeader = ({ menuTree, utilMenu }) => {
   return (
     <Container>
       <ButtonWrapper align="center" justify="space-between">
-        <img
-          src={image.userIcon.default}
-          alt="유저 모양 아이콘"
-          width={30}
-          height={30}
-        />
+        <Link to={isAuthenticated ? "/mypage" : "login"}>
+          <img
+            src={image.userIcon.default}
+            alt="유저 모양 아이콘"
+            width={30}
+            height={30}
+          />
+        </Link>
 
         <StyledLink to="/">
           <img

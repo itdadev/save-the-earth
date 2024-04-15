@@ -18,6 +18,12 @@ export const IsMobile = ({ children }) => {
   return isMobile ? children : null;
 };
 
+export const IsMini = ({ children }) => {
+  const isMini = useMediaQuery({ maxWidth: 320 });
+
+  return isMini ? children : null;
+};
+
 export const IsDefault = ({ children }) => {
   const isDefault = useMediaQuery({ maxWidth: 1239 });
 
@@ -25,9 +31,11 @@ export const IsDefault = ({ children }) => {
 };
 
 const bp = {
+  mini: 359,
   mobile: 360,
   tablet: 768,
   desktop: 1240,
 };
 
 export const mq = n => `@media (min-width: ${bp[n]}px)`;
+export const mqx = n => `@media (max-width: ${bp[n]}px)`;

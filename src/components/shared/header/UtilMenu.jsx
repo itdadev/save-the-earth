@@ -31,7 +31,14 @@ const UtilMenu = ({ utilMenu, hideHeader }) => {
         })}
 
       {user && (
-        <Link to="/" onClick={logoutUser}>
+        <Link
+          to="/"
+          onClick={() => {
+            logoutUser();
+
+            hideHeader();
+          }}
+        >
           로그아웃
         </Link>
       )}

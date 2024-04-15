@@ -108,7 +108,7 @@ const PlanWrapper = styled(Flex)(() => ({
 const PlanItem = styled.div(() => ({
   display: "flex",
   gap: "0 0.8rem",
-  alignItems: "center",
+
   [mq("desktop")]: {
     alignItems: "flex-start",
   },

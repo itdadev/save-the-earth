@@ -19,6 +19,7 @@ export const image = {
   declarationEstablishment: require("./assets/images/declarationEstablishment.png"),
   media01: require("./assets/images/media01.jpg"),
   media02: require("./assets/images/media02.jpg"),
+  uniqueNumber: require("./assets/images/unique-number.png"),
 
   // NOTE: icons for all pages
   headerLogo: require("./assets/icons/headerLogo.svg"),

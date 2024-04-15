@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { color } from "@/theme";
-import { mq } from "@/libs/react-responsive/mediaQuery";
+import { mq, mqx } from "@/libs/react-responsive/mediaQuery";
 import { useMediaQuery } from "react-responsive";
 
 import axios from "axios";
@@ -27,13 +27,18 @@ const Container = styled.div(() => ({
 const ActivityItem = styled(Link)(({ theme }) => ({
   display: "flex",
   width: "100%",
-  gap: "0 2.4rem",
+  gap: "2.4rem",
   padding: "2rem 0",
   fontSize: "1.8rem",
   borderBottom: `1px solid ${theme.color.grey05}`,
+  flexDirection: "row",
 
   ":nth-of-type(1)": {
     borderTop: `1px solid ${theme.color.grey05}`,
+  },
+
+  [mqx("mini")]: {
+    flexDirection: "column",
   },
 
   [mq("desktop")]: {

@@ -35,6 +35,12 @@ const StyledLink = styled(Link)(({ theme }) => ({
   },
 }));
 
+const DownloadA = styled.a(({ theme }) => ({
+  borderRight: `1px solid ${theme.color.black01}`,
+  paddingRight: "1rem",
+  marginRight: "1rem",
+}));
+
 const DonateButton = styled.button(({ theme }) => ({
   position: "fixed",
   bottom: 0,
@@ -87,7 +93,9 @@ const Footer = () => {
             개인정보 보호정책
           </StyledLink>
 
-          <StyledLink to="/">고유번호증</StyledLink>
+          <DownloadA href={image.uniqueNumber} download>
+            고유번호증
+          </DownloadA>
 
           <a href="https://www.nts.go.kr/" target="_blank" rel="noreferrer">
             국세청 바로가기

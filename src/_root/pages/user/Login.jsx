@@ -87,6 +87,8 @@ const Login = () => {
 
   const { setLoggedIn } = useUserLoggedIn();
 
+  console.log(state);
+
   const { control, setFocus, setError, handleSubmit } = useForm({
     resolver: zodResolver(zodLogin),
     defaultValues: {

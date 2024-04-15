@@ -29,6 +29,7 @@ const Item = styled.div(({ theme }) => ({
   fontSize: "2rem",
   marginBottom: "1rem",
   paddingBottom: "1rem",
+  flexWrap: "wrap",
 
   "&:not(:last-of-type)": {
     borderBottom: `1px solid ${theme.color.grey03}`,
