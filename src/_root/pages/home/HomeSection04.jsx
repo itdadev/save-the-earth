@@ -43,7 +43,7 @@ const HomeSection04 = () => {
           <TagWrapper vertical justify="center" align="center">
             <TitleTag title="핵심 가치" />
 
-            <CoreValueTitle>작은 행동 실현</CoreValueTitle>
+            <CoreValueTitle>작은 행동 실천</CoreValueTitle>
           </TagWrapper>
 
           <IsDesktop>

@@ -176,7 +176,7 @@ const WebHeader = ({ menuTree, utilMenu }) => {
         })}
 
         <ProjectWrapper align="center" justify="space-between">
-          <ProjectList />
+          <ProjectList hide />
         </ProjectWrapper>
       </SubMenuWrapper>
     </Container>

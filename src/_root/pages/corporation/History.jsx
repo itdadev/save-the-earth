@@ -4,19 +4,20 @@ import { Flex } from "antd";
 import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useMediaQuery } from "react-responsive";
+
 import {
   CommonContainer,
   CommonPageContainer,
 } from "@/components/ui/container";
 import { CommonTitleTwo } from "@/components/ui/fonts/Fonts";
-import { mq } from "@/libs/react-responsive/mediaQuery";
 import { HISTORY_LIST_QUERY_KEY } from "@/constants/queryKeys";
 import { HISTORY_API_URL } from "@/constants/apiUrls";
 import { ImageFigure } from "@/components/ui/image";
+import { IsDefault, IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 
 const Container = styled(Flex)(() => ({
   flexDirection: "column",
+
   [mq("desktop")]: {
     flexDirection: "row",
   },
@@ -52,7 +53,7 @@ const Year = styled.div(({ theme }) => ({
 
   [mq("desktop")]: {
     fontSize: "3.6rem",
-    marginBottom: "3rem",
+    marginBottom: "1rem",
   },
 }));
 
@@ -121,6 +122,7 @@ const MobileButton = styled.div(({ theme }) => ({
   height: "3rem",
   fontWeight: theme.fontWeight.bold,
   border: `1px solid ${theme.color.black01}`,
+
   [mq("desktop")]: {
     minWidth: "20rem",
     height: "6rem",
@@ -128,9 +130,11 @@ const MobileButton = styled.div(({ theme }) => ({
   },
 }));
 
-const History = () => {
-  const isDesktop = useMediaQuery({ minWidth: 1240 });
+const ImageWrapper = styled.div(() => ({
+  marginBottom: "2rem",
+}));
 
+const History = () => {
   const { data: offlineHistory } = useQuery({
     queryKey: [HISTORY_LIST_QUERY_KEY],
     queryFn: async () => await axios.get(`${HISTORY_API_URL}`),
@@ -165,16 +169,22 @@ const History = () => {
       return (
         <div key={item.history_seq}>
           {yearComponent}
+
           {item.image_url && (
-            <ImageFigure>
-              <img src={item.image_url} alt={item.history_title} />
-            </ImageFigure>
+            <ImageWrapper>
+              <ImageFigure>
+                <img src={item.image_url} alt={item.history_title} />
+              </ImageFigure>
+            </ImageWrapper>
           )}
+
           <Flex gap="0 1rem">
             <Month>{day.month() + 1}</Month>
+
             <Wrapper gap="2rem 0" vertical>
               <div>
                 <Title>{item.history_title}</Title>
+
                 <Description>{item.history_content}</Description>
               </div>
             </Wrapper>
@@ -193,15 +203,25 @@ const History = () => {
 
         <Container>
           <Block vertical>
-            {!isDesktop && <MobileButton>오프라인</MobileButton>}
-            {isDesktop && <MobileButton>오프라인</MobileButton>}
+            <IsDefault>
+              <MobileButton>오프라인</MobileButton>
+            </IsDefault>
+
+            <IsDesktop>
+              <MobileButton>오프라인</MobileButton>
+            </IsDesktop>
 
             <EachRow>{renderHistory(offlineHistory)}</EachRow>
           </Block>
 
           <Block vertical>
-            {!isDesktop && <MobileButton>온라인</MobileButton>}
-            {isDesktop && <MobileButton>온라인</MobileButton>}
+            <IsDefault>
+              <MobileButton>온라인</MobileButton>
+            </IsDefault>
+
+            <IsDesktop>
+              <MobileButton>온라인</MobileButton>
+            </IsDesktop>
 
             <EachRow>{renderHistory(onlineHistory)}</EachRow>
           </Block>
