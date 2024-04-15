@@ -74,12 +74,13 @@ const Month = styled.div(({ theme }) => ({
     width: "1rem",
     height: "1rem",
     borderRadius: "50%",
-    background: theme.color.black01,
+    background: theme.color.grey06,
   },
 
   [mq("desktop")]: {
     fontSize: "3rem",
     minWidth: "5rem",
+
     ":before": {
       left: "-6.8rem",
       width: "1.6rem",

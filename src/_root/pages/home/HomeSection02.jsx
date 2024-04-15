@@ -6,7 +6,7 @@ import { CommonContainer } from "@/components/ui/container";
 import { Flex } from "antd";
 import { IsDefault, IsDesktop, mq } from "@/libs/react-responsive/mediaQuery";
 import { ImageFigure } from "@/components/ui/image";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   ACTIVITY_LIST_QUERY_KEY,

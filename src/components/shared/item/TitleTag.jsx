@@ -15,7 +15,7 @@ const Container = styled.div(({ theme, bgColor, textColor, fit }) => ({
   whiteSpace: "nowrap",
 
   [mq("desktop")]: {
-    padding: fit ? "1rem 3rem 0.7rem 3rem" : "1rem 7rem 0.6rem",
+    padding: fit ? "1rem 3rem 0.8rem 3rem" : "1rem 7rem 0.6rem",
     fontSize: fit ? "1.8rem" : "2.4rem",
   },
 }));

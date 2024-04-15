@@ -153,18 +153,20 @@ const CampaignDetail = () => {
       {
         id: 1,
         title: "행사일",
-        description: <div>{campaignDetail?.detail_data.campaign_date}</div>,
+        description: <div>{campaignDetail?.detail_data?.campaign_date}</div>,
       },
       {
         id: 2,
         title: "장소",
-        description: <div>{campaignDetail?.detail_data.campaign_location}</div>,
+        description: (
+          <div>{campaignDetail?.detail_data?.campaign_location}</div>
+        ),
       },
       {
         id: 3,
         title: "참여대상",
         description: (
-          <div>{campaignDetail?.detail_data.campaign_participants}</div>
+          <div>{campaignDetail?.detail_data?.campaign_participants}</div>
         ),
       },
     ]);
@@ -175,18 +177,18 @@ const CampaignDetail = () => {
       <CommonContainer>
         <TitleTag title="환경활동" bgColor={color.primary02} />
 
-        <PageTitle>{campaignDetail?.detail_data.campaign_title}</PageTitle>
+        <PageTitle>{campaignDetail?.detail_data?.campaign_title}</PageTitle>
 
         <ImageFigure ratio="2 / 1">
           <img
-            src={campaignDetail?.file_list[0].file_url}
-            alt={campaignDetail?.detail_data.campaign_title}
+            src={campaignDetail?.file_list[0]?.file_url}
+            alt={campaignDetail?.detail_data?.campaign_title}
           />
         </ImageFigure>
 
         <ActivityDescription>
           <DangerouslyInnerHtml
-            value={campaignDetail?.detail_data.campaign_content}
+            value={campaignDetail?.detail_data?.campaign_content}
           />
 
           <div>

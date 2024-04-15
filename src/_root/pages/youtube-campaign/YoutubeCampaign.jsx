@@ -114,6 +114,7 @@ const YoutubeCampaign = () => {
           {youtubeList?.data?.map(youtube => {
             const regExp =
               /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+
             const matches = youtube.youtube_link?.match(regExp);
 
             return (

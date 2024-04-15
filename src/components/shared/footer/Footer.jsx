@@ -83,7 +83,9 @@ const Footer = () => {
         </p>
 
         <Flex align="center">
-          <StyledLink to="/privacy-policy">개인정보 보호정책</StyledLink>
+          <StyledLink to="/incorporated-association/개인정보취급방침">
+            개인정보 보호정책
+          </StyledLink>
 
           <StyledLink to="/">고유번호증</StyledLink>
 

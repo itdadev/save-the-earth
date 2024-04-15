@@ -37,7 +37,7 @@ const useRefreshToken = async config => {
       });
 
       if (res.status === 400) {
-        alert("refresh token is not stored");
+        console.log("refresh token is not stored");
 
         LogoutUser();
 
@@ -55,8 +55,6 @@ const useRefreshToken = async config => {
       );
     } catch (error) {
       if (error.response.data.code === JWT_TOKEN_EXPIRED) {
-        alert("logout");
-
         localStorage.removeItem(LOCAL_STORAGE_TOKENS);
         window.location.reload();
       }

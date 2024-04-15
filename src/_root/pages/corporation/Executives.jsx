@@ -1,4 +1,8 @@
 import React from "react";
+import axios from "axios";
+import { Flex } from "antd";
+import styled from "@emotion/styled";
+import { useQuery } from "@tanstack/react-query";
 
 import { image } from "@/theme";
 import {
@@ -6,14 +10,9 @@ import {
   CommonPageContainer,
 } from "@/components/ui/container";
 import { CommonTitleOne } from "@/components/ui/fonts/Fonts";
-import { Flex } from "antd";
-import styled from "@emotion/styled";
-import { mq } from "@/libs/react-responsive/mediaQuery";
 import { EXECUTIVE_LIST_QUERY_KEY } from "@/constants/queryKeys";
-
-import { useQuery } from "@tanstack/react-query";
 import { EXECUTIVE_LIST_API_URL } from "@/constants/apiUrls";
-import axios from "axios";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const PageTitle = styled(CommonTitleOne)(() => ({
   lineHeight: 0.8,
@@ -116,17 +115,21 @@ const Executives = () => {
                 </ExecutiveName>
 
                 <ExecutiveWrapper>
-                  <ExperienceUl>
-                    {executive.current_experience?.map((now, idx) => {
-                      return <li key={idx}>{now.experience}</li>;
-                    })}
-                  </ExperienceUl>
+                  {executive.current_experience?.length > 0 && (
+                    <ExperienceUl>
+                      {executive.current_experience?.map((now, idx) => {
+                        return <li key={idx}>{now.experience}</li>;
+                      })}
+                    </ExperienceUl>
+                  )}
 
-                  <ExperienceUl before={true}>
-                    {executive.past_experience?.map((before, idx) => {
-                      return <li key={idx}>{before.experience}</li>;
-                    })}
-                  </ExperienceUl>
+                  {executive.past_experience?.length > 0 && (
+                    <ExperienceUl before={true}>
+                      {executive.past_experience?.map((before, idx) => {
+                        return <li key={idx}>{before.experience}</li>;
+                      })}
+                    </ExperienceUl>
+                  )}
                 </ExecutiveWrapper>
               </ExecutiveItem>
             );

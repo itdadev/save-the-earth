@@ -42,11 +42,11 @@ const Text = styled(Flex)(({ big }) => ({
 }));
 
 const Dollar = styled.div(({ theme, big }) => ({
-  fontSize: big === "true" ? "2.2rem" : "2.4rem",
+  fontSize: big === "true" ? "2.2rem" : "2rem",
   fontWeight: theme.fontWeight.bold,
 
   [mq("desktop")]: {
-    fontSize: big === "true" ? "3.8rem" : "2.4rem",
+    fontSize: big === "true" ? "3.8rem" : "2rem",
   },
 }));
 
@@ -97,9 +97,9 @@ const ProjectList = ({ big, hide }) => {
                   gap="0.4rem 0"
                   big={big ? "true" : "false"}
                 >
-                  {/*{project.title}*/}
+                  {project.title}
 
-                  <Dollar big={big ? "true" : "false"}>{project.title}</Dollar>
+                  <Dollar big={big ? "true" : "false"}>{project.dollar}</Dollar>
                 </Text>
               </>
             )}

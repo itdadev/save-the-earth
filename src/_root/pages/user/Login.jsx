@@ -21,7 +21,11 @@ import { SingleCheckBox } from "@/components/ui/form";
 import { zodLogin } from "@/libs/zod/zodValidation";
 import { useMutation } from "@tanstack/react-query";
 import { USER_SIGN_IN_API_URL } from "@/constants/apiUrls";
-import { INVALID_LOGIN_INFO, SUCCESS_CODE } from "@/constants/responseResults";
+import {
+  DEACTIVATED_USER,
+  INVALID_LOGIN_INFO,
+  SUCCESS_CODE,
+} from "@/constants/responseResults";
 import { useUserLoggedIn } from "@/store/useLoginStore";
 import {
   GoogleLoginButton,
@@ -125,6 +129,10 @@ const Login = () => {
         if (error.response.data.data === "google") {
           navigate("/join/google", { state: { userData: snsData.google } });
         }
+      }
+
+      if (error.response.data.code === DEACTIVATED_USER) {
+        // CASE: Deactivated user
       }
     },
   });

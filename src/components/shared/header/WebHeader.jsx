@@ -49,6 +49,7 @@ const SubMenuWrapper = styled(Flex)(({ open }) => ({
   position: "absolute",
   width: "100%",
   left: "0",
+  gap: "1rem",
   top: open ? "14.6rem" : "-100vh",
   zIndex: -1,
   paddingLeft: "10rem",
@@ -89,7 +90,11 @@ const SubMenuList = styled.nav(({ theme }) => ({
 const ProjectWrapper = styled(Flex)(() => ({
   width: "36rem",
   padding: "0 2.4rem",
-  // background: "rgba(247, 216, 226, 0.8)",
+}));
+
+const StyledLink = styled(Link)(() => ({
+  height: "fit-content",
+  display: "flex",
 }));
 
 const WebHeader = ({ menuTree, utilMenu }) => {
@@ -106,22 +111,23 @@ const WebHeader = ({ menuTree, utilMenu }) => {
   return (
     <Container vertical>
       <UtilMenuWrapper align="center" justify="space-between">
-        <Link to="/">
+        <StyledLink to="/">
           <img src={image.headerLogo.default} alt="Save the Earth" />
-        </Link>
+        </StyledLink>
 
         <UtilMenu utilMenu={utilMenu} />
       </UtilMenuWrapper>
 
-      <MainMenuWrapper align="center" justify="space-between" gap="1rem">
+      <MainMenuWrapper
+        align="center"
+        justify="space-between"
+        gap="1rem"
+        onMouseEnter={showHeaderHandler}
+        onMouseLeave={hideHeaderHandler}
+      >
         {menuTree?.map(menu => {
           return (
-            <MainMenuItem
-              to={menu.url}
-              key={menu.id}
-              onMouseEnter={showHeaderHandler}
-              onMouseLeave={hideHeaderHandler}
-            >
+            <MainMenuItem to={menu.url} key={menu.id}>
               {menu.title}
             </MainMenuItem>
           );
@@ -170,7 +176,7 @@ const WebHeader = ({ menuTree, utilMenu }) => {
         })}
 
         <ProjectWrapper align="center" justify="space-between">
-          <ProjectList hide />
+          <ProjectList />
         </ProjectWrapper>
       </SubMenuWrapper>
     </Container>
