@@ -132,6 +132,11 @@ const MobileButton = styled.div(({ theme }) => ({
 
 const ImageWrapper = styled.div(() => ({
   marginBottom: "2rem",
+  maxWidth: "95%",
+
+  [mq("desktop")]: {
+    maxWidth: "90%",
+  },
 }));
 
 const History = () => {

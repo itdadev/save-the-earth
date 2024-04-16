@@ -41,35 +41,23 @@ const Text = styled(Flex)(({ big }) => ({
   },
 }));
 
-const Dollar = styled.div(({ theme, big }) => ({
-  fontSize: big === "true" ? "2.2rem" : "2rem",
-  fontWeight: theme.fontWeight.bold,
-
-  [mq("desktop")]: {
-    fontSize: big === "true" ? "3.8rem" : "2rem",
-  },
-}));
-
 const ProjectList = ({ big, hide }) => {
   const projectList = [
     {
       id: 1,
       title: "기후 프로젝트",
-      dollar: "$375k+",
       src: image.headerProject01,
       color: "#6DA1D8",
     },
     {
       id: 2,
       title: "산림 프로젝트",
-      dollar: "$250k+",
       src: image.headerProject02,
       color: "#8AB469",
     },
     {
       id: 3,
       title: "해양 프로젝트",
-      dollar: "$100k+",
       src: image.headerProject03,
       color: "#FF8D56",
     },
@@ -98,8 +86,6 @@ const ProjectList = ({ big, hide }) => {
                   big={big ? "true" : "false"}
                 >
                   {project.title}
-
-                  <Dollar big={big ? "true" : "false"}>{project.dollar}</Dollar>
                 </Text>
               </>
             )}

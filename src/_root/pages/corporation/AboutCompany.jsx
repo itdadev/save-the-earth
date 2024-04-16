@@ -68,7 +68,7 @@ const MapWrapper = styled.div(({ theme }) => ({
 const AboutCompany = () => {
   const companeyInfoArr = [
     { id: 1, title: "대표자", content: "정미혜" },
-    { id: 2, title: "전화번호", content: "02-1234-1234" },
+    { id: 2, title: "전화번호", content: "02-373-0447" },
     { id: 3, title: "Email", content: "hazel@thecedor.com" },
     {
       id: 4,
