@@ -175,14 +175,6 @@ const History = () => {
         <div key={item.history_seq}>
           {yearComponent}
 
-          {item.image_url && (
-            <ImageWrapper>
-              <ImageFigure>
-                <img src={item.image_url} alt={item.history_title} />
-              </ImageFigure>
-            </ImageWrapper>
-          )}
-
           <Flex gap="0 1rem">
             <Month>{day.month() + 1}</Month>
 
@@ -194,6 +186,14 @@ const History = () => {
               </div>
             </Wrapper>
           </Flex>
+
+          {item.image_url && (
+            <ImageWrapper>
+              <ImageFigure>
+                <img src={item.image_url} alt={item.history_title} />
+              </ImageFigure>
+            </ImageWrapper>
+          )}
         </div>
       );
     });

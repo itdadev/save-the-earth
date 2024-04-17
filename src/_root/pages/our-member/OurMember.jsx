@@ -81,6 +81,7 @@ const OurMember = () => {
                     value={member.member_content}
                     className="ellipsis-3"
                     noLink
+                    noImage
                   />
                 </MediaTexts>
               </MediaItem>
