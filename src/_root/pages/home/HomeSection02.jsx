@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import { ACTIVITY_API_URL, CAMPAIGN_API_URL } from "@/constants/apiUrls";
 import { changeUrl } from "@/utils/Functions";
+import { image } from "@/theme";
 
 const CampaignWrapper = styled.div(() => ({
   position: "relative",
@@ -125,6 +126,11 @@ const DotList = ({ goToSlide, campaignArr, currentIdx }) => {
       <Dot
         onClick={() => goToSlide(campaignArr?.length)}
         on={currentIdx === campaignArr?.length ? "true" : "false"}
+      />
+
+      <Dot
+        onClick={() => goToSlide(campaignArr?.length + 1)}
+        on={currentIdx === campaignArr?.length + 1 ? "true" : "false"}
       />
     </DotWrapper>
   );
@@ -273,16 +279,16 @@ const HomeSection02 = () => {
 
             <CampaignItem onClick={e => onClickCard(e, "/our-member")}>
               <ImageFigure ratio="3 / 2">
-                <img
-                  src={activityList?.data?.[0].image_url}
-                  alt="우리 회원 공간"
-                />
+                <img src={image.ourMemberThumbnail} alt="우리 회원 공간" />
               </ImageFigure>
 
               <CampaignTexts>
                 <CampaignTitle>우리 회원 공간</CampaignTitle>
 
-                <p className="ellipsis-3">우리 회원 공간 내용</p>
+                <p className="ellipsis-3">
+                  세이브 더 얼스 회원들의 소식을 알리고 다양한 활동들을
+                  공유합니다.
+                </p>
               </CampaignTexts>
             </CampaignItem>
           </Slider>

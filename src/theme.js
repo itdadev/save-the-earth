@@ -20,6 +20,7 @@ export const image = {
   media01: require("./assets/images/media01.jpg"),
   media02: require("./assets/images/media02.jpg"),
   uniqueNumber: require("./assets/images/unique-number.png"),
+  ourMemberThumbnail: require("./assets/images/our-member-thumbnail.jpeg"),
 
   // NOTE: icons for all pages
   headerLogo: require("./assets/icons/headerLogo.svg"),
