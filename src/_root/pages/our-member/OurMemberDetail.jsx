@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -32,6 +32,13 @@ const Description = styled(CommonDescriptionOne)(({ theme }) => ({
 
   [mq("desktop")]: {
     marginTop: "5.4rem",
+  },
+
+  "& img": {
+    width: "100% !important",
+    height: "100% !important",
+    objectFit: "contain",
+    margin: "0.6rem 0",
   },
 }));
 
@@ -69,5 +76,4 @@ const OurMemberDetail = () => {
     </CommonPageContainer>
   );
 };
-
 export default OurMemberDetail;

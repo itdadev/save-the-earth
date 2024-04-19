@@ -113,6 +113,7 @@ const PhoneVerificationFields = ({
         setError("phone", { message: data });
         return;
       }
+      clearErrors("phone");
 
       startTimer();
       resetTimer();
