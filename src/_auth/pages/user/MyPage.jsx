@@ -17,6 +17,7 @@ import {
   changePhoneFormat,
   translateLoginType,
 } from "@/utils/Functions";
+import { mq } from "@/libs/react-responsive/mediaQuery";
 
 const Wrapper = styled.div(() => ({
   maxWidth: "50rem",
@@ -26,13 +27,17 @@ const Wrapper = styled.div(() => ({
 const Item = styled.div(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
-  fontSize: "2rem",
+  fontSize: "1.6rem",
   marginBottom: "1rem",
   paddingBottom: "1rem",
   flexWrap: "wrap",
 
   "&:not(:last-of-type)": {
     borderBottom: `1px solid ${theme.color.grey03}`,
+  },
+
+  [mq("desktop")]: {
+    fontSize: "2rem",
   },
 }));
 

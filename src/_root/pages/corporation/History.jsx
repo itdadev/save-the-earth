@@ -189,9 +189,7 @@ const History = () => {
 
           {item.image_url && (
             <ImageWrapper>
-              <ImageFigure>
-                <img src={item.image_url} alt={item.history_title} />
-              </ImageFigure>
+              <img src={item.image_url} alt={item.history_title} width="100%" />
             </ImageWrapper>
           )}
         </div>

@@ -18,11 +18,13 @@ import { useUserStore } from "@/store/useUserStore";
 import Interceptor from "@/libs/axios/AxiosInterceptor";
 import { LOCAL_STORAGE_TOKENS } from "@/constants/storageKey";
 import { changeUrl } from "@/utils/Functions";
+import { useLogoutUser } from "@/hooks/useAuth";
 
 const Header = () => {
   const { user, setUser, clearUser } = useUserStore();
+  const logoutUser = useLogoutUser();
 
-  const { data: userData, isSuccess } = useQuery({
+  const { data: userData, error } = useQuery({
     queryKey: [USER_DATA_QUERY_KEY],
     queryFn: async () => await Interceptor.get(`${USER_API_URL}`),
     select: data => {
@@ -30,13 +32,18 @@ const Header = () => {
     },
     enabled: !!localStorage.getItem(LOCAL_STORAGE_TOKENS),
   });
+
   useEffect(() => {
-    if (isSuccess) {
+    if (userData) {
       setUser(userData);
-    } else {
-      clearUser();
     }
-  }, [isSuccess]);
+
+    if (error) {
+      clearUser();
+
+      logoutUser();
+    }
+  }, [userData, error]);
 
   const { data: campaignList } = useQuery({
     queryKey: [CAMPAIGN_LIST_QUERY_KEY],
