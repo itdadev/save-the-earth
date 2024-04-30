@@ -38,6 +38,28 @@ export const SendButton = styled.div(({ theme, disabled }) => ({
   color: theme.color.black02,
 }));
 
+const SendText = styled.div(() => ({
+  position: "relative",
+  color: "white",
+  gap: "-3rem",
+  minWidth: "8rem",
+  height: "100%",
+  width: "100%",
+
+  p: {
+    position: "absolute",
+    top: "50%",
+    transform: "translateY(-50%)",
+  },
+
+  img: {
+    position: "absolute",
+    top: "50%",
+    transform: "translateY(-50%)",
+    left: "2.6rem",
+  },
+}));
+
 const PhoneVerificationFields = ({
   watch,
   control,
@@ -62,6 +84,8 @@ const PhoneVerificationFields = ({
   const [codeExpired, setCodeExpired] = useState(false);
   const [codeVerified, setCodeVerified] = useState(false);
 
+  const [sendCodeLoading, setSendCodeLoading] = useState(false);
+
   const resetTimer = useCallback(() => {
     setTargetDate(new Date().getTime() + CODE_EXPIRE_TIME);
   }, [setTargetDate]);
@@ -74,7 +98,7 @@ const PhoneVerificationFields = ({
     timerRef.current.stop();
   }, []);
 
-  const { mutate: sendCodeFunction, status: codeSendStatus } = useMutation({
+  const { mutate: sendCodeFunction } = useMutation({
     mutationFn: async data => {
       if (codeSent) {
         // CASE: 핸드폰 번호 다시 입력
@@ -106,6 +130,7 @@ const PhoneVerificationFields = ({
         resetTimer();
         startTimer();
         resetField("auth_code");
+        setCodeActive(true);
         return;
       }
 
@@ -114,9 +139,16 @@ const PhoneVerificationFields = ({
         return;
       }
 
+      setSendCodeLoading(true);
+
+      setTimeout(() => {
+        setSendCodeLoading(false);
+      }, 5000);
+
       startTimer();
       resetTimer();
       setCodeSent(true);
+      setCodeActive(true);
     },
     onError: error => {
       if (error.response.data.code === DUPLICATE_USER_PHONE) {
@@ -201,7 +233,7 @@ const PhoneVerificationFields = ({
             <SendButton
               type="primary"
               size="large"
-              disabled={codeVerified || codeSendStatus === "pending"}
+              disabled={codeVerified || sendCodeLoading}
               onClick={() => {
                 if (codeSent) {
                   setCodeSent(false);
@@ -212,8 +244,11 @@ const PhoneVerificationFields = ({
                 }
               }}
             >
-              {codeSendStatus === "pending" ? (
-                <Loading />
+              {sendCodeLoading ? (
+                <SendText>
+                  <p>전송중</p>
+                  <Loading />
+                </SendText>
               ) : codeSent && !codeVerified ? (
                 "핸드폰 번호 다시 입력"
               ) : codeVerified ? (

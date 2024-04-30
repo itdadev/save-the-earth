@@ -146,11 +146,15 @@ const Join = () => {
       setValue("user_email", userData?.email);
       setValue("user_name", userData?.name);
 
-      if (loginType === "kakao") {
+      if (
+        (loginType === "kakao" && userData?.birthyear) ||
+        (loginType === "kakao" && userData?.phone_number)
+      ) {
         setValue(
           "user_birth",
           changeBirthFormat(userData?.birthyear + userData?.birthday),
         );
+
         setValue("user_phone", userData?.phone_number?.replace("+82 ", "0"));
       } else {
         setValue("user_birth", "");
@@ -159,6 +163,7 @@ const Join = () => {
 
       setValue("login_type", loginType);
       setValue("user_email_checked", false);
+
       if (loginType !== "email") {
         setValue("user_password", "qweqwe123");
         setValue("confirm_password", "qweqwe123");

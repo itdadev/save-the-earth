@@ -24,7 +24,15 @@ const UtilMenu = ({ utilMenu, hideHeader }) => {
         .filter(el => !el.outerLink)
         .map(util => {
           return (
-            <Link to={util.url} key={util.id} onClick={hideHeader}>
+            <Link
+              to={util.url}
+              key={util.id}
+              onClick={() => {
+                if (hideHeader) {
+                  hideHeader();
+                }
+              }}
+            >
               {util.title}
             </Link>
           );
@@ -36,7 +44,9 @@ const UtilMenu = ({ utilMenu, hideHeader }) => {
           onClick={() => {
             logoutUser();
 
-            hideHeader();
+            if (hideHeader) {
+              hideHeader();
+            }
           }}
         >
           로그아웃
