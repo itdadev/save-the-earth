@@ -73,6 +73,8 @@ function App() {
     setScreenSize();
   });
 
+  console.log(process.env.REACT_APP_BASE_URL);
+
   return (
     <ThemeProvider theme={AppTheme}>
       <ConfigProvider theme={AntdTheme}>

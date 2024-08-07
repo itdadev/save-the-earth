@@ -35,7 +35,7 @@ export const MediaItem = styled.div(({ clickable }) => ({
 }));
 export const MediaTexts = styled(Flex)(({ theme, order }) => ({
   background: order === 0 ? theme.color.primary01 : theme.color.secondary01,
-  height: "27.4rem",
+  height: "18.8rem",
   padding: "3rem 1.6rem",
   color: "white",
   fontSize: "1.4rem",

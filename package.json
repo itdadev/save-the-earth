@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false env-cmd -f .env.dev craco start",
-    "build": "GENERATE_SOURCEMAP=false env-cmd -f .env.dev craco build",
+    "build": "GENERATE_SOURCEMAP=false env-cmd -f .env.prod craco build",
     "test": "craco test",
     "windowBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "eject": "craco eject",
