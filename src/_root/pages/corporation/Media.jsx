@@ -48,8 +48,12 @@ export const MediaTexts = styled(Flex)(({ theme, order }) => ({
 }));
 
 export const MediaTitle = styled.header(({ theme }) => ({
-  fontSize: "3rem",
   fontWeight: theme.fontWeight.bold,
+  fontSize: "2.4rem",
+
+  [mq("desktop")]: {
+    fontSize: "3rem",
+  },
 }));
 const Media = () => {
   const [active, setActive] = useState(1);

@@ -28,7 +28,9 @@ const OurMember = () => {
   const { data: memberList } = useQuery({
     queryKey: [MEMBER_LIST_QUERY_KEY, active],
     queryFn: async () =>
-      await axios.get(`${MEMBER_API}?page=${active}&limit=${LOAD_SIZE_4}`),
+      await axios.get(
+        `${MEMBER_API}?page=${active}&limit=${LOAD_SIZE_4}&post_target=savetheearth`,
+      ),
     select: data => {
       return data?.data;
     },
